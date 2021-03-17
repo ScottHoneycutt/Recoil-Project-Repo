@@ -11,6 +11,7 @@ namespace RecoilGame
     {
         protected Rectangle objectRect;
         protected Texture2D sprite;
+        protected bool isActive;
 
         //Get property for the Rectangle object for collision detection later----
         public Rectangle ObjectRect
@@ -53,10 +54,11 @@ namespace RecoilGame
         /// <param name="width">The width of the rectangle----</param>
         /// <param name="height">The heigh of the rectangle----</param>
         /// <param name="texture">The texture to be displayed in the rectangle----</param>
-        public GameObject(int xPosition, int yPosition, int width, int height, Texture2D texture)
+        public GameObject(int xPosition, int yPosition, int width, int height, Texture2D texture , bool active)
         {
             sprite = texture;
             objectRect = new Rectangle(xPosition, yPosition, width, height);
+            isActive = active;
         }
 
     }

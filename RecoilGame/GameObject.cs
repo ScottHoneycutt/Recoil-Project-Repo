@@ -5,49 +5,65 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace RecoilGame
 {
     class GameObject
     {
-        //Fields
-        private Texture2D sprite;
-        private Rectangle rectangle;
-        private bool isActive;
+        protected Rectangle objectRect;
+        protected Texture2D sprite;
+        protected bool isActive;
 
-        //CONSTRUCTOR
-
-        /// <summary>
-        /// GameObject's Constructor
-        /// </summary>
-        /// <param name="sprite">Texture For Object</param>
-        /// <param name="rectangle">Rectangle For Object</param>
-        /// <param name="isActive">Set Whether Object Is Active</param>
-        public GameObject(Texture2D sprite, Rectangle rectangle, bool isActive)
+        //Get property for the Rectangle object for collision detection later----
+        public Rectangle ObjectRect
         {
-            this.sprite = sprite;
-            this.rectangle = rectangle;
-            this.isActive = isActive;
+            get
+            {
+                return objectRect;
+            }
         }
 
-        //PROPERTIES
-
-        /// <summary>
-        /// Rectangle Property
-        /// </summary>
-        public Rectangle Rectangle
+        //Centered coordinate properties for the rectangle for easier use later----
+        public int CenteredX
         {
-            get { return rectangle; }
-            set { rectangle = value; }
+            get
+            {
+                return objectRect.X + objectRect.Width / 2;
+            }
+            set
+            {
+                objectRect.X = value - objectRect.Width / 2;
+            }
+        }
+        public int CenteredY
+        {
+            get
+            {
+                return objectRect.Y + objectRect.Height / 2;
+            }
+            set
+            {
+                objectRect.Y = value - objectRect.Height / 2;
+            }
         }
 
         /// <summary>
-        /// IsActive Property
+        /// Creates a new basic GameObject----
         /// </summary>
-        public bool IsActive
+        /// <param name="xPosition">The X coordinate of the object's rectangle (top left corner)----</param>
+        /// <param name="yPosition">The Y coordinate of the object's rectangle (top left corner)----</param>
+        /// <param name="width">The width of the rectangle----</param>
+        /// <param name="height">The heigh of the rectangle----</param>
+        /// <param name="texture">The texture to be displayed in the rectangle----</param>
+        public GameObject(int xPosition, int yPosition, int width, int height, Texture2D texture , bool active)
         {
-            get { return isActive; }
-            set { isActive = value; }
+            sprite = texture;
+            objectRect = new Rectangle(xPosition, yPosition, width, height);
+            isActive = active;
         }
+
     }
 }

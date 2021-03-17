@@ -14,6 +14,7 @@ namespace RecoilGame
         private float cooldown;
         private int numOfProjectiles;
 
+
         //CONSTRUCTOR
 
         /// <summary>
@@ -32,6 +33,27 @@ namespace RecoilGame
             this.cooldown = cooldown;
             this.numOfProjectiles = numOfProjectiles;
         }
+
+
+        //PROPERTIES
+
+        /// <summary>
+        /// Property That Returns Or Sets Weapon's Cooldown
+        /// </summary>
+        public float Cooldown
+        {
+            get { return cooldown; }
+            set { cooldown = value; }
+        }
+
+        /// <summary>
+        /// Property For Weapon's Projectiles
+        /// </summary>
+        public int NumOfProjectiles
+        {
+            get { return numOfProjectiles; }
+        }
+
 
         //METHODS
 

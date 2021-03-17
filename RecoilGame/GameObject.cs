@@ -1,7 +1,4 @@
-﻿//Trevor Dunn       3/17/21
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
+﻿//Aidan Kamp
 using System;
 using System.Collections.Generic;
 using System.Text;

@@ -93,7 +93,6 @@ namespace RecoilGame
         public void Simulate()
         {
             //Updating lifetime timer----
-            //lifetime -= 
 
             //Updating position----
             position.X += velocity.X;

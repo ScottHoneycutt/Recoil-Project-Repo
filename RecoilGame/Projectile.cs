@@ -7,6 +7,11 @@ using Microsoft.Xna.Framework.Input;
 
 namespace RecoilGame
 {
+    /// <summary>
+    /// Scott Honeycutt----
+    /// 3/17/2021----
+    /// Projectile class handles simulating the movement and collisions of bullets----
+    /// </summary>
     class Projectile : GameObject
     {
         private Vector2 velocity;
@@ -87,6 +92,9 @@ namespace RecoilGame
         /// </summary>
         public void Simulate()
         {
+            //Updating lifetime timer----
+            //lifetime -= 
+
             //Updating position----
             position.X += velocity.X;
             position.Y += velocity.Y;

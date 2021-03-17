@@ -28,8 +28,8 @@ namespace RecoilGame
         /// <param name="texture"></param> player texture
         /// <param name="velocity"></param> player velocity
         /// <param name="health"></param> player health value
-        public Player(int x, int y, int width, int height, Texture2D texture, Vector2 velocity, float health)
-            : base(x, y, width, height, texture)
+        public Player(int x, int y, int width, int height, Texture2D texture, bool isActive, Vector2 velocity, float health)
+            : base(x, y, width, height, texture, isActive)
 
         {
             this.health = health;

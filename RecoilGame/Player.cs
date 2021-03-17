@@ -7,15 +7,17 @@ using System.Text;
 
 namespace RecoilGame
 {
-    class Player : GameObject
+    class Player : GameObject, IDamageable
     {
-        //Aidan 3/17/2021
+        //Aidan 
+        //3/17/2021
+        //Created base structure with fields and constructor
 
         //Fields
 
         private List<PlayerWeapon> weaponList;
         private PlayerWeapon currentWeapon;
-        private float health;
+        private int health;
         private Vector2 velocity;
 
         /// <summary>
@@ -28,12 +30,29 @@ namespace RecoilGame
         /// <param name="texture"></param> player texture
         /// <param name="velocity"></param> player velocity
         /// <param name="health"></param> player health value
-        public Player(int x, int y, int width, int height, Texture2D texture, bool isActive, Vector2 velocity, float health)
+        public Player(int x, int y, int width, int height, Texture2D texture, bool isActive, Vector2 velocity, int health)
             : base(x, y, width, height, texture, isActive)
 
         {
             this.health = health;
             this.velocity = velocity;
+        }
+
+        /// <summary>
+        /// Method that allows the player to take damage
+        /// </summary>
+        /// <param name="damage"></param>
+        public void TakeDamage(int damage)
+        {
+            //if the damage reduces the health to or below 0, health = 0
+            if ((health - damage) <= 0)
+            {
+                health = 0;
+            }
+            else
+            {
+                health -= damage;
+            }
         }
     }
 }

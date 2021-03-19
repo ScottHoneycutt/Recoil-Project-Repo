@@ -11,6 +11,7 @@ namespace RecoilGame
     class GameObject
     {
         protected Rectangle objectRect;
+        protected Vector2 position;
         protected Texture2D sprite;
         protected bool isActive;
 
@@ -66,6 +67,7 @@ namespace RecoilGame
         {
             sprite = texture;
             objectRect = new Rectangle(xPosition, yPosition, width, height);
+            position = new Vector2(xPosition, yPosition);
             isActive = active;
         }
 

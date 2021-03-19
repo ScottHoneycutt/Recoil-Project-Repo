@@ -9,6 +9,9 @@ namespace RecoilGame
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
+        //Manager classes----
+        public static ProjectileManager projectileManager;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -19,6 +22,7 @@ namespace RecoilGame
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            projectileManager = new ProjectileManager();
 
             base.Initialize();
         }

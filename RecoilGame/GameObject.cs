@@ -8,7 +8,7 @@ using System.Text;
 
 namespace RecoilGame
 {
-    class GameObject
+    public class GameObject
     {
         protected Rectangle objectRect;
         protected Vector2 position;

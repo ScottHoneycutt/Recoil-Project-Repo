@@ -12,7 +12,7 @@ namespace RecoilGame
     /// 3/17/2021----
     /// Projectile class handles simulating the movement and collisions of bullets----
     /// </summary>
-    class Projectile : GameObject
+    public class Projectile : GameObject
     {
         private Vector2 velocity;
         private int damage;
@@ -86,13 +86,25 @@ namespace RecoilGame
             this.isFriendly = isFriendly;
         }
 
+
+
         /// <summary>
         /// Simulates the projectile's movement and calls CheckForCollisions for collision
         /// detection. Is meant to be run every frame----
         /// </summary>
-        public void Simulate()
+        /// <param name="gameTime">GameTime variable to determine when the object expires----</param>
+        public void Simulate(GameTime gameTime)
         {
             //Updating lifetime timer----
+            lifetime -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            //Expiring old projectiles and preventing further simulation----
+            if (lifetime <= 0)
+            {
+                isActive = false;
+                Game1.projectileManager.ReportExpired(this);
+                return;
+            }
 
             //Updating position----
             position.X += velocity.X;
@@ -101,10 +113,13 @@ namespace RecoilGame
             objectRect.X = (int)position.X;
             objectRect.Y = (int)position.Y;
 
+            //Checking for collisions----
+            CheckForCollisions();
+
             //Updating the velocity vector----
             velocity.Y -= gravity;
 
-
+            
         }
 
         /// <summary>
@@ -114,6 +129,7 @@ namespace RecoilGame
         {
             if (isFriendly)
             {
+                
                 //Check for collisions with all enemy objects here----
             }
             else

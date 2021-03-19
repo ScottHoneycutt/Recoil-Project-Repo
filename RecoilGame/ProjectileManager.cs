@@ -16,10 +16,12 @@ namespace RecoilGame
     public class ProjectileManager
     {
         private List<Projectile> listOfProjectiles;
+        private List<Projectile> expiredProjectiles;
 
         public ProjectileManager()
         {
             listOfProjectiles = new List<Projectile>();
+            expiredProjectiles = new List<Projectile>();
         }
 
 
@@ -31,9 +33,26 @@ namespace RecoilGame
             }
         }
 
+        /// <summary>
+        /// Reports a projectile that has expired so that it can be removed when CollectGarbage is called----
+        /// </summary>
+        /// <param name="expiredProjectile">The projectile that has expired----</param>
         public void ReportExpired(Projectile expiredProjectile)
         {
-            listOfProjectiles.Remove(expiredProjectile);
+            expiredProjectiles.Add(expiredProjectile);
+        }
+
+        /// <summary>
+        /// Cleans listOfProjectiles of expired projectiles so that there is no attempt to keep simulating
+        /// them. *****This is to be run AFTER Simulate() in Update() so as to not interefere with it*****-----
+        /// </summary>
+        public void CollectGarbage()
+        {
+            foreach(Projectile expiredProjectile in expiredProjectiles)
+            {
+                listOfProjectiles.Remove(expiredProjectile);
+                expiredProjectiles.Clear();
+            }
         }
     }
 }

@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace RecoilGame
 {
-    //Aidan 
+    //Aidan Kamp
     //3/19/2021
     //Created base structure with fields and constructor
     class HealthPack : GameObject

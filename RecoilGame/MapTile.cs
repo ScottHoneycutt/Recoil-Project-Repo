@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-//Aidan 
+//Aidan Kamp
 //3/19/2021
 //Created base structure with fields and constructor
 

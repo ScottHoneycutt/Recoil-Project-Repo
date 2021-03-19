@@ -11,6 +11,7 @@ namespace RecoilGame
 
         //Manager classes----
         public static ProjectileManager projectileManager;
+        public static EnemyManager enemyManager;
 
         public Game1()
         {

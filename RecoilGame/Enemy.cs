@@ -47,6 +47,16 @@ namespace RecoilGame
             this.velocity = velocity;
         }
 
+        public void Move()
+        {
+            position = new Vector2(
+                CenteredX + velocity.X,
+                CenteredY + velocity.Y);
+
+            objectRect.X = (int)position.X;
+            objectRect.Y = (int)position.Y;
+        }
+
         public void TakeDamage(int damage)
         {
             health -= damage;

@@ -70,6 +70,5 @@ namespace RecoilGame
             position = new Vector2(xPosition, yPosition);
             isActive = active;
         }
-
     }
 }

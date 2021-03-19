@@ -117,8 +117,6 @@ namespace RecoilGame
 
             //Updating the velocity vector----
             velocity.Y -= gravity;
-
-            
         }
 
         /// <summary>
@@ -128,8 +126,17 @@ namespace RecoilGame
         {
             if (isFriendly)
             {
-                
                 //Check for collisions with all enemy objects here----
+                for (int i = 0; i < Game1.enemyManager.ListOfEnemies.Count; i++)
+                {
+                    if (this.objectRect.Intersects(Game1.enemyManager.ListOfEnemies[i].ObjectRect))
+                    {
+                        Game1.enemyManager.ListOfEnemies[i].TakeDamage(damage);
+                        Expire();
+                        //Saving time by returning early----
+                        return;
+                    }
+                }
             }
             else
             {
@@ -139,10 +146,20 @@ namespace RecoilGame
                     Game1.playerManager.PlayerObject.TakeDamage(damage);
                     //Expires after collision----
                     Expire();
+                    //Saving time by returning early----
+                    return;
                 }
             }
-
             //Check for collisions with the terrain here----
+            for (int i = 0; i < Game1.levelManager.ListOfMapTiles.Count; i++)
+            {
+                if (this.objectRect.Intersects(Game1.levelManager.ListOfMapTiles[i].ObjectRect))
+                {
+                    Expire();
+                    //Saving time by returning early----
+                    return;
+                }
+            }
         }
 
 

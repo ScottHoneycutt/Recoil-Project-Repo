@@ -11,6 +11,14 @@ namespace RecoilGame
     {
         private List<Enemy> listOfEnemies;
 
+        public List<Enemy> ListOfEnemies
+        {
+            get
+            {
+                return listOfEnemies;
+            }
+        }
+
         public EnemyManager()
         {
             listOfEnemies = new List<Enemy>();

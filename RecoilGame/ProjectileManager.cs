@@ -24,7 +24,10 @@ namespace RecoilGame
             expiredProjectiles = new List<Projectile>();
         }
 
-
+        /// <summary>
+        /// Tells all projectiles to simulate/update themselves, managing movement and collisions----
+        /// </summary>
+        /// <param name="gameTime">GameTime passed in to limit how long a projectile lives----</param>
         public void Simulate(GameTime gameTime)
         {
             foreach (Projectile proj in listOfProjectiles)

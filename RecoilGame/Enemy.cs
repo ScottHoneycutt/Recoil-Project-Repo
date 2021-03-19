@@ -10,7 +10,7 @@ namespace RecoilGame
     // Name: Jack Walsh
     // Date: 3/19/2021
     // Purpose: Create enemy and adjust its health
-    class Enemy : GameObject, IDamageable
+    public class Enemy : GameObject, IDamageable
     {
         // Variables
         private float health;

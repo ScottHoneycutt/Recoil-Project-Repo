@@ -48,7 +48,7 @@ namespace RecoilGame
             }
         }
 
-        // Having isActive a property for easy drawing purposes
+        // Having isActive a property for easy drawing / moving purposes
         public bool IsActive
         {
             get { return isActive; }

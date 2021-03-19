@@ -71,5 +71,18 @@ namespace RecoilGame
             isActive = active;
         }
 
+        /// <summary>
+        /// Draws the GameObject if it isActive
+        /// </summary>
+        /// <param name="sb"></param>
+        /// <param name="tint"></param>
+        public virtual void Draw(SpriteBatch sb, Color tint)
+        {
+            if (isActive)
+            {
+                sb.Draw(sprite, objectRect, tint);
+            }
+            
+        }
     }
 }

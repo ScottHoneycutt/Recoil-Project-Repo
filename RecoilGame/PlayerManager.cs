@@ -4,7 +4,18 @@ using System.Text;
 
 namespace RecoilGame
 {
-    class PlayerManager
+    public class PlayerManager
     {
+        private Player playerObject;
+
+        public Player PlayerObject
+        {
+            get
+            {
+                return playerObject;
+            }
+        }
+
+
     }
 }

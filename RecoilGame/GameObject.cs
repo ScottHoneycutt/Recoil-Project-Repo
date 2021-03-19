@@ -47,6 +47,13 @@ namespace RecoilGame
             }
         }
 
+        // Having isActive a property for easy drawing purposes
+        public bool IsActive
+        {
+            get { return isActive; }
+            set { isActive = value; }
+        }
+
         /// <summary>
         /// Creates a new basic GameObject----
         /// </summary>

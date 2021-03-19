@@ -7,12 +7,41 @@ using Microsoft.Xna.Framework.Input;
 
 namespace RecoilGame
 {
-    class Enemy : IDamageable
+    // Name: Jack Walsh
+    // Date: 3/19/2021
+    // Purpose: Create enemy and adjust its health
+    class Enemy : GameObject, IDamageable
     {
-        private int health;
+        // Variables
+        private float health;
         private Vector2 velocity;
 
-        public Enemy(int health, Vector2 velocity)
+        // Properties
+        public float Health
+        {
+            get { return health; }
+            set { health = value; }
+        }
+
+        public Vector2 Velocity
+        {
+            get { return velocity; }
+            set { velocity = value; }
+        }
+
+        /// <summary>
+        /// Constructor for Enemy class - inherits from GameObject
+        /// </summary>
+        /// <param name="x"> X position of topleft corner of playerRect </param>
+        /// <param name="y"> Y position of topleft corner of playerRect </param>
+        /// <param name="width"> Width of playerRect </param>
+        /// <param name="height"> Height of playerRect </param>
+        /// <param name="texture"> Player texture </param>
+        /// <param name="isActive"> If player should be drawn to screen </param>
+        /// <param name="velocity"> Velocity of player </param>
+        /// <param name="health"> Health of player </param>
+        public Enemy(int x, int y, int width, int height, Texture2D texture, bool isActive, Vector2 velocity, float health)
+            : base(x, y, width, height, texture, isActive)
         {
             this.health = health;
             this.velocity = velocity;
@@ -23,7 +52,7 @@ namespace RecoilGame
             health -= damage;
             if (health <= 0)
             {
-                //die
+                isActive = false;
             }
         }
     }

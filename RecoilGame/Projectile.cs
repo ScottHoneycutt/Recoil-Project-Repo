@@ -101,8 +101,7 @@ namespace RecoilGame
             //Expiring old projectiles and preventing further simulation----
             if (lifetime <= 0)
             {
-                isActive = false;
-                Game1.projectileManager.ReportExpired(this);
+                Expire();
                 return;
             }
 
@@ -123,7 +122,7 @@ namespace RecoilGame
         }
 
         /// <summary>
-        /// Helper method. for collisions between the projectile and other relevant objects----
+        /// Helper method. For collisions between the projectile and other relevant objects----
         /// </summary>
         public void CheckForCollisions()
         {
@@ -135,10 +134,25 @@ namespace RecoilGame
             else
             {
                 //Check for collisions with the player here----
+                if (this.objectRect.Intersects(Game1.playerManager.PlayerObject.ObjectRect))
+                {
+                    Game1.playerManager.PlayerObject.TakeDamage(damage);
+                    //Expires after collision----
+                    Expire();
+                }
             }
 
             //Check for collisions with the terrain here----
         }
 
+
+        /// <summary>
+        /// Helper method. Helps remove an object from the simulation cycle----
+        /// </summary>
+        private void Expire()
+        {
+            isActive = false;
+            Game1.projectileManager.ReportExpired(this);
+        }
     }
 }

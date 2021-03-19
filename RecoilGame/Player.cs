@@ -7,7 +7,7 @@ using System.Text;
 
 namespace RecoilGame
 {
-    class Player : GameObject, IDamageable
+    public class Player : GameObject, IDamageable
     {
         //Aidan 
         //3/17/2021

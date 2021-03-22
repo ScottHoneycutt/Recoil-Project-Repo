@@ -53,9 +53,13 @@ namespace RecoilGame
         /// </summary>
         public override void Shoot()
         {
-            for(int x = 0; x < 5; x++)
+            Projectile projectile;
+
+            for(int x = 0; x < NumOfProjectiles; x++)
             {
                 //Create projectile using projectileTexture
+
+                projectile = new Projectile()                
             }
 
             throw new NotImplementedException();

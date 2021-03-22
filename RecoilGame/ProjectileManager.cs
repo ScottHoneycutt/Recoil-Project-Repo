@@ -15,7 +15,7 @@ namespace RecoilGame
     /// </summary>
     public class ProjectileManager
     {
-        private List<Projectile> listOfProjectiles;
+        public List<Projectile> listOfProjectiles;
         private List<Projectile> expiredProjectiles;
 
         public ProjectileManager()
@@ -55,6 +55,19 @@ namespace RecoilGame
             {
                 listOfProjectiles.Remove(expiredProjectile);
                 expiredProjectiles.Clear();
+            }
+        }
+
+        /// <summary>
+        /// Tells all projectiles to draw themselves----
+        /// </summary>
+        /// <param name="sb">The spritebatch to be used for the drawing----</param>
+        /// <param name="tint">The color to draw the sprites in----</param>
+        public void Draw(SpriteBatch sb, Color tint)
+        {
+            foreach (Projectile proj in listOfProjectiles)
+            {
+                proj.Draw(sb, tint);
             }
         }
     }

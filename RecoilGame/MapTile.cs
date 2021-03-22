@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace RecoilGame
 {
-    class MapTile : GameObject
+    public class MapTile : GameObject
     {
         //fields
 

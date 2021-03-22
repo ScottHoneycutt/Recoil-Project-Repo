@@ -122,7 +122,7 @@ namespace RecoilGame
         /// <summary>
         /// Helper method. For collisions between the projectile and other relevant objects----
         /// </summary>
-        public void CheckForCollisions()
+        private void CheckForCollisions()
         {
             if (isFriendly)
             {

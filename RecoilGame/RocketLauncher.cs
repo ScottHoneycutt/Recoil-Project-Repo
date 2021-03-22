@@ -14,12 +14,16 @@ namespace RecoilGame
         private Texture2D projectileTexture;
 
         //Constructor
-        public RocketLauncher(int xPos, int yPos, int width, int height, Texture2D sprite, bool isActive, float cooldown, int numOfProjectiles, Texture2D projectileTexture) : base(xPos, yPos, width, height, sprite, isActive, cooldown, numOfProjectiles)
+        public RocketLauncher(int xPos, int yPos, int width, int height, Texture2D sprite, 
+            bool isActive, float cooldown, int numOfProjectiles, Texture2D projectileTexture) 
+            : base(xPos, yPos, width, height, sprite, isActive, cooldown, numOfProjectiles)
         {
             this.projectileTexture = projectileTexture;
         }
 
-        //Shoot Method
+        /// <summary>
+        /// Creates a new Projectile and Adds it to ListOfProjectiles
+        /// </summary>
         public override void Shoot()
         {
             //Test to see if this will actually create a projectile and how it will work, then we'll add more since we want shotgun to have multiple projectiles

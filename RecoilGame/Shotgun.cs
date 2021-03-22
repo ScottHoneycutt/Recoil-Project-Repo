@@ -28,7 +28,9 @@ namespace RecoilGame
         /// <param name="cooldown">Float For Cooldown Of Shotgun</param>
         /// <param name="numOfProjectiles">Int For Number Of Shotgun Projectiles</param>
         /// <param name="playerRecoil">Float For Shotgun's Recoil</param>
-        public Shotgun(int xPos, int yPos, int width, int height, Texture2D sprite, bool isActive, float cooldown, int numOfProjectiles, float playerRecoil, Texture2D projectileTexture) : base(xPos, yPos, width, height, sprite, isActive, cooldown, numOfProjectiles)
+        public Shotgun(int xPos, int yPos, int width, int height, Texture2D sprite, bool isActive, 
+            float cooldown, int numOfProjectiles, float playerRecoil, Texture2D projectileTexture) 
+            : base(xPos, yPos, width, height, sprite, isActive, cooldown, numOfProjectiles)
         {
             this.playerRecoil = playerRecoil;
             this.projectileTexture = projectileTexture;
@@ -49,7 +51,7 @@ namespace RecoilGame
         //METHODS
 
         /// <summary>
-        /// Shoot Method, Overidden From PlayerWeapon
+        /// Creates a new Projectile and Adds it to ListOfProjectiles
         /// </summary>
         public override void Shoot()
         {

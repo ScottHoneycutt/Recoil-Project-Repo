@@ -9,8 +9,11 @@ namespace RecoilGame
     // Purpose: 
     public class EnemyManager
     {
+        // Variables
         private List<Enemy> listOfEnemies;
+        private List<Enemy> deadEnemies;
 
+        // Properties
         public List<Enemy> ListOfEnemies
         {
             get
@@ -19,11 +22,18 @@ namespace RecoilGame
             }
         }
 
+        /// <summary>
+        /// Constructor for EnemyManager
+        /// </summary>
         public EnemyManager()
         {
             listOfEnemies = new List<Enemy>();
+            deadEnemies = new List<Enemy>();
         }
 
+        /// <summary>
+        /// Move enemies if active or send them to dead enemies
+        /// </summary>
         public void MoveEnemies()
         {
             foreach(Enemy enemy in listOfEnemies)
@@ -31,7 +41,22 @@ namespace RecoilGame
                 if (enemy.IsActive)
                 {
                     enemy.Move();
+                } else
+                {
+                    deadEnemies.Add(enemy);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Remove dead enemies from list of enemies and clears deadEnemy list
+        /// </summary>
+        public void RemoveDeadEnemies()
+        {
+            foreach(Enemy deadEnemy in deadEnemies)
+            {
+                listOfEnemies.Remove(deadEnemy);
+                deadEnemies.Clear();
             }
         }
     }

@@ -10,7 +10,7 @@ namespace RecoilGame
     // Name: Jack Walsh
     // Date: 3/19/2021
     // Purpose: Create enemy and adjust its health
-    class Enemy : GameObject, IDamageable
+    public class Enemy : GameObject, IDamageable
     {
         // Variables
         private float health;
@@ -45,6 +45,16 @@ namespace RecoilGame
         {
             this.health = health;
             this.velocity = velocity;
+        }
+
+        public void Move()
+        {
+            position = new Vector2(
+                CenteredX + velocity.X,
+                CenteredY + velocity.Y);
+
+            objectRect.X = (int)position.X;
+            objectRect.Y = (int)position.Y;
         }
 
         public void TakeDamage(int damage)

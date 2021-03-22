@@ -48,7 +48,7 @@ namespace RecoilGame
             }
         }
 
-        // Having isActive a property for easy drawing purposes
+        // Having isActive a property for easy drawing / moving purposes
         public bool IsActive
         {
             get { return isActive; }
@@ -71,5 +71,18 @@ namespace RecoilGame
             isActive = active;
         }
 
+        /// <summary>
+        /// Draws the GameObject if it isActive
+        /// </summary>
+        /// <param name="sb"></param>
+        /// <param name="tint"></param>
+        public virtual void Draw(SpriteBatch sb, Color tint)
+        {
+            if (isActive)
+            {
+                sb.Draw(sprite, objectRect, tint);
+            }
+            
+        }
     }
 }

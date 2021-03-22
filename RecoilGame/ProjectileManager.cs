@@ -15,14 +15,19 @@ namespace RecoilGame
     /// </summary>
     public class ProjectileManager
     {
-        public List<Projectile> listOfProjectiles;
+        private List<Projectile> listOfProjectiles;
+        private List<Projectile> expiredProjectiles;
 
         public ProjectileManager()
         {
             listOfProjectiles = new List<Projectile>();
+            expiredProjectiles = new List<Projectile>();
         }
 
-
+        /// <summary>
+        /// Tells all projectiles to simulate/update themselves, managing movement and collisions----
+        /// </summary>
+        /// <param name="gameTime">GameTime passed in to limit how long a projectile lives----</param>
         public void Simulate(GameTime gameTime)
         {
             foreach (Projectile proj in listOfProjectiles)
@@ -31,9 +36,39 @@ namespace RecoilGame
             }
         }
 
+        /// <summary>
+        /// Reports a projectile that has expired so that it can be removed when CollectGarbage is called----
+        /// </summary>
+        /// <param name="expiredProjectile">The projectile that has expired----</param>
         public void ReportExpired(Projectile expiredProjectile)
         {
-            listOfProjectiles.Remove(expiredProjectile);
+            expiredProjectiles.Add(expiredProjectile);
+        }
+
+        /// <summary>
+        /// Cleans listOfProjectiles of expired projectiles so that there is no attempt to keep simulating
+        /// them. *****This is to be run AFTER Simulate() in Update() so as to not interefere with it*****-----
+        /// </summary>
+        public void CollectGarbage()
+        {
+            foreach(Projectile expiredProjectile in expiredProjectiles)
+            {
+                listOfProjectiles.Remove(expiredProjectile);
+                expiredProjectiles.Clear();
+            }
+        }
+
+        /// <summary>
+        /// Tells all projectiles to draw themselves----
+        /// </summary>
+        /// <param name="sb">The spritebatch to be used for the drawing----</param>
+        /// <param name="tint">The color to draw the sprites in----</param>
+        public void Draw(SpriteBatch sb, Color tint)
+        {
+            foreach (Projectile proj in listOfProjectiles)
+            {
+                proj.Draw(sb, tint);
+            }
         }
     }
 }

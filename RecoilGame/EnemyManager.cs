@@ -7,9 +7,22 @@ namespace RecoilGame
     // Name: Jack Walsh
     // Date: 3/17/2021
     // Purpose: 
-    class EnemyManager
+    public class EnemyManager
     {
-        public static List<Enemy> listOfEnemies;
+        private List<Enemy> listOfEnemies;
+
+        public List<Enemy> ListOfEnemies
+        {
+            get
+            {
+                return listOfEnemies;
+            }
+        }
+
+        public EnemyManager()
+        {
+            listOfEnemies = new List<Enemy>();
+        }
 
         public void MoveEnemies()
         {
@@ -17,6 +30,7 @@ namespace RecoilGame
             {
                 if (enemy.IsActive)
                 {
+                    enemy.Move();
                 }
             }
         }

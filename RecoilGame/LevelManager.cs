@@ -4,7 +4,18 @@ using System.Text;
 
 namespace RecoilGame
 {
-    class LevelManager
+    public class LevelManager
     {
+        private List<MapTile> listOfMapTiles;
+
+        public List<MapTile> ListOfMapTiles
+        {
+            get
+            {
+                return listOfMapTiles;
+            }
+        }
+
+
     }
 }

@@ -11,6 +11,9 @@ namespace RecoilGame
 
         //Manager classes----
         public static ProjectileManager projectileManager;
+        public static PlayerManager playerManager;
+        public static EnemyManager enemyManager;
+        public static LevelManager levelManager;
 
         public Game1()
         {
@@ -23,6 +26,9 @@ namespace RecoilGame
         {
             // TODO: Add your initialization logic here
             projectileManager = new ProjectileManager();
+            playerManager = new PlayerManager();
+            enemyManager = new EnemyManager();
+            levelManager = new LevelManager();
 
             base.Initialize();
         }

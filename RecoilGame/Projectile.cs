@@ -101,8 +101,7 @@ namespace RecoilGame
             //Expiring old projectiles and preventing further simulation----
             if (lifetime <= 0)
             {
-                isActive = false;
-                Game1.projectileManager.ReportExpired(this);
+                Expire();
                 return;
             }
 
@@ -118,27 +117,59 @@ namespace RecoilGame
 
             //Updating the velocity vector----
             velocity.Y -= gravity;
-
-            
         }
 
         /// <summary>
-        /// Helper method. for collisions between the projectile and other relevant objects----
+        /// Helper method. For collisions between the projectile and other relevant objects----
         /// </summary>
-        public void CheckForCollisions()
+        private void CheckForCollisions()
         {
             if (isFriendly)
             {
-                
                 //Check for collisions with all enemy objects here----
+                for (int i = 0; i < Game1.enemyManager.ListOfEnemies.Count; i++)
+                {
+                    if (this.objectRect.Intersects(Game1.enemyManager.ListOfEnemies[i].ObjectRect))
+                    {
+                        Game1.enemyManager.ListOfEnemies[i].TakeDamage(damage);
+                        Expire();
+                        //Saving time by returning early----
+                        return;
+                    }
+                }
             }
             else
             {
                 //Check for collisions with the player here----
+                if (this.objectRect.Intersects(Game1.playerManager.PlayerObject.ObjectRect))
+                {
+                    Game1.playerManager.PlayerObject.TakeDamage(damage);
+                    //Expires after collision----
+                    Expire();
+                    //Saving time by returning early----
+                    return;
+                }
             }
-
             //Check for collisions with the terrain here----
+            for (int i = 0; i < Game1.levelManager.ListOfMapTiles.Count; i++)
+            {
+                if (this.objectRect.Intersects(Game1.levelManager.ListOfMapTiles[i].ObjectRect))
+                {
+                    Expire();
+                    //Saving time by returning early----
+                    return;
+                }
+            }
         }
 
+
+        /// <summary>
+        /// Helper method. Helps remove an object from the simulation cycle----
+        /// </summary>
+        private void Expire()
+        {
+            isActive = false;
+            Game1.projectileManager.ReportExpired(this);
+        }
     }
 }

@@ -17,6 +17,7 @@ namespace RecoilGame
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
+
         //Manager classes----
         public static ProjectileManager projectileManager;
         public static PlayerManager playerManager;
@@ -37,10 +38,17 @@ namespace RecoilGame
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            //Changing screen size----
+            _graphics.PreferredBackBufferWidth = 550;
+            _graphics.PreferredBackBufferHeight = 550;
+            _graphics.ApplyChanges();
+
             projectileManager = new ProjectileManager();
             
             enemyManager = new EnemyManager();
-            levelManager = new LevelManager();
+            levelManager = new LevelManager(this);
+
+            levelManager.GenerateTestLevel();
 
             //Initialize player
             
@@ -87,6 +95,10 @@ namespace RecoilGame
 
 
             // TODO: Add your drawing code here
+            _spriteBatch.Begin();
+            levelManager.DrawLevel(_spriteBatch);
+
+            _spriteBatch.End();
 
             _spriteBatch.Begin();
 

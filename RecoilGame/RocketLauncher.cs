@@ -22,9 +22,10 @@ namespace RecoilGame
         //Shoot Method
         public override void Shoot()
         {
-            //Create a projectile using projectileTexture
+            //Test to see if this will actually create a projectile and how it will work, then we'll add more since we want shotgun to have multiple projectiles
+            Game1.projectileManager.listOfProjectiles.Add(new Projectile(ObjectRect.Right, this.CenteredY, 20, 20, projectileTexture, true, new Vector2(ObjectRect.Right, this.CenteredY), 20, 5, 10, false, true));
 
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
 }

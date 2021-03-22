@@ -23,7 +23,24 @@ namespace RecoilGame
                 return objectRect;
             }
         }
+        //position vector coordinate positions
+        public float XPos
+        {
+            get { return position.X; }
+            set { position.X = value; }
+        }
 
+        public float YPos
+        {
+            get { return position.Y; }
+            set { position.Y = value; }
+        }
+
+        public Vector2 Position
+        {
+            get { return position; }
+            set { position = value; }
+        }
         //Centered coordinate properties for the rectangle for easier use later----
         public int CenteredX
         {
@@ -83,6 +100,17 @@ namespace RecoilGame
                 sb.Draw(sprite, objectRect, tint);
             }
             
+        }
+
+        /// <summary>
+        /// Aidan Kamp 3/22/21
+        /// Converts the float position vector values into the rectangle position
+        /// Should increase the accuracy of position
+        /// </summary>
+        public void ConvertPosToRect()
+        {
+            objectRect.X = (int)position.X;
+            objectRect.Y = (int)position.Y;
         }
     }
 }

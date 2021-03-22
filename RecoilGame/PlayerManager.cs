@@ -20,7 +20,8 @@ namespace RecoilGame
     {
         //Aidan Kamp
         //3/22/21
-        //Updated fields, added MovePlayer() method
+        //Updated fields, added MovePlayer() method,
+        //PlayerState enum, added CheckForCollisions method
 
         private Player playerObject;
         private List<PlayerWeapon> weaponList;
@@ -28,6 +29,10 @@ namespace RecoilGame
         private KeyboardState kbState;
         private MouseState mState;
         private PlayerState playerState;
+        private float playerSpeedX;
+        private Vector2 playerVelocity;
+        private Vector2 jumpVelocity;
+        private Vector2 playerGravity;
 
 
         public Player PlayerObject
@@ -45,6 +50,25 @@ namespace RecoilGame
         }
 
         /// <summary>
+        /// PlayerManger constructor takes in the player object and values for movement
+        /// </summary>
+        /// <param name="player"></param> instance of player object
+        /// <param name="playerSpeedX"></param> the horizontal speed o fhte player
+        /// <param name="yJumpVelocity"></param> the jump velocity vector y value
+        /// <param name="yGravity"></param> the gravity vector y value
+        public PlayerManager(Player player, float playerSpeedX, float yJumpVelocity, float yGravity)
+        {
+            playerObject = player;
+            playerState = PlayerState.Grounded;
+            this.playerSpeedX = playerSpeedX;
+            
+            //creates the vectors using the passed in y values
+            jumpVelocity = new Vector2(0, yJumpVelocity);
+            playerGravity = new Vector2(0, yGravity);
+            playerVelocity = Vector2.Zero;
+        }
+
+        /// <summary>
         /// Method handles player movement using FSM
         /// </summary>
         public void MovePlayer()
@@ -59,32 +83,35 @@ namespace RecoilGame
                     //can move or jump
                     if (kbState.IsKeyDown(Keys.A))
                     {
-                        playerObject.CenteredX -= 5;
+                        playerObject.XPos -= playerSpeedX;
                     }
                     if (kbState.IsKeyDown(Keys.D))
                     {
-                        playerObject.CenteredX += 5;
+                        playerObject.XPos += playerSpeedX;
                     }
                     if (SingleKeyPress(Keys.W))
                     {
-                        playerObject.CenteredY -= 5;
+                        playerVelocity.Y = jumpVelocity.Y;
                         playerState = PlayerState.Jump;
                     }
                     break;
                 case PlayerState.Jump:
 
-                    //can move when you jump but it is less useful.
+                    //can move when you jump but it is less useful (half as fast).
                     //can't jump again
                     if (kbState.IsKeyDown(Keys.A))
                     {
-                        playerObject.CenteredX -= 2;
+                        playerObject.XPos -= playerSpeedX/2;
                     }
                     if (kbState.IsKeyDown(Keys.D))
                     {
-                        playerObject.CenteredX += 2;
+                        playerObject.XPos += playerSpeedX/2;
                     }
                     break;
             }
+            
+            //moving the rectangle
+            playerObject.ConvertPosToRect();
             
         }
 
@@ -98,7 +125,71 @@ namespace RecoilGame
         return Keyboard.GetState().IsKeyDown(key) && prevKBState.IsKeyUp(key);
         }
 
+        /// <summary>
+        /// Handles collisions between player and the MapTiles
+        /// </summary>
+        public void CheckForCollisions()
+        {
+            Rectangle playerRect = playerObject.ObjectRect;
+            for (int i = 0; i < Game1.levelManager.ListOfMapTiles.Count; i++)
+            {
+                Rectangle tileRect = Game1.levelManager.ListOfMapTiles[i].ObjectRect;
+                if (playerRect.Intersects(tileRect))
+                {
+                    
+                    Rectangle intersection = Rectangle.Intersect(
+                        playerRect,
+                        tileRect);
 
+                    if (intersection.Width <= intersection.Height)
+                    {
+                        //checking to see which direction to move
+                        if (playerRect.X < tileRect.X)
+                        {
+                            playerRect.X -= intersection.Width;
+                        }
+                        else
+                        {
+                            playerRect.X += intersection.Width;
+                        }
+                    }
+                    //if height is less than width than the player is moved up or down
+                    if (intersection.Height < intersection.Width)
+                    {
+                        //checking to see which direction to move
+                        if (playerRect.Y < tileRect.Y)
+                        {
+                            playerRect.Y -= intersection.Height;
+                            playerVelocity.Y = 0;
 
+                            //the player is grounded at this state
+                            playerState = PlayerState.Grounded;
+                        }
+                        else
+                        {
+                            playerRect.Y += intersection.Height;
+                            playerVelocity.Y = 0;
+                        }
+                    }
+                }
+                //setting final positions
+                playerObject.XPos = playerRect.X;
+                playerObject.YPos = playerRect.Y;
+
+                //Converting the position vector to a rectangle
+                playerObject.ConvertPosToRect();
+            }
+        }
+
+        /// <summary>
+        /// Applies gravity to the player
+        /// </summary>
+        public void ApplyPlayerGravity()
+        {
+            
+            playerVelocity += playerGravity;
+            playerObject.Position += playerVelocity;
+
+        }
     }
 }

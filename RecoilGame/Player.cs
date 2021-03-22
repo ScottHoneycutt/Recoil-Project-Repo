@@ -12,13 +12,15 @@ namespace RecoilGame
         //Aidan 
         //3/17/2021
         //Created base structure with fields and constructor
+        //
+        //3/22/21
+        //Removed velocity vector from player as it is now handled in the manager
 
         //Fields
 
         private List<PlayerWeapon> weaponList;
         private PlayerWeapon currentWeapon;
         private int health;
-        private Vector2 velocity;
 
         /// <summary>
         /// Param Constructor for Player Object
@@ -30,18 +32,17 @@ namespace RecoilGame
         /// <param name="texture"></param> player texture
         /// <param name="velocity"></param> player velocity
         /// <param name="health"></param> player health value
-        public Player(int x, int y, int width, int height, Texture2D texture, bool isActive, Vector2 velocity, int health)
+        public Player(int x, int y, int width, int height, Texture2D texture, bool isActive, int health)
             : base(x, y, width, height, texture, isActive)
 
         {
             this.health = health;
-            this.velocity = velocity;
         }
 
         /// <summary>
         /// Method that allows the player to take damage
         /// </summary>
-        /// <param name="damage"></param>
+        /// <param name="damage"></param> damage that the player will take
         public void TakeDamage(int damage)
         {
             //if the damage reduces the health to or below 0, health = 0

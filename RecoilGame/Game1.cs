@@ -4,8 +4,16 @@ using Microsoft.Xna.Framework.Input;
 
 namespace RecoilGame
 {
+
+ 
     public class Game1 : Game
     {
+
+        /// <summary>
+        /// Aidan Kamp - 3/22/21
+        /// Tested player fields, player physics in the update method, and drawing the player
+        /// All methods are commented out
+        /// </summary>
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
@@ -14,6 +22,10 @@ namespace RecoilGame
         public static PlayerManager playerManager;
         public static EnemyManager enemyManager;
         public static LevelManager levelManager;
+
+        //Player
+        Texture2D playerSprite;
+        Player player;
 
         public Game1()
         {
@@ -26,9 +38,12 @@ namespace RecoilGame
         {
             // TODO: Add your initialization logic here
             projectileManager = new ProjectileManager();
-            playerManager = new PlayerManager();
+            
             enemyManager = new EnemyManager();
             levelManager = new LevelManager();
+
+            //Initialize player
+            
 
             base.Initialize();
         }
@@ -37,6 +52,16 @@ namespace RecoilGame
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            playerSprite = Content.Load<Texture2D>("square");
+
+            //Aidan - I had to initialize these after the player sprite was loaded or
+            //I'd get a null pointer error for the sprite texture
+            /*
+             * 
+            player = new Player(100, 100, 40, 40, playerSprite, true, 100);
+            playerManager = new PlayerManager(player, 5, -8, .15f);
+
+            */
             // TODO: use this.Content to load your game content here
         }
 
@@ -46,7 +71,12 @@ namespace RecoilGame
                 Exit();
 
             // TODO: Add your update logic here
-            
+
+            //Player Physics
+            /*
+            playerManager.MovePlayer();
+            playerManager.ApplyPlayerGravity();
+            */
 
             base.Update(gameTime);
         }
@@ -55,7 +85,16 @@ namespace RecoilGame
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
+
             // TODO: Add your drawing code here
+
+            _spriteBatch.Begin();
+
+            //player.Draw(_spriteBatch, Color.White);
+
+
+            _spriteBatch.End();
+
 
             base.Draw(gameTime);
         }

@@ -49,6 +49,9 @@ namespace RecoilGame
             this.lifetime = lifetime;
             this.isExplosive = isExplosive;
             this.isFriendly = isFriendly;
+
+            //Adding projectiles to ProjectileManager's list of projectiles to simulate----
+            Game1.projectileManager.ReportExists(this);
         }
 
         /// <summary>
@@ -84,6 +87,9 @@ namespace RecoilGame
             this.lifetime = lifetime;
             this.isExplosive = isExplosive;
             this.isFriendly = isFriendly;
+
+            //Adding projectiles to ProjectileManager's list of projectiles to simulate----
+            Game1.projectileManager.ReportExists(this);
         }
 
 

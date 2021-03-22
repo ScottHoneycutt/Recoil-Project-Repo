@@ -37,6 +37,15 @@ namespace RecoilGame
         }
 
         /// <summary>
+        /// Reports the existence of new projectiles to the ProjectileManager so that it can be added to the
+        /// list of active projectiles----
+        /// </summary>
+        public void ReportExists(Projectile newProj)
+        {
+            listOfProjectiles.Add(newProj);
+        }
+
+        /// <summary>
         /// Reports a projectile that has expired so that it can be removed when CollectGarbage is called----
         /// </summary>
         /// <param name="expiredProjectile">The projectile that has expired----</param>
@@ -46,8 +55,8 @@ namespace RecoilGame
         }
 
         /// <summary>
-        /// Cleans listOfProjectiles of expired projectiles so that there is no attempt to keep simulating
-        /// them. *****This is to be run AFTER Simulate() in Update() so as to not interefere with it*****-----
+        /// Cleans listOfProjectiles of expired projectiles so that they stop simulating them. 
+        /// *****This is to be run AFTER Simulate() in Update() so as to not interefere with it*****-----
         /// </summary>
         public void CollectGarbage()
         {

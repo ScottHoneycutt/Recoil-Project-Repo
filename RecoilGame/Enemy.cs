@@ -47,6 +47,9 @@ namespace RecoilGame
             this.velocity = velocity;
         }
 
+        /// <summary>
+        /// Move enemy according to velocity 
+        /// </summary>
         public void Move()
         {
             position = new Vector2(
@@ -57,6 +60,10 @@ namespace RecoilGame
             objectRect.Y = (int)position.Y;
         }
 
+        /// <summary>
+        /// Take damage and potentially deactivate if health < 0
+        /// </summary>
+        /// <param name="damage"> Damage to take </param>
         public void TakeDamage(int damage)
         {
             health -= damage;

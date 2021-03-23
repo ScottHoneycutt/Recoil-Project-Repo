@@ -49,8 +49,6 @@ namespace RecoilGame
             levelManager = new LevelManager(this);
 
             levelManager.GenerateTestLevel();
-
-            //Initialize player
             
 
             base.Initialize();
@@ -64,12 +62,11 @@ namespace RecoilGame
 
             //Aidan - I had to initialize these after the player sprite was loaded or
             //I'd get a null pointer error for the sprite texture
-            /*
-             * 
-            player = new Player(100, 100, 40, 40, playerSprite, true, 100);
-            playerManager = new PlayerManager(player, 5, -8, .15f);
+            
+            player = new Player(200, 200, 40, 40, playerSprite, true, 100);
+            playerManager = new PlayerManager(player, 6, 3, -10, .25f);
 
-            */
+            
             // TODO: use this.Content to load your game content here
         }
 
@@ -81,10 +78,11 @@ namespace RecoilGame
             // TODO: Add your update logic here
 
             //Player Physics
-            /*
-            playerManager.MovePlayer();
-            playerManager.ApplyPlayerGravity();
-            */
+            
+            //playerManager.MovePlayer();
+            //playerManager.CheckForCollisions();
+            //playerManager.ApplyPlayerGravity();
+
 
             base.Update(gameTime);
         }
@@ -96,14 +94,10 @@ namespace RecoilGame
 
             // TODO: Add your drawing code here
             _spriteBatch.Begin();
+
             levelManager.DrawLevel(_spriteBatch);
 
-            _spriteBatch.End();
-
-            _spriteBatch.Begin();
-
             //player.Draw(_spriteBatch, Color.White);
-
 
             _spriteBatch.End();
 

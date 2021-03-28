@@ -82,6 +82,7 @@ namespace RecoilGame
                 listOfMapTiles.Clear();
                 objectiveTile = null;
                 //GenerateLevelFromFile();
+                GenerateTestLevel();
             }
         }
 

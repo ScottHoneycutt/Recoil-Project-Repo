@@ -67,5 +67,30 @@ namespace RecoilGame
                 sb.Draw(normalSprite, position, Color.White);
             }
         }
+
+        /// <summary>
+        /// Created by Scott. Copied some of the code useed in Draw() to determine if the user
+        /// clicked on the button----
+        /// </summary>
+        /// <returns>True if the user clicked on the button in this frame, false otherwise----</returns>
+        public bool CheckForClick(MouseState currentMouseState, MouseState previousMouseState)
+        {
+            //If the mouse is pressed now and was not pressed in the previous frame,
+            //AND the cursor is within the bounds of the button, then the button has 
+            //been clicked----
+            if (currentMouseState.LeftButton == ButtonState.Pressed && 
+                previousMouseState.LeftButton == ButtonState.Released &&
+                currentMouseState.X >= position.X &&
+                currentMouseState.X <= position.X + position.Width &&
+                currentMouseState.Y >= position.Y &&
+                currentMouseState.Y <= position.Y + position.Height)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

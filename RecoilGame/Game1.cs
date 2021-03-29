@@ -5,7 +5,19 @@ using Microsoft.Xna.Framework.Input;
 namespace RecoilGame
 {
 
+    /// <summary>
+    /// Scott Honeycutt----
+    /// 3/28/2021----
+    /// Set up finite state machine to transition from main menu to the test level----
+    /// </summary>
  
+    public enum GameState
+    {
+        MainMenu,
+        Level,
+        Victory
+    }
+
     public class Game1 : Game
     {
 
@@ -17,6 +29,19 @@ namespace RecoilGame
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
+        //Finite state machine enum----
+        private GameState currentGameState;
+
+        //User input containers----
+        private MouseState currentMouseState;
+        private MouseState prevMousState;
+        private KeyboardState currentKeyboardState;
+        private KeyboardState prevKeyboardState;
+
+        //Start button for the main menu----
+        private Button startButton;
+        private Texture2D startHoverSprite;
+        private Texture2D startUpSprite;
 
         //Manager classes----
         public static ProjectileManager projectileManager;
@@ -44,10 +69,16 @@ namespace RecoilGame
             _graphics.PreferredBackBufferHeight = 550;
             _graphics.ApplyChanges();
 
+            //Setting up manager classes----
             projectileManager = new ProjectileManager();
-            
             enemyManager = new EnemyManager();
             levelManager = new LevelManager(this);
+
+            //Setting up keyboard and mouse states----
+            currentMouseState = Mouse.GetState();
+            currentKeyboardState = Keyboard.GetState();
+            prevMousState = currentMouseState;
+            prevKeyboardState = currentKeyboardState;
 
             levelManager.GenerateTestLevel();
             
@@ -69,6 +100,12 @@ namespace RecoilGame
 
             
             // TODO: use this.Content to load your game content here
+
+
+            //Creating the start button for the main menu----
+            startHoverSprite = Content.Load<Texture2D>("start_ovr");
+            startUpSprite = Content.Load<Texture2D>("start_up");
+            startButton = new Button(startUpSprite, startHoverSprite, 150, 300, 200, 100);
         }
 
         protected override void Update(GameTime gameTime)
@@ -79,31 +116,71 @@ namespace RecoilGame
             // TODO: Add your update logic here
             kbState = Keyboard.GetState();
 
-            //Player Physics
-            
-            playerManager.MovePlayer();
-            playerManager.CheckForCollisions();
-            playerManager.ApplyPlayerGravity();
+            //Refreshing current inputs-----
+            currentMouseState = Mouse.GetState();
+            currentKeyboardState = Keyboard.GetState();
 
+            //FINITE STATE MACHINE: PUT YOUR STUFF IN HERE----
+            //Main menu----
+            if (currentGameState == GameState.MainMenu)
+            {
+                //Clicking the start button puts the game into the Level state----
+                if (startButton.CheckForClick(currentMouseState, prevMousState))
+                {
+                    currentGameState = GameState.Level;
+                }
+            }
+            //Level state----
+            else if (currentGameState == GameState.Level)
+            {
+                //Player Physics
+                /*
+                playerManager.MovePlayer();
+                playerManager.ApplyPlayerGravity();
+                */
+            }
+            //Victory screen----
+            else if (currentGameState == GameState.Victory)
+            {
+
+            }
 
             
+            //THIS SHOULD ALWAYS REMAIN LAST IN UPDATE. Refreshing previous inputs----
+            prevMousState = currentMouseState;
+            prevKeyboardState = currentKeyboardState;
+
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
-
             // TODO: Add your drawing code here
+
             _spriteBatch.Begin();
 
-            levelManager.DrawLevel(_spriteBatch);
+            //Using the finite the finite state machine to determine what gets drawn to the screen----
+            //Main menu----
+            if (currentGameState == GameState.MainMenu)
+            {
+                startButton.Draw(_spriteBatch);
+            }
+            //Level state----
+            else if (currentGameState == GameState.Level)
+            {
+                levelManager.DrawLevel(_spriteBatch);
+                //player.Draw(_spriteBatch, Color.White);
+            }
+            //Victory screen----
+            else if (currentGameState == GameState.Victory)
+            {
+
+            }
 
             player.Draw(_spriteBatch, Color.White);
 
             _spriteBatch.End();
-
 
             base.Draw(gameTime);
         }

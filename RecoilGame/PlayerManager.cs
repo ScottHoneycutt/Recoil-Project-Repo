@@ -23,6 +23,10 @@ namespace RecoilGame
         //Updated fields, added MovePlayer() method,
         //PlayerState enum, added CheckForCollisions method
 
+        //Aidan Kamp
+        //3/29/21
+        //Debugged Collision Detection, Added an Add Velco
+
         private Player playerObject;
         private List<PlayerWeapon> weaponList;
         private KeyboardState prevKBState;
@@ -209,6 +213,11 @@ namespace RecoilGame
         public void AddVelocity(Vector2 velocity)
         {
             playerVelocity += velocity;
+        }
+
+        public void ShootingCapability()
+        {
+            
         }
     }
 }

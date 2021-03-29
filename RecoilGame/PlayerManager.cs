@@ -44,6 +44,12 @@ namespace RecoilGame
             }
         }
 
+        public KeyboardState KBState
+        {
+            get { return kbState; }
+            set { kbState = value; }
+        }
+
         public KeyboardState PrevKB
         {
             get { return prevKBState; }
@@ -75,7 +81,7 @@ namespace RecoilGame
         /// </summary>
         public void MovePlayer()
         {
-            kbState = Keyboard.GetState();
+            
 
             switch (playerState)
             {
@@ -133,9 +139,9 @@ namespace RecoilGame
         public void CheckForCollisions()
         {
             Rectangle playerRect = playerObject.ObjectRect;
-            for (int i = 0; i < Game1.levelManager.ListOfMapTiles.Count; i++)
+            foreach (MapTile mapTile in Game1.levelManager.ListOfMapTiles)
             {
-                Rectangle tileRect = Game1.levelManager.ListOfMapTiles[i].ObjectRect;
+                Rectangle tileRect = mapTile.ObjectRect;
                 if (playerRect.Intersects(tileRect))
                 {
                     
@@ -149,10 +155,12 @@ namespace RecoilGame
                         if (playerRect.X < tileRect.X)
                         {
                             playerRect.X -= intersection.Width;
+                            //System.Diagnostics.Debug.WriteLine("Wall to the right");
                         }
                         else
                         {
                             playerRect.X += intersection.Width;
+                            //System.Diagnostics.Debug.WriteLine("Wall to the left");
                         }
                     }
                     //if height is less than width than the player is moved up or down
@@ -166,11 +174,14 @@ namespace RecoilGame
 
                             //the player is grounded at this state
                             playerState = PlayerState.Grounded;
+
+                            //System.Diagnostics.Debug.WriteLine("On the ground");
                         }
                         else
                         {
                             playerRect.Y += intersection.Height;
                             playerVelocity.Y = 0;
+                            //System.Diagnostics.Debug.WriteLine("Wall above");
                         }
                     }
                 }
@@ -191,6 +202,7 @@ namespace RecoilGame
             
             playerVelocity += playerGravity;
             playerObject.Position += playerVelocity;
+            playerObject.ConvertPosToRect();
 
         }
 

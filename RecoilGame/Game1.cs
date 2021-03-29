@@ -115,7 +115,7 @@ namespace RecoilGame
 
             // TODO: Add your update logic here
             kbState = Keyboard.GetState();
-
+            playerManager.KBState = kbState;
             //Refreshing current inputs-----
             currentMouseState = Mouse.GetState();
             currentKeyboardState = Keyboard.GetState();
@@ -136,10 +136,11 @@ namespace RecoilGame
                 //Player Physics
                 
                 playerManager.MovePlayer();
-                playerManager.CheckForCollisions();
-                playerManager.ApplyPlayerGravity();
-
                 
+                playerManager.ApplyPlayerGravity();
+                playerManager.CheckForCollisions();
+
+
             }
             //Victory screen----
             else if (currentGameState == GameState.Victory)
@@ -151,7 +152,7 @@ namespace RecoilGame
             //THIS SHOULD ALWAYS REMAIN LAST IN UPDATE. Refreshing previous inputs----
             prevMousState = currentMouseState;
             prevKeyboardState = currentKeyboardState;
-
+            playerManager.PrevKB = currentKeyboardState;
             base.Update(gameTime);
         }
 

@@ -193,5 +193,10 @@ namespace RecoilGame
             playerObject.Position += playerVelocity;
 
         }
+
+        public void AddVelocity(Vector2 velocity)
+        {
+            playerVelocity += velocity;
+        }
     }
 }

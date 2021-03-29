@@ -15,7 +15,7 @@ namespace RecoilGame
     /// </summary>
     public class ProjectileManager
     {
-        public List<Projectile> listOfProjectiles;
+        private List<Projectile> listOfProjectiles;
         private List<Projectile> expiredProjectiles;
 
         public ProjectileManager()

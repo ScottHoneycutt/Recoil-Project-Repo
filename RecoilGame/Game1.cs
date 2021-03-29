@@ -79,8 +79,6 @@ namespace RecoilGame
             currentKeyboardState = Keyboard.GetState();
             prevMousState = currentMouseState;
             prevKeyboardState = currentKeyboardState;
-
-            levelManager.GenerateTestLevel();
             
 
             base.Initialize();
@@ -135,11 +133,11 @@ namespace RecoilGame
             {
                 //Player Physics
                 playerManager.MovePlayer();
-                
                 playerManager.ApplyPlayerGravity();
                 playerManager.CheckForCollisions();
 
-
+                //Checking map objectives----
+                levelManager.RunLevel();
             }
             //Victory screen----
             else if (currentGameState == GameState.Victory)

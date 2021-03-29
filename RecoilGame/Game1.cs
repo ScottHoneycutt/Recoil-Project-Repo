@@ -93,12 +93,11 @@ namespace RecoilGame
 
             //Aidan - I had to initialize these after the player sprite was loaded or
             //I'd get a null pointer error for the sprite texture
-            /*
-             * 
+
             player = new Player(100, 100, 40, 40, playerSprite, true, 100);
             playerManager = new PlayerManager(player, 5, -8, .15f);
 
-            */
+            
             // TODO: use this.Content to load your game content here
 
 
@@ -133,10 +132,10 @@ namespace RecoilGame
             else if (currentGameState == GameState.Level)
             {
                 //Player Physics
-                /*
+                
                 playerManager.MovePlayer();
                 playerManager.ApplyPlayerGravity();
-                */
+                
             }
             //Victory screen----
             else if (currentGameState == GameState.Victory)
@@ -169,7 +168,7 @@ namespace RecoilGame
             else if (currentGameState == GameState.Level)
             {
                 levelManager.DrawLevel(_spriteBatch);
-                //player.Draw(_spriteBatch, Color.White);
+                player.Draw(_spriteBatch, Color.White);
             }
             //Victory screen----
             else if (currentGameState == GameState.Victory)

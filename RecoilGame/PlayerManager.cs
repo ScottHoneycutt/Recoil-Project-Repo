@@ -29,7 +29,8 @@ namespace RecoilGame
         private KeyboardState kbState;
         private MouseState mState;
         private PlayerState playerState;
-        private float playerSpeedX;
+        private float groundSpeedX;
+        private float airSpeedX;
         private Vector2 playerVelocity;
         private Vector2 jumpVelocity;
         private Vector2 playerGravity;
@@ -56,12 +57,13 @@ namespace RecoilGame
         /// <param name="playerSpeedX"></param> the horizontal speed o fhte player
         /// <param name="yJumpVelocity"></param> the jump velocity vector y value
         /// <param name="yGravity"></param> the gravity vector y value
-        public PlayerManager(Player player, float playerSpeedX, float yJumpVelocity, float yGravity)
+        public PlayerManager(Player player, float groundSpeedX, float airSpeedX, float yJumpVelocity, float yGravity)
         {
             playerObject = player;
             playerState = PlayerState.Grounded;
-            this.playerSpeedX = playerSpeedX;
-            
+            this.groundSpeedX = groundSpeedX;
+            this.airSpeedX = airSpeedX;
+
             //creates the vectors using the passed in y values
             jumpVelocity = new Vector2(0, yJumpVelocity);
             playerGravity = new Vector2(0, yGravity);
@@ -83,11 +85,11 @@ namespace RecoilGame
                     //can move or jump
                     if (kbState.IsKeyDown(Keys.A))
                     {
-                        playerObject.XPos -= playerSpeedX;
+                        playerObject.XPos -= groundSpeedX;
                     }
                     if (kbState.IsKeyDown(Keys.D))
                     {
-                        playerObject.XPos += playerSpeedX;
+                        playerObject.XPos += groundSpeedX;
                     }
                     if (SingleKeyPress(Keys.W))
                     {
@@ -101,11 +103,11 @@ namespace RecoilGame
                     //can't jump again
                     if (kbState.IsKeyDown(Keys.A))
                     {
-                        playerObject.XPos -= playerSpeedX/2;
+                        playerObject.XPos -= (airSpeedX);
                     }
                     if (kbState.IsKeyDown(Keys.D))
                     {
-                        playerObject.XPos += playerSpeedX/2;
+                        playerObject.XPos += (airSpeedX);
                     }
                     break;
             }

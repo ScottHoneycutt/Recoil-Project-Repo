@@ -52,6 +52,7 @@ namespace RecoilGame
         //Player
         Texture2D playerSprite;
         Player player;
+        KeyboardState kbState;
 
         public Game1()
         {
@@ -93,9 +94,9 @@ namespace RecoilGame
 
             //Aidan - I had to initialize these after the player sprite was loaded or
             //I'd get a null pointer error for the sprite texture
-
-            player = new Player(100, 100, 40, 40, playerSprite, true, 100);
-            playerManager = new PlayerManager(player, 5, -8, .15f);
+            
+            player = new Player(200, 200, 40, 40, playerSprite, true, 100);
+            playerManager = new PlayerManager(player, 6, 3, -18.5f, .8f);
 
             
             // TODO: use this.Content to load your game content here
@@ -113,6 +114,7 @@ namespace RecoilGame
                 Exit();
 
             // TODO: Add your update logic here
+            kbState = Keyboard.GetState();
 
             //Refreshing current inputs-----
             currentMouseState = Mouse.GetState();
@@ -132,10 +134,10 @@ namespace RecoilGame
             else if (currentGameState == GameState.Level)
             {
                 //Player Physics
-                
+                /*
                 playerManager.MovePlayer();
                 playerManager.ApplyPlayerGravity();
-                
+                */
             }
             //Victory screen----
             else if (currentGameState == GameState.Victory)
@@ -168,7 +170,7 @@ namespace RecoilGame
             else if (currentGameState == GameState.Level)
             {
                 levelManager.DrawLevel(_spriteBatch);
-                player.Draw(_spriteBatch, Color.White);
+                //player.Draw(_spriteBatch, Color.White);
             }
             //Victory screen----
             else if (currentGameState == GameState.Victory)
@@ -176,6 +178,7 @@ namespace RecoilGame
 
             }
 
+            player.Draw(_spriteBatch, Color.White);
 
             _spriteBatch.End();
 

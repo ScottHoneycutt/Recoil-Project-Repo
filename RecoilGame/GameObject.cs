@@ -80,6 +80,7 @@ namespace RecoilGame
         /// <param name="width">The width of the rectangle----</param>
         /// <param name="height">The heigh of the rectangle----</param>
         /// <param name="texture">The texture to be displayed in the rectangle----</param>
+        /// <param name="active">Whether or not the object is currently active----</param>
         public GameObject(int xPosition, int yPosition, int width, int height, Texture2D texture , bool active)
         {
             sprite = texture;

@@ -134,10 +134,9 @@ namespace RecoilGame
             else if (currentGameState == GameState.Level)
             {
                 //Player Physics
-                /*
                 playerManager.MovePlayer();
                 playerManager.ApplyPlayerGravity();
-                */
+                
             }
             //Victory screen----
             else if (currentGameState == GameState.Victory)
@@ -145,7 +144,6 @@ namespace RecoilGame
 
             }
 
-            
             //THIS SHOULD ALWAYS REMAIN LAST IN UPDATE. Refreshing previous inputs----
             prevMousState = currentMouseState;
             prevKeyboardState = currentKeyboardState;
@@ -170,15 +168,13 @@ namespace RecoilGame
             else if (currentGameState == GameState.Level)
             {
                 levelManager.DrawLevel(_spriteBatch);
-                //player.Draw(_spriteBatch, Color.White);
+                player.Draw(_spriteBatch, Color.White);
             }
             //Victory screen----
             else if (currentGameState == GameState.Victory)
             {
 
             }
-
-            player.Draw(_spriteBatch, Color.White);
 
             _spriteBatch.End();
 

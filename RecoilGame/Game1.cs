@@ -27,6 +27,7 @@ namespace RecoilGame
         //Player
         Texture2D playerSprite;
         Player player;
+        KeyboardState kbState;
 
         public Game1()
         {
@@ -64,7 +65,7 @@ namespace RecoilGame
             //I'd get a null pointer error for the sprite texture
             
             player = new Player(200, 200, 40, 40, playerSprite, true, 100);
-            playerManager = new PlayerManager(player, 6, 3, -10, .25f);
+            playerManager = new PlayerManager(player, 6, 3, -18.5f, .8f);
 
             
             // TODO: use this.Content to load your game content here
@@ -76,14 +77,16 @@ namespace RecoilGame
                 Exit();
 
             // TODO: Add your update logic here
+            kbState = Keyboard.GetState();
 
             //Player Physics
             
-            //playerManager.MovePlayer();
-            //playerManager.CheckForCollisions();
-            //playerManager.ApplyPlayerGravity();
+            playerManager.MovePlayer();
+            playerManager.CheckForCollisions();
+            playerManager.ApplyPlayerGravity();
 
 
+            
             base.Update(gameTime);
         }
 
@@ -97,7 +100,7 @@ namespace RecoilGame
 
             levelManager.DrawLevel(_spriteBatch);
 
-            //player.Draw(_spriteBatch, Color.White);
+            player.Draw(_spriteBatch, Color.White);
 
             _spriteBatch.End();
 

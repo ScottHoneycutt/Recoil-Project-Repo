@@ -59,6 +59,8 @@ namespace RecoilGame
             new Projectile(ObjectRect.Right, this.CenteredY, 20, 20, projectileTexture, true, new Vector2(ObjectRect.Right, this.CenteredY), 20, 5, 10, false, true);
 
             //throw new NotImplementedException();
+
+
         }
     }
 }

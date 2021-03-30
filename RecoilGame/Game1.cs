@@ -94,7 +94,7 @@ namespace RecoilGame
             //I'd get a null pointer error for the sprite texture
             
             player = new Player(200, 200, 40, 40, playerSprite, true, 100);
-            playerManager = new PlayerManager(player, 6, 3, -18.5f, .8f);
+            playerManager = new PlayerManager(player, 6, 3, -10.5f, .6f);
 
             
             // TODO: use this.Content to load your game content here
@@ -135,6 +135,7 @@ namespace RecoilGame
                 playerManager.MovePlayer();
                 playerManager.ApplyPlayerGravity();
                 playerManager.CheckForCollisions();
+                playerManager.ShootingCapability();
 
                 //Checking map objectives----
                 levelManager.RunLevel();
@@ -149,6 +150,7 @@ namespace RecoilGame
             prevMousState = currentMouseState;
             prevKeyboardState = currentKeyboardState;
             playerManager.PrevKB = currentKeyboardState;
+            playerManager.PrevMouse = prevMousState;
             base.Update(gameTime);
         }
 

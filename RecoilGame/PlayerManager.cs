@@ -29,8 +29,10 @@ namespace RecoilGame
 
         private Player playerObject;
         private List<PlayerWeapon> weaponList;
+        private PlayerWeapon currentWeapon;
         private KeyboardState prevKBState;
         private KeyboardState kbState;
+        private MouseState prevMouseState;
         private MouseState mState;
         private PlayerState playerState;
         private float groundSpeedX;
@@ -38,6 +40,7 @@ namespace RecoilGame
         private Vector2 playerVelocity;
         private Vector2 jumpVelocity;
         private Vector2 playerGravity;
+        private Shotgun playerShotgun;
 
 
         public Player PlayerObject
@@ -58,6 +61,12 @@ namespace RecoilGame
         {
             get { return prevKBState; }
             set { prevKBState = value; }
+        }
+
+        public MouseState PrevMouse
+        {
+            get { return prevMouseState; }
+            set { prevMouseState = value; }
         }
 
         /// <summary>
@@ -85,7 +94,7 @@ namespace RecoilGame
         /// </summary>
         public void MovePlayer()
         {
-            
+
 
             switch (playerState)
             {
@@ -121,10 +130,10 @@ namespace RecoilGame
                     }
                     break;
             }
-            
+
             //moving the rectangle
             playerObject.ConvertPosToRect();
-            
+
         }
 
         /// <summary>
@@ -134,7 +143,7 @@ namespace RecoilGame
         /// <returns></returns>
         private bool SingleKeyPress(Keys key)
         {
-        return Keyboard.GetState().IsKeyDown(key) && prevKBState.IsKeyUp(key);
+            return Keyboard.GetState().IsKeyDown(key) && prevKBState.IsKeyUp(key);
         }
 
         /// <summary>
@@ -148,7 +157,7 @@ namespace RecoilGame
                 Rectangle tileRect = mapTile.ObjectRect;
                 if (playerRect.Intersects(tileRect))
                 {
-                    
+
                     Rectangle intersection = Rectangle.Intersect(
                         playerRect,
                         tileRect);
@@ -159,11 +168,13 @@ namespace RecoilGame
                         if (playerRect.X < tileRect.X)
                         {
                             playerRect.X -= intersection.Width;
+                            playerVelocity.X = 0;
                             //System.Diagnostics.Debug.WriteLine("Wall to the right");
                         }
                         else
                         {
                             playerRect.X += intersection.Width;
+                            playerVelocity.X = 0;
                             //System.Diagnostics.Debug.WriteLine("Wall to the left");
                         }
                     }
@@ -175,6 +186,7 @@ namespace RecoilGame
                         {
                             playerRect.Y -= intersection.Height;
                             playerVelocity.Y = 0;
+                            playerVelocity.X = 0;
 
                             //the player is grounded at this state
                             playerState = PlayerState.Grounded;
@@ -203,13 +215,17 @@ namespace RecoilGame
         /// </summary>
         public void ApplyPlayerGravity()
         {
-            
+
             playerVelocity += playerGravity;
             playerObject.Position += playerVelocity;
             playerObject.ConvertPosToRect();
 
         }
 
+        /// <summary>
+        /// Takes in a velocity vector and adds it to the current player velocity
+        /// </summary>
+        /// <param name="velocity"></param>
         public void AddVelocity(Vector2 velocity)
         {
             playerVelocity += velocity;
@@ -217,7 +233,26 @@ namespace RecoilGame
 
         public void ShootingCapability()
         {
-            
+            float playerRecoil = 15;
+            MouseState mouseState = Mouse.GetState();
+            if (mouseState.LeftButton == ButtonState.Pressed && prevMouseState.LeftButton != ButtonState.Pressed)
+            {
+                playerVelocity = Vector2.Zero;
+                //get direction of vector
+                int xMouse = mouseState.X;
+                int yMouse = mouseState.Y;
+                float xDirection = -1 * (xMouse - playerObject.CenteredX);
+                float yDirection = -1 * (yMouse - playerObject.CenteredY);
+
+                //get the magnitude so it can be normalized
+                double magnitude = Math.Sqrt((xDirection * xDirection) + (yDirection * yDirection));
+                float xNormalized = xDirection / (float)magnitude;
+                float yNormalized = yDirection / (float)magnitude;
+                Vector2 recoil = new Vector2(xNormalized * (playerRecoil / 2), yNormalized * playerRecoil);
+
+                playerVelocity += recoil;
+                playerObject.ConvertPosToRect();
+            }
         }
     }
 }

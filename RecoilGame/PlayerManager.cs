@@ -23,16 +23,24 @@ namespace RecoilGame
         //Updated fields, added MovePlayer() method,
         //PlayerState enum, added CheckForCollisions method
 
+        //Aidan Kamp
+        //3/29/21
+        //Debugged Collision Detection, Added an Add Velco
+
         private Player playerObject;
         private List<PlayerWeapon> weaponList;
+        private PlayerWeapon currentWeapon;
         private KeyboardState prevKBState;
         private KeyboardState kbState;
+        private MouseState prevMouseState;
         private MouseState mState;
         private PlayerState playerState;
-        private float playerSpeedX;
+        private float groundSpeedX;
+        private float airSpeedX;
         private Vector2 playerVelocity;
         private Vector2 jumpVelocity;
         private Vector2 playerGravity;
+        private Shotgun playerShotgun;
 
 
         public Player PlayerObject
@@ -43,10 +51,22 @@ namespace RecoilGame
             }
         }
 
+        public KeyboardState KBState
+        {
+            get { return kbState; }
+            set { kbState = value; }
+        }
+
         public KeyboardState PrevKB
         {
             get { return prevKBState; }
             set { prevKBState = value; }
+        }
+
+        public MouseState PrevMouse
+        {
+            get { return prevMouseState; }
+            set { prevMouseState = value; }
         }
 
         /// <summary>
@@ -56,12 +76,13 @@ namespace RecoilGame
         /// <param name="playerSpeedX"></param> the horizontal speed o fhte player
         /// <param name="yJumpVelocity"></param> the jump velocity vector y value
         /// <param name="yGravity"></param> the gravity vector y value
-        public PlayerManager(Player player, float playerSpeedX, float yJumpVelocity, float yGravity)
+        public PlayerManager(Player player, float groundSpeedX, float airSpeedX, float yJumpVelocity, float yGravity)
         {
             playerObject = player;
             playerState = PlayerState.Grounded;
-            this.playerSpeedX = playerSpeedX;
-            
+            this.groundSpeedX = groundSpeedX;
+            this.airSpeedX = airSpeedX;
+
             //creates the vectors using the passed in y values
             jumpVelocity = new Vector2(0, yJumpVelocity);
             playerGravity = new Vector2(0, yGravity);
@@ -73,7 +94,7 @@ namespace RecoilGame
         /// </summary>
         public void MovePlayer()
         {
-            kbState = Keyboard.GetState();
+
 
             switch (playerState)
             {
@@ -83,11 +104,11 @@ namespace RecoilGame
                     //can move or jump
                     if (kbState.IsKeyDown(Keys.A))
                     {
-                        playerObject.XPos -= playerSpeedX;
+                        playerObject.XPos -= groundSpeedX;
                     }
                     if (kbState.IsKeyDown(Keys.D))
                     {
-                        playerObject.XPos += playerSpeedX;
+                        playerObject.XPos += groundSpeedX;
                     }
                     if (SingleKeyPress(Keys.W))
                     {
@@ -101,18 +122,18 @@ namespace RecoilGame
                     //can't jump again
                     if (kbState.IsKeyDown(Keys.A))
                     {
-                        playerObject.XPos -= playerSpeedX/2;
+                        playerObject.XPos -= (airSpeedX);
                     }
                     if (kbState.IsKeyDown(Keys.D))
                     {
-                        playerObject.XPos += playerSpeedX/2;
+                        playerObject.XPos += (airSpeedX);
                     }
                     break;
             }
-            
+
             //moving the rectangle
             playerObject.ConvertPosToRect();
-            
+
         }
 
         /// <summary>
@@ -122,7 +143,7 @@ namespace RecoilGame
         /// <returns></returns>
         private bool SingleKeyPress(Keys key)
         {
-        return Keyboard.GetState().IsKeyDown(key) && prevKBState.IsKeyUp(key);
+            return Keyboard.GetState().IsKeyDown(key) && prevKBState.IsKeyUp(key);
         }
 
         /// <summary>
@@ -131,12 +152,12 @@ namespace RecoilGame
         public void CheckForCollisions()
         {
             Rectangle playerRect = playerObject.ObjectRect;
-            for (int i = 0; i < Game1.levelManager.ListOfMapTiles.Count; i++)
+            foreach (MapTile mapTile in Game1.levelManager.ListOfMapTiles)
             {
-                Rectangle tileRect = Game1.levelManager.ListOfMapTiles[i].ObjectRect;
+                Rectangle tileRect = mapTile.ObjectRect;
                 if (playerRect.Intersects(tileRect))
                 {
-                    
+
                     Rectangle intersection = Rectangle.Intersect(
                         playerRect,
                         tileRect);
@@ -147,10 +168,14 @@ namespace RecoilGame
                         if (playerRect.X < tileRect.X)
                         {
                             playerRect.X -= intersection.Width;
+                            playerVelocity.X = 0;
+                            //System.Diagnostics.Debug.WriteLine("Wall to the right");
                         }
                         else
                         {
                             playerRect.X += intersection.Width;
+                            playerVelocity.X = 0;
+                            //System.Diagnostics.Debug.WriteLine("Wall to the left");
                         }
                     }
                     //if height is less than width than the player is moved up or down
@@ -161,14 +186,18 @@ namespace RecoilGame
                         {
                             playerRect.Y -= intersection.Height;
                             playerVelocity.Y = 0;
+                            playerVelocity.X = 0;
 
                             //the player is grounded at this state
                             playerState = PlayerState.Grounded;
+
+                            //System.Diagnostics.Debug.WriteLine("On the ground");
                         }
                         else
                         {
                             playerRect.Y += intersection.Height;
                             playerVelocity.Y = 0;
+                            //System.Diagnostics.Debug.WriteLine("Wall above");
                         }
                     }
                 }
@@ -186,10 +215,44 @@ namespace RecoilGame
         /// </summary>
         public void ApplyPlayerGravity()
         {
-            
+
             playerVelocity += playerGravity;
             playerObject.Position += playerVelocity;
+            playerObject.ConvertPosToRect();
 
+        }
+
+        /// <summary>
+        /// Takes in a velocity vector and adds it to the current player velocity
+        /// </summary>
+        /// <param name="velocity"></param>
+        public void AddVelocity(Vector2 velocity)
+        {
+            playerVelocity += velocity;
+        }
+
+        public void ShootingCapability()
+        {
+            float playerRecoil = 15;
+            MouseState mouseState = Mouse.GetState();
+            if (mouseState.LeftButton == ButtonState.Pressed && prevMouseState.LeftButton != ButtonState.Pressed)
+            {
+                playerVelocity = Vector2.Zero;
+                //get direction of vector
+                int xMouse = mouseState.X;
+                int yMouse = mouseState.Y;
+                float xDirection = -1 * (xMouse - playerObject.CenteredX);
+                float yDirection = -1 * (yMouse - playerObject.CenteredY);
+
+                //get the magnitude so it can be normalized
+                double magnitude = Math.Sqrt((xDirection * xDirection) + (yDirection * yDirection));
+                float xNormalized = xDirection / (float)magnitude;
+                float yNormalized = yDirection / (float)magnitude;
+                Vector2 recoil = new Vector2(xNormalized * (playerRecoil / 2), yNormalized * playerRecoil);
+
+                playerVelocity += recoil;
+                playerObject.ConvertPosToRect();
+            }
         }
     }
 }

@@ -18,8 +18,7 @@ namespace RecoilGame
 
         //Fields
 
-        private List<PlayerWeapon> weaponList;
-        private PlayerWeapon currentWeapon;
+
         private int health;
 
         /// <summary>

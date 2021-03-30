@@ -56,8 +56,7 @@ namespace RecoilGame
                 CenteredX + velocity.X,
                 CenteredY + velocity.Y);
 
-            objectRect.X = (int)position.X;
-            objectRect.Y = (int)position.Y;
+            ConvertPosToRect();
         }
 
         /// <summary>

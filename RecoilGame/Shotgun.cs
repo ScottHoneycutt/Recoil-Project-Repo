@@ -59,6 +59,8 @@ namespace RecoilGame
             new Projectile(ObjectRect.Right, this.CenteredY, 20, 20, projectileTexture, true, new Vector2(5,0), 20, 5, 40, false, true);
 
             //throw new NotImplementedException();
+
+
         }
 
         public void UpdateCooldown(GameTime gameTime)

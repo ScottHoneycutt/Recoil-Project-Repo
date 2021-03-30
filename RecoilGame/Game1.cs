@@ -59,6 +59,7 @@ namespace RecoilGame
         //Player
         Texture2D playerSprite;
         Player player;
+        KeyboardState kbState;
 
         public Game1()
         {
@@ -99,12 +100,11 @@ namespace RecoilGame
 
             //Aidan - I had to initialize these after the player sprite was loaded or
             //I'd get a null pointer error for the sprite texture
-            /*
-             * 
-            player = new Player(100, 100, 40, 40, playerSprite, true, 100);
-            playerManager = new PlayerManager(player, 5, -8, .15f);
+            
+            player = new Player(200, 200, 40, 40, playerSprite, true, 100);
+            playerManager = new PlayerManager(player, 6, 3, -10.5f, .6f);
 
-            */
+            
             // TODO: use this.Content to load your game content here
 
 
@@ -122,7 +122,8 @@ namespace RecoilGame
                 Exit();
 
             // TODO: Add your update logic here
-
+            kbState = Keyboard.GetState();
+            playerManager.KBState = kbState;
             //Refreshing current inputs-----
             currentMouseState = Mouse.GetState();
             currentKeyboardState = Keyboard.GetState();
@@ -147,10 +148,13 @@ namespace RecoilGame
 
 
                 //Player Physics
-                /*
                 playerManager.MovePlayer();
                 playerManager.ApplyPlayerGravity();
-                */
+                playerManager.CheckForCollisions();
+                playerManager.ShootingCapability();
+
+                //Checking map objectives----
+                levelManager.RunLevel();
             }
             //Victory screen----
             else if (currentGameState == GameState.Victory)
@@ -158,11 +162,11 @@ namespace RecoilGame
 
             }
 
-            
             //THIS SHOULD ALWAYS REMAIN LAST IN UPDATE. Refreshing previous inputs----
             prevMousState = currentMouseState;
             prevKeyboardState = currentKeyboardState;
-
+            playerManager.PrevKB = currentKeyboardState;
+            playerManager.PrevMouse = prevMousState;
             base.Update(gameTime);
         }
 
@@ -195,13 +199,13 @@ namespace RecoilGame
                     projectileManager.Simulate(gameTime);
                 }
                 
+                player.Draw(_spriteBatch, Color.White);
             }
             //Victory screen----
             else if (currentGameState == GameState.Victory)
             {
 
             }
-
 
             _spriteBatch.End();
 

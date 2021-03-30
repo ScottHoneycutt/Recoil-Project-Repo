@@ -62,10 +62,11 @@ namespace RecoilGame
             //Objective----
             objectiveTile = new MapTile(450, 450, 50, 50, testSprite, true, true);
 
-            /*//Spawning in the player (using the ObjectRect get like a set property because I'm evil----
-            Rectangle playerRect = Game1.playerManager.PlayerObject.ObjectRect;
-            playerRect.X = 50;
-            playerRect.Y = 400;*/
+            //Spawning in the player----
+            System.Diagnostics.Debug.WriteLine(currentLevel);
+            Game1.playerManager.PlayerObject.Position = new Vector2(100, 100);
+            Game1.playerManager.PlayerObject.ConvertPosToRect();
+
         }
 
         /// <summary>
@@ -73,6 +74,14 @@ namespace RecoilGame
         /// </summary>
         public void RunLevel()
         {
+            //Starting the first level----
+            if (currentLevel == 0)
+            {
+                currentLevel++;
+                //GenerateLevelFromFile();
+                GenerateTestLevel();
+            }
+
             //If the objective has been completed----
             if (ObjectiveReached())
             {
@@ -86,16 +95,17 @@ namespace RecoilGame
             }
         }
 
-        
-
         /// <summary>
         /// Draws all Maptiles in the current level to the screen----
         /// </summary>
         /// <param name="sb">The SpriteBatch used to draw the MapTiles----</param>
         public void DrawLevel(SpriteBatch sb)
         {
-            //Drawing objective first----
-            objectiveTile.Draw(sb, Color.Yellow);
+            //Drawing objective first (if it exists)----
+            if (objectiveTile != null)
+            {
+                objectiveTile.Draw(sb, Color.Yellow);
+            }
 
             //Drawing all other tiles----
             foreach (MapTile tile in listOfMapTiles)

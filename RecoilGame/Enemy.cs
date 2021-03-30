@@ -15,6 +15,8 @@ namespace RecoilGame
         // Variables
         private float health;
         private Vector2 velocity;
+        private float attackPeriod;
+        private float attackTimer;
 
         // Properties
         public float Health
@@ -40,11 +42,48 @@ namespace RecoilGame
         /// <param name="isActive"> If player should be drawn to screen </param>
         /// <param name="velocity"> Velocity of player </param>
         /// <param name="health"> Health of player </param>
-        public Enemy(int x, int y, int width, int height, Texture2D texture, bool isActive, Vector2 velocity, float health)
+        /// /// <param name="attackPeriod">The amount of time between each attack----</param>
+        public Enemy(int x, int y, int width, int height, Texture2D texture, bool isActive, Vector2 velocity, 
+            float health, float attackPeriod)
             : base(x, y, width, height, texture, isActive)
         {
             this.health = health;
             this.velocity = velocity;
+            this.attackPeriod = attackPeriod;
+            attackTimer = 0;
+
+            //Reporting this enemy's existence to the EnemyManager;
+            Game1.enemyManager.ReportExists(this);
+        }
+
+        /// <summary>
+        /// Handles the shooting/targeting of enemy objects----
+        /// </summary>
+        /// <param name="playerRef">Reference to the player object----</param>
+        /// <param name="gameTime">GameTime object reference so that the duration between frames
+        /// can be counted----</param>
+        /// <param name="projectileSprite">The texture to use for the projectile th enemy shoots----</param>
+        public void SimulateBehaviors(Player playerRef, GameTime gameTime, Texture2D projectileSprite)
+        {
+            //Shoot at the player once every attack period----
+            attackTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (attackTimer > attackPeriod)
+            {
+                //Restting timer every attack----
+                attackTimer = 0;
+
+                //Calculating the velocity vector for the projectile----
+                Vector2 normalizedVector = new Vector2(playerRef.CenteredX - CenteredX, 
+                    playerRef.CenteredY - CenteredY);
+                normalizedVector.Normalize();
+                normalizedVector.X *= 15;
+                normalizedVector.Y *= 15;
+
+                //Creating the projectile----
+                new Projectile(CenteredX, CenteredY, 10, 10, projectileSprite, true, normalizedVector, 10,
+                    0, 2, false, false);
+                System.Diagnostics.Debug.WriteLine("Bang!");
+            }
         }
 
         /// <summary>

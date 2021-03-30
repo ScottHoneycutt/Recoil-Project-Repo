@@ -20,10 +20,15 @@ namespace RecoilGame
         private List<Explosion> listOfExplosions;
         private List<Explosion> expiredExplosions;
 
+        /// <summary>
+        /// Constructor for the projectileManager class----
+        /// </summary>
         public ProjectileManager()
         {
             listOfProjectiles = new List<Projectile>();
             expiredProjectiles = new List<Projectile>();
+            listOfExplosions = new List<Explosion>();
+            expiredExplosions = new List<Explosion>();
         }
 
         /// <summary>

@@ -150,6 +150,7 @@ namespace RecoilGame
                 if (this.objectRect.Intersects(Game1.playerManager.PlayerObject.ObjectRect))
                 {
                     Game1.playerManager.PlayerObject.TakeDamage(damage);
+                    System.Diagnostics.Debug.WriteLine("Oof!");
                     //Expires after collision----
                     Expire();
                     //Saving time by returning early----
@@ -161,13 +162,13 @@ namespace RecoilGame
             {
                 if (this.objectRect.Intersects(Game1.levelManager.ListOfMapTiles[i].ObjectRect))
                 {
+                    System.Diagnostics.Debug.WriteLine("Dink!");
                     Expire();
                     //Saving time by returning early----
                     return;
                 }
             }
         }
-
 
         /// <summary>
         /// Helper method. Helps remove an object from the simulation cycle----

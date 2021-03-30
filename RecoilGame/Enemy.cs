@@ -92,8 +92,8 @@ namespace RecoilGame
         public void Move()
         {
             position = new Vector2(
-                CenteredX + velocity.X,
-                CenteredY + velocity.Y);
+                position.X + velocity.X,
+                position.Y + velocity.Y);
 
             ConvertPosToRect();
         }

@@ -142,7 +142,7 @@ namespace RecoilGame
                 playerManager.ShootingCapability();
 
                 //Running enemy behaviors----
-                //enemyManager.MoveEnemies();
+                enemyManager.MoveEnemies();
                 enemyManager.SimulateBehaviors(gameTime);
 
                 //Simulating projectiles----

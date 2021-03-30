@@ -1,4 +1,7 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -49,6 +52,10 @@ namespace RecoilGame
         public static EnemyManager enemyManager;
         public static LevelManager levelManager;
 
+        private Shotgun shotgun;
+
+        private PlayerWeapon currentWeapon;
+
         //Player
         Texture2D playerSprite;
         Player player;
@@ -80,7 +87,6 @@ namespace RecoilGame
             prevKeyboardState = currentKeyboardState;
 
             levelManager.GenerateTestLevel();
-            
 
             base.Initialize();
         }
@@ -106,6 +112,8 @@ namespace RecoilGame
             startHoverSprite = Content.Load<Texture2D>("start_ovr");
             startUpSprite = Content.Load<Texture2D>("start_up");
             startButton = new Button(startUpSprite, startHoverSprite, 150, 300, 200, 100);
+
+            shotgun = new Shotgun(200, 200, 60, 15, playerSprite, true, 5, 1, 0, playerSprite);
         }
 
         protected override void Update(GameTime gameTime)
@@ -132,6 +140,12 @@ namespace RecoilGame
             //Level state----
             else if (currentGameState == GameState.Level)
             {
+                if(currentMouseState.LeftButton == ButtonState.Pressed && prevMousState.LeftButton == ButtonState.Released)
+                {
+                    shotgun.Shoot();
+                }
+
+
                 //Player Physics
                 /*
                 playerManager.MovePlayer();
@@ -170,6 +184,17 @@ namespace RecoilGame
             {
                 levelManager.DrawLevel(_spriteBatch);
                 //player.Draw(_spriteBatch, Color.White);
+
+                if(projectileManager.listOfProjectiles.Count >= 1)
+                {
+                    foreach (Projectile projectile in projectileManager.listOfProjectiles)
+                    {
+                        projectile.Draw(_spriteBatch, Color.Red);
+                    }
+
+                    projectileManager.Simulate(gameTime);
+                }
+                
             }
             //Victory screen----
             else if (currentGameState == GameState.Victory)

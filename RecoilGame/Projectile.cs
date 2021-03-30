@@ -102,7 +102,9 @@ namespace RecoilGame
         public void Simulate(GameTime gameTime)
         {
             //Updating lifetime timer----
-            lifetime -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+            //lifetime -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            lifetime -= 1;
 
             //Expiring old projectiles and preventing further simulation----
             if (lifetime <= 0)
@@ -122,7 +124,7 @@ namespace RecoilGame
             CheckForCollisions();
 
             //Updating the velocity vector----
-            velocity.Y -= gravity;
+            velocity.Y += gravity/150;
         }
 
         /// <summary>

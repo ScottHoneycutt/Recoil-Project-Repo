@@ -84,8 +84,8 @@ namespace RecoilGame
             foreach(Enemy deadEnemy in deadEnemies)
             {
                 listOfEnemies.Remove(deadEnemy);
-                deadEnemies.Clear();
             }
+            deadEnemies.Clear();
         }
 
         /// <summary>

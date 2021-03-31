@@ -26,7 +26,7 @@ namespace RecoilGame
         /// </summary>
         public override void Shoot()
         {
-            if(Cooldown > 0)
+            if(CurrentCooldown > 0)
             {
                 return;
             }
@@ -34,13 +34,14 @@ namespace RecoilGame
             //Test to see if this will actually create a projectile and how it will work, then we'll add more since we want shotgun to have multiple projectiles
             new Projectile(ObjectRect.Right, this.CenteredY, 20, 20, projectileTexture, true, new Vector2(ObjectRect.Right, this.CenteredY), 20, 5, 10, false, true);
 
-            Cooldown = 10.0f;
+            //Cooldown = 10.0f;
 
             //throw new NotImplementedException();
         }
 
-        public void UpdateCooldown(GameTime gameTime)
+        public override void UpdateCooldown(GameTime gameTime)
         {
+            /*
             if(Cooldown == 0)
             {
                 return;
@@ -50,6 +51,7 @@ namespace RecoilGame
             {
                 Cooldown -= (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
+            */
         }
     }
 }

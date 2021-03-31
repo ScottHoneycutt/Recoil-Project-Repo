@@ -12,6 +12,7 @@ namespace RecoilGame
     {
         //Fields
         private float cooldown;
+        private float currentCooldown;
         private int numOfProjectiles;
 
 
@@ -32,18 +33,18 @@ namespace RecoilGame
         {
             this.cooldown = cooldown;
             this.numOfProjectiles = numOfProjectiles;
+            currentCooldown = 0;
         }
 
 
         //PROPERTIES
 
         /// <summary>
-        /// Property That Returns Or Sets Weapon's Cooldown
+        /// Property That Returns Weapon's Cooldown Amount when shot
         /// </summary>
-        public float Cooldown
+        public float CooldownAmount
         {
             get { return cooldown; }
-            set { cooldown = value; }
         }
 
         /// <summary>
@@ -54,6 +55,15 @@ namespace RecoilGame
             get { return numOfProjectiles; }
         }
 
+        /// <summary>
+        /// Property that sets or gets the weapon's current cooldown
+        /// </summary>
+        public float CurrentCooldown
+        {
+            get { return currentCooldown; }
+            set { currentCooldown = value; }
+        }
+
 
         //METHODS
 
@@ -61,5 +71,7 @@ namespace RecoilGame
         /// Abstract Method For Shoot, Must Be Overriden By Weapons
         /// </summary>
         public abstract void Shoot();
+
+        public abstract void UpdateCooldown(GameTime gameTime);
     }
 }

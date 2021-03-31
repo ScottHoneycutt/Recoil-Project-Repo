@@ -24,6 +24,8 @@ namespace RecoilGame
         {
             listOfProjectiles = new List<Projectile>();
             expiredProjectiles = new List<Projectile>();
+            listOfExplosions = new List<Explosion>();
+            expiredExplosions = new List<Explosion>();
         }
 
         /// <summary>

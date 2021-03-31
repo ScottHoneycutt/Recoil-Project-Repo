@@ -53,8 +53,8 @@ namespace RecoilGame
         public static LevelManager levelManager;
 
         private Shotgun shotgun;
-
         private PlayerWeapon currentWeapon;
+        private List<PlayerWeapon> weapons; 
 
         //Player
         Texture2D playerSprite;
@@ -87,7 +87,7 @@ namespace RecoilGame
             prevMousState = currentMouseState;
             prevKeyboardState = currentKeyboardState;
 
-            levelManager.GenerateTestLevel();
+            weapons = new List<PlayerWeapon>();
 
             base.Initialize();
         }
@@ -104,7 +104,9 @@ namespace RecoilGame
             player = new Player(200, 200, 40, 40, playerSprite, true, 100);
             playerManager = new PlayerManager(player, 6, 3, -10.5f, .6f);
 
-            
+            levelManager.GenerateTestLevel();
+
+
             // TODO: use this.Content to load your game content here
 
 
@@ -113,7 +115,9 @@ namespace RecoilGame
             startUpSprite = Content.Load<Texture2D>("start_up");
             startButton = new Button(startUpSprite, startHoverSprite, 150, 300, 200, 100);
 
-            shotgun = new Shotgun(200, 200, 60, 15, playerSprite, true, 5, 1, 0, playerSprite);
+            shotgun = new Shotgun((int)player.XPos, (int)player.YPos, 40, 40, playerSprite, true, 3, 1, 0, playerSprite);
+            currentWeapon = shotgun;
+            weapons.Add(shotgun);
         }
 
         protected override void Update(GameTime gameTime)
@@ -141,17 +145,24 @@ namespace RecoilGame
             //Level state----
             else if (currentGameState == GameState.Level)
             {
+                //Updates the weapons position based on player's position
+                currentWeapon.XPos = player.XPos;
+                currentWeapon.CenteredY = player.CenteredY;
+
                 if(currentMouseState.LeftButton == ButtonState.Pressed && prevMousState.LeftButton == ButtonState.Released)
                 {
-                    shotgun.Shoot();
+                    currentWeapon.Shoot();
                 }
 
+                foreach(PlayerWeapon weapon in weapons)
+                {
+                    weapon.UpdateCooldown(gameTime);
+                }
 
                 //Player Physics
                 playerManager.MovePlayer();
                 playerManager.ApplyPlayerGravity();
                 playerManager.CheckForCollisions();
-                playerManager.ShootingCapability();
 
                 //Checking map objectives----
                 levelManager.RunLevel();
@@ -172,7 +183,7 @@ namespace RecoilGame
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
             // TODO: Add your drawing code here
 
             _spriteBatch.Begin();
@@ -187,19 +198,12 @@ namespace RecoilGame
             else if (currentGameState == GameState.Level)
             {
                 levelManager.DrawLevel(_spriteBatch);
-                //player.Draw(_spriteBatch, Color.White);
 
-                if(projectileManager.listOfProjectiles.Count >= 1)
-                {
-                    foreach (Projectile projectile in projectileManager.listOfProjectiles)
-                    {
-                        projectile.Draw(_spriteBatch, Color.Red);
-                    }
+                projectileManager.Draw(_spriteBatch, Color.Red);
 
-                    projectileManager.Simulate(gameTime);
-                }
+                projectileManager.Simulate(gameTime);
                 
-                player.Draw(_spriteBatch, Color.White);
+                player.Draw(_spriteBatch, Color.Blue);
             }
             //Victory screen----
             else if (currentGameState == GameState.Victory)

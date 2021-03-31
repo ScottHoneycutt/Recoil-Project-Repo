@@ -14,6 +14,7 @@ namespace RecoilGame
         WalkLeft,
         WalkRight,
         Grounded,
+        Airborn,
         Jump
     }
     public class PlayerManager
@@ -41,7 +42,7 @@ namespace RecoilGame
         private Vector2 jumpVelocity;
         private Vector2 playerGravity;
         private Shotgun playerShotgun;
-
+        private bool isColliding;
 
         public Player PlayerObject
         {
@@ -69,6 +70,12 @@ namespace RecoilGame
             set { prevMouseState = value; }
         }
 
+        public PlayerState State
+        {
+            get { return playerState; }
+            set { playerState = value; }
+        }
+
         /// <summary>
         /// PlayerManger constructor takes in the player object and values for movement
         /// </summary>
@@ -82,7 +89,7 @@ namespace RecoilGame
             playerState = PlayerState.Grounded;
             this.groundSpeedX = groundSpeedX;
             this.airSpeedX = airSpeedX;
-
+            isColliding = false;
             //creates the vectors using the passed in y values
             jumpVelocity = new Vector2(0, yJumpVelocity);
             playerGravity = new Vector2(0, yGravity);
@@ -101,7 +108,10 @@ namespace RecoilGame
                 //grounded and jump states since the direction you face is not impacted by the direction you're moving
                 //direction faced will instead be dependent on mouse location (for shooting)
                 case PlayerState.Grounded:
+
+                    System.Diagnostics.Debug.WriteLine("Grounded State");
                     //can move or jump
+
                     if (kbState.IsKeyDown(Keys.A))
                     {
                         playerObject.XPos -= groundSpeedX;
@@ -116,7 +126,27 @@ namespace RecoilGame
                         playerState = PlayerState.Jump;
                     }
                     break;
+                case PlayerState.Airborn:
+
+                    System.Diagnostics.Debug.WriteLine("Airborn State");
+
+                    //player has reduced aerial movement but can still jump
+                    if (kbState.IsKeyDown(Keys.A))
+                    {
+                        playerObject.XPos -= (airSpeedX);
+                    }
+                    if (kbState.IsKeyDown(Keys.D))
+                    {
+                        playerObject.XPos += (airSpeedX);
+                    }
+                    if (SingleKeyPress(Keys.W))
+                    {
+                        playerVelocity.Y = jumpVelocity.Y;
+                        playerState = PlayerState.Jump;
+                    }
+                    break;
                 case PlayerState.Jump:
+                    System.Diagnostics.Debug.WriteLine("Jump State");
 
                     //can move when you jump but it is less useful (half as fast).
                     //can't jump again
@@ -151,13 +181,14 @@ namespace RecoilGame
         /// </summary>
         public void CheckForCollisions()
         {
+            isColliding = false;
             Rectangle playerRect = playerObject.ObjectRect;
             foreach (MapTile mapTile in Game1.levelManager.ListOfMapTiles)
             {
                 Rectangle tileRect = mapTile.ObjectRect;
                 if (playerRect.Intersects(tileRect))
                 {
-
+                    
                     Rectangle intersection = Rectangle.Intersect(
                         playerRect,
                         tileRect);
@@ -170,12 +201,24 @@ namespace RecoilGame
                             playerRect.X -= intersection.Width;
                             playerVelocity.X = 0;
                             //System.Diagnostics.Debug.WriteLine("Wall to the right");
+
+                            playerObject.XPos = playerRect.X;
+                            playerObject.YPos = playerRect.Y;
+
+                            //Converting the position vector to a rectangle
+                            playerObject.ConvertPosToRect();
                         }
                         else
                         {
                             playerRect.X += intersection.Width;
                             playerVelocity.X = 0;
                             //System.Diagnostics.Debug.WriteLine("Wall to the left");
+
+                            playerObject.XPos = playerRect.X;
+                            playerObject.YPos = playerRect.Y;
+
+                            //Converting the position vector to a rectangle
+                            playerObject.ConvertPosToRect();
                         }
                     }
                     //if height is less than width than the player is moved up or down
@@ -184,29 +227,53 @@ namespace RecoilGame
                         //checking to see which direction to move
                         if (playerRect.Y < tileRect.Y)
                         {
+                            
                             playerRect.Y -= intersection.Height;
                             playerVelocity.Y = 0;
                             playerVelocity.X = 0;
 
-                            //the player is grounded at this state
-                            playerState = PlayerState.Grounded;
 
+                            //the player is grounded at this state
+                            isColliding = true;
+                            playerState = PlayerState.Grounded;
+                            
                             //System.Diagnostics.Debug.WriteLine("On the ground");
+
+                            playerObject.XPos = playerRect.X;
+                            playerObject.YPos = playerRect.Y;
+
+                            //Converting the position vector to a rectangle
+                            playerObject.ConvertPosToRect();
                         }
                         else
                         {
+
                             playerRect.Y += intersection.Height;
                             playerVelocity.Y = 0;
                             //System.Diagnostics.Debug.WriteLine("Wall above");
+
+                            playerObject.XPos = playerRect.X;
+                            playerObject.YPos = playerRect.Y;
+
+                            //Converting the position vector to a rectangle
+                            playerObject.ConvertPosToRect();
                         }
                     }
                 }
+
+
                 //setting final positions
                 playerObject.XPos = playerRect.X;
                 playerObject.YPos = playerRect.Y;
 
                 //Converting the position vector to a rectangle
                 playerObject.ConvertPosToRect();
+            }
+
+            if(isColliding == false && playerState != PlayerState.Jump)
+            {
+                //System.Diagnostics.Debug.WriteLine("The Game Thinks we're in the air");
+                playerState = PlayerState.Airborn;
             }
         }
 
@@ -250,8 +317,18 @@ namespace RecoilGame
                 float yNormalized = yDirection / (float)magnitude;
                 Vector2 recoil = new Vector2(xNormalized * (playerRecoil / 2), yNormalized * playerRecoil);
 
+                //Add velocity and adjust location
                 playerVelocity += recoil;
                 playerObject.ConvertPosToRect();
+
+                //changes playerState to airborn (can still use jump) if done from the ground
+                /*
+                if(playerState == PlayerState.Grounded)
+                {
+                    playerState = PlayerState.Airborn;
+                }
+                */
+                
             }
         }
     }

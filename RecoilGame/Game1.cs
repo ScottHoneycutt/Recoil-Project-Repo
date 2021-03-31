@@ -119,7 +119,7 @@ namespace RecoilGame
             //it automatically stores itself in the EnemyManager----
             new Enemy(250, 250, 50, 50, playerSprite, true, new Vector2(0,0), 10, 3);
 
-            shotgun = new Shotgun((int)player.XPos, (int)player.YPos, 40, 40, playerSprite, true, 3, 1, 0, playerSprite);
+            shotgun = new Shotgun((int)player.XPos, (int)player.YPos, 40, 40, playerSprite, true, 1, 1, 0, playerSprite);
             currentWeapon = shotgun;
             weapons.Add(shotgun);
         }

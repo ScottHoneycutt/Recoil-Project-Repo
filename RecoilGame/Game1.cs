@@ -212,9 +212,8 @@ namespace RecoilGame
             else if (currentGameState == GameState.Level)
             {
                 levelManager.DrawLevel(_spriteBatch);
-                player.Draw(_spriteBatch, Color.White);
+
                 enemyManager.Draw(_spriteBatch, Color.Red);
-                projectileManager.Draw(_spriteBatch, Color.Orange);
 
                 projectileManager.Draw(_spriteBatch, Color.Red);
 

@@ -183,6 +183,7 @@ namespace RecoilGame
         {
             isColliding = false;
             Rectangle playerRect = playerObject.ObjectRect;
+            playerObject.ConvertPosToRect();
             foreach (MapTile mapTile in Game1.levelManager.ListOfMapTiles)
             {
                 Rectangle tileRect = mapTile.ObjectRect;
@@ -193,7 +194,7 @@ namespace RecoilGame
                         playerRect,
                         tileRect);
 
-                    if (intersection.Width <= intersection.Height)
+                    if (intersection.Width < intersection.Height)
                     {
                         //checking to see which direction to move
                         if (playerRect.X < tileRect.X)
@@ -202,11 +203,6 @@ namespace RecoilGame
                             playerVelocity.X = 0;
                             //System.Diagnostics.Debug.WriteLine("Wall to the right");
 
-                            playerObject.XPos = playerRect.X;
-                            playerObject.YPos = playerRect.Y;
-
-                            //Converting the position vector to a rectangle
-                            playerObject.ConvertPosToRect();
                         }
                         else
                         {
@@ -214,18 +210,14 @@ namespace RecoilGame
                             playerVelocity.X = 0;
                             //System.Diagnostics.Debug.WriteLine("Wall to the left");
 
-                            playerObject.XPos = playerRect.X;
-                            playerObject.YPos = playerRect.Y;
 
-                            //Converting the position vector to a rectangle
-                            playerObject.ConvertPosToRect();
                         }
                     }
                     //if height is less than width than the player is moved up or down
-                    if (intersection.Height < intersection.Width)
+                    if (intersection.Height <= intersection.Width)
                     {
                         //checking to see which direction to move
-                        if (playerRect.Y < tileRect.Y)
+                        if (playerRect.Y <= tileRect.Y)
                         {
                             
                             playerRect.Y -= intersection.Height;
@@ -239,11 +231,7 @@ namespace RecoilGame
                             
                             //System.Diagnostics.Debug.WriteLine("On the ground");
 
-                            playerObject.XPos = playerRect.X;
-                            playerObject.YPos = playerRect.Y;
 
-                            //Converting the position vector to a rectangle
-                            playerObject.ConvertPosToRect();
                         }
                         else
                         {
@@ -252,25 +240,21 @@ namespace RecoilGame
                             playerVelocity.Y = 0;
                             //System.Diagnostics.Debug.WriteLine("Wall above");
 
-                            playerObject.XPos = playerRect.X;
-                            playerObject.YPos = playerRect.Y;
 
-                            //Converting the position vector to a rectangle
-                            playerObject.ConvertPosToRect();
                         }
                     }
                 }
 
 
-                //setting final positions
-                playerObject.XPos = playerRect.X;
-                playerObject.YPos = playerRect.Y;
 
-                //Converting the position vector to a rectangle
-                playerObject.ConvertPosToRect();
             }
+            //setting final positions
+            playerObject.XPos = playerRect.X;
+            playerObject.YPos = playerRect.Y;
 
-            if(isColliding == false && playerState != PlayerState.Jump)
+            //Converting the position vector to a rectangle
+            playerObject.ConvertPosToRect();
+            if (isColliding == false && playerState != PlayerState.Jump)
             {
                 //System.Diagnostics.Debug.WriteLine("The Game Thinks we're in the air");
                 playerState = PlayerState.Airborn;

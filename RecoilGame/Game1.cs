@@ -104,9 +104,6 @@ namespace RecoilGame
             player = new Player(200, 200, 40, 40, playerSprite, true, 100);
             playerManager = new PlayerManager(player, 6, 3, -10.5f, .6f);
 
-            levelManager.GenerateTestLevel();
-
-
             // TODO: use this.Content to load your game content here
 
 

@@ -95,6 +95,7 @@ namespace RecoilGame
                 //Cleaning up the old level and transitioning to the new one----
                 listOfMapTiles.Clear();
                 objectiveTile = null;
+                Game1.enemyManager.ListOfEnemies.Clear();
                 //GenerateLevelFromFile();
                 GenerateTestLevel();
             }

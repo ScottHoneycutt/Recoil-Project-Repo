@@ -68,6 +68,10 @@ namespace RecoilGame
             System.Diagnostics.Debug.WriteLine(currentLevel);
             Game1.playerManager.PlayerObject.Position = new Vector2(100, 100);
             Game1.playerManager.PlayerObject.ConvertPosToRect();
+
+            //Creating a single enemy for testing purposes (does not need to be stored because
+            //it automatically stores itself in the EnemyManager)----
+            new Enemy(250, 250, 50, 50, testSprite, true, new Vector2(0, 0), 10, 3);
         }
 
         /// <summary>

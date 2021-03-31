@@ -82,7 +82,6 @@ namespace RecoilGame
                 //Creating the projectile----
                 new Projectile(CenteredX, CenteredY, 10, 10, projectileSprite, true, normalizedVector, 10,
                     0, 2, false, false);
-                System.Diagnostics.Debug.WriteLine("Bang!");
             }
         }
 

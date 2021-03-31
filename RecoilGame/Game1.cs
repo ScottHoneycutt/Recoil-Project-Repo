@@ -115,10 +115,6 @@ namespace RecoilGame
             startUpSprite = Content.Load<Texture2D>("start_up");
             startButton = new Button(startUpSprite, startHoverSprite, 150, 300, 200, 100);
 
-            //Creating a single enemy for testing purposes (does not need to be stored because
-            //it automatically stores itself in the EnemyManager----
-            new Enemy(250, 250, 50, 50, playerSprite, true, new Vector2(0,0), 10, 3);
-
             shotgun = new Shotgun((int)player.XPos, (int)player.YPos, 40, 40, playerSprite, true, 3, 1, 0, playerSprite);
             currentWeapon = shotgun;
             weapons.Add(shotgun);
@@ -180,6 +176,7 @@ namespace RecoilGame
 
                 //Garbage collection methods----
                 projectileManager.CollectGarbage();
+                enemyManager.RemoveDeadEnemies();
             }
             //Victory screen----
             else if (currentGameState == GameState.Victory)

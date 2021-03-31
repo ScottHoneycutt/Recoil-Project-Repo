@@ -102,9 +102,7 @@ namespace RecoilGame
         public void Simulate(GameTime gameTime)
         {
             //Updating lifetime timer----
-            //lifetime -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            lifetime -= 1;
+            lifetime -= (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             //Expiring old projectiles and preventing further simulation----
             if (lifetime <= 0)

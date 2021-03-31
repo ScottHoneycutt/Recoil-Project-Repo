@@ -17,6 +17,7 @@ namespace RecoilGame
     {
         private List<MapTile> listOfMapTiles;
         private int currentLevel;
+        private int numberOfLevels;
         private MapTile objectiveTile;
         private Texture2D testSprite;
         private int playerSpawnX;
@@ -44,6 +45,7 @@ namespace RecoilGame
             testSprite = game.Content.Load<Texture2D>("square");
             //Setting objectiveTile to null until one appears in a level----
             objectiveTile = null;
+            numberOfLevels = 3;
         }
 
         /// <summary>
@@ -66,7 +68,6 @@ namespace RecoilGame
             System.Diagnostics.Debug.WriteLine(currentLevel);
             Game1.playerManager.PlayerObject.Position = new Vector2(100, 100);
             Game1.playerManager.PlayerObject.ConvertPosToRect();
-
         }
 
         /// <summary>

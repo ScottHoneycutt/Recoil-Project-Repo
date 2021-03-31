@@ -68,13 +68,12 @@ namespace RecoilGame
                 {
                     //Impart a velocity onto the player----
                     //Normalizing the displacement vector from the explosion to the player----
-                    Vector2 velocityVector = new Vector2(displacementVector.X / displacementVector.Length(),
-                        displacementVector.Y / displacementVector.Length());
+                    displacementVector.Normalize();
 
                     //Multiplying the normalized vector by playerKnockback to calculate the velocity vector----
-                    velocityVector.X *= playerKnockback;
-                    velocityVector.Y *= playerKnockback;
-                    Game1.playerManager.AddVelocity(velocityVector);
+                    displacementVector.X *= playerKnockback;
+                    displacementVector.Y *= playerKnockback;
+                    Game1.playerManager.AddVelocity(displacementVector);
                 }
 
                 //Checking for collisions between the explosion and all enemies----

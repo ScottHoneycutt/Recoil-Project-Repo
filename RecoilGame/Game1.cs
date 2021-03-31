@@ -76,9 +76,9 @@ namespace RecoilGame
             _graphics.PreferredBackBufferHeight = 550;
             _graphics.ApplyChanges();
 
-            //Setting up manager classes----
+            //Setting up manager classes (except PlayerManager, which gets set up in load)----
             projectileManager = new ProjectileManager();
-            enemyManager = new EnemyManager();
+            enemyManager = new EnemyManager(this);
             levelManager = new LevelManager(this);
 
             //Setting up keyboard and mouse states----
@@ -114,6 +114,10 @@ namespace RecoilGame
             startHoverSprite = Content.Load<Texture2D>("start_ovr");
             startUpSprite = Content.Load<Texture2D>("start_up");
             startButton = new Button(startUpSprite, startHoverSprite, 150, 300, 200, 100);
+
+            //Creating a single enemy for testing purposes (does not need to be stored because
+            //it automatically stores itself in the EnemyManager----
+            new Enemy(250, 250, 50, 50, playerSprite, true, new Vector2(0,0), 10, 3);
 
             shotgun = new Shotgun((int)player.XPos, (int)player.YPos, 40, 40, playerSprite, true, 3, 1, 0, playerSprite);
             currentWeapon = shotgun;
@@ -164,8 +168,18 @@ namespace RecoilGame
                 playerManager.ApplyPlayerGravity();
                 playerManager.CheckForCollisions();
 
+                //Running enemy behaviors----
+                enemyManager.MoveEnemies();
+                enemyManager.SimulateBehaviors(gameTime);
+
+                //Simulating projectiles----
+                projectileManager.Simulate(gameTime);
+
                 //Checking map objectives----
                 levelManager.RunLevel();
+
+                //Garbage collection methods----
+                projectileManager.CollectGarbage();
             }
             //Victory screen----
             else if (currentGameState == GameState.Victory)
@@ -198,6 +212,9 @@ namespace RecoilGame
             else if (currentGameState == GameState.Level)
             {
                 levelManager.DrawLevel(_spriteBatch);
+                player.Draw(_spriteBatch, Color.White);
+                enemyManager.Draw(_spriteBatch, Color.Red);
+                projectileManager.Draw(_spriteBatch, Color.Orange);
 
                 projectileManager.Draw(_spriteBatch, Color.Red);
 

@@ -112,7 +112,7 @@ namespace RecoilGame
             startUpSprite = Content.Load<Texture2D>("start_up");
             startButton = new Button(startUpSprite, startHoverSprite, 150, 300, 200, 100);
 
-            shotgun = new Shotgun((int)player.XPos, (int)player.YPos, 40, 40, playerSprite, true, 1, 1, 0, playerSprite);
+            shotgun = new Shotgun((int)player.XPos, (int)player.YPos, 40, 40, playerSprite, true, 1, 1, 20, 0, playerSprite);
             currentWeapon = shotgun;
             weapons.Add(shotgun);
         }

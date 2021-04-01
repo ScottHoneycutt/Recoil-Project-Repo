@@ -17,6 +17,7 @@ namespace RecoilGame
         private Vector2 velocity;
         private float attackPeriod;
         private float attackTimer;
+        private int damage;
 
         // Properties
         public float Health
@@ -29,6 +30,12 @@ namespace RecoilGame
         {
             get { return velocity; }
             set { velocity = value; }
+        }
+
+        public int Damage
+        {
+            get { return damage; }
+            set { damage = value; }
         }
 
         /// <summary>
@@ -44,12 +51,13 @@ namespace RecoilGame
         /// <param name="health"> Health of player </param>
         /// /// <param name="attackPeriod">The amount of time between each attack----</param>
         public Enemy(int x, int y, int width, int height, Texture2D texture, bool isActive, Vector2 velocity, 
-            float health, float attackPeriod)
+            float health, float attackPeriod, int damage)
             : base(x, y, width, height, texture, isActive)
         {
             this.health = health;
             this.velocity = velocity;
             this.attackPeriod = attackPeriod;
+            this.damage = damage;
             attackTimer = 0;
 
             //Reporting this enemy's existence to the EnemyManager;
@@ -80,7 +88,7 @@ namespace RecoilGame
                 normalizedVector.Y *= 15;
 
                 //Creating the projectile----
-                new Projectile(CenteredX, CenteredY, 10, 10, projectileSprite, true, normalizedVector, 10,
+                new Projectile(CenteredX, CenteredY, 10, 10, projectileSprite, true, normalizedVector, Damage,
                     0, 2, false, false);
             }
         }

@@ -14,7 +14,7 @@ namespace RecoilGame
         private float cooldown;
         private float currentCooldown;
         private int numOfProjectiles;
-        private float damage;
+        private int damage;
 
 
         //CONSTRUCTOR
@@ -30,7 +30,9 @@ namespace RecoilGame
         /// <param name="isActive">Bool For If Weapon Is Active</param>
         /// <param name="cooldown">Float For Weapon Cooldown</param>
         /// <param name="numOfProjectiles">Int For Number Of Projectiles</param>
-        public PlayerWeapon(int xPos, int yPos, int width, int height, Texture2D sprite, bool isActive, float cooldown, int numOfProjectiles, float damage) : base(xPos, yPos, width, height, sprite, isActive)
+        public PlayerWeapon(int xPos, int yPos, int width, int height, Texture2D sprite, 
+            bool isActive, float cooldown, int numOfProjectiles, int damage) : 
+            base(xPos, yPos, width, height, sprite, isActive)
         {
             this.cooldown = cooldown;
             this.numOfProjectiles = numOfProjectiles;
@@ -68,7 +70,7 @@ namespace RecoilGame
         /// <summary>
         /// Property that sets or gets the weapon's damage
         /// </summary>
-        public float Damage
+        public int Damage
         {
             get { return damage; }
             set { damage = value; }

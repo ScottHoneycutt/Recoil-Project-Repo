@@ -29,7 +29,7 @@ namespace RecoilGame
         /// <param name="numOfProjectiles">Int For Number Of Shotgun Projectiles</param>
         /// <param name="playerRecoil">Float For Shotgun's Recoil</param>
         public Shotgun(int xPos, int yPos, int width, int height, Texture2D sprite, bool isActive, 
-            float cooldown, int numOfProjectiles, float damage, float playerRecoil, Texture2D projectileTexture) 
+            float cooldown, int numOfProjectiles, int damage, float playerRecoil, Texture2D projectileTexture) 
             : base(xPos, yPos, width, height, sprite, isActive, cooldown, numOfProjectiles, damage)
         {
             this.playerRecoil = playerRecoil;
@@ -81,7 +81,7 @@ namespace RecoilGame
             Vector2 direction = new Vector2(xNormalized*bulletSpeed, yNormalized*bulletSpeed);
 
             //Test to see if this will actually create a projectile and how it will work, then we'll add more since we want shotgun to have multiple projectiles
-            new Projectile(player.CenteredX, player.CenteredY, 7, 7, projectileTexture, true, direction, (int)Damage, 5, 0.75f, false, true);
+            new Projectile(player.CenteredX, player.CenteredY, 7, 7, projectileTexture, true, direction, Damage, 5, 0.75f, false, true);
 
             //Calls playerManager's shooting capability method
             Game1.playerManager.ShootingCapability();

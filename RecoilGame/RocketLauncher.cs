@@ -15,7 +15,7 @@ namespace RecoilGame
 
         //Constructor
         public RocketLauncher(int xPos, int yPos, int width, int height, Texture2D sprite, 
-            bool isActive, float cooldown, int numOfProjectiles, float damage, Texture2D projectileTexture) 
+            bool isActive, float cooldown, int numOfProjectiles, int damage, Texture2D projectileTexture) 
             : base(xPos, yPos, width, height, sprite, isActive, cooldown, numOfProjectiles, damage)
         {
             this.projectileTexture = projectileTexture;

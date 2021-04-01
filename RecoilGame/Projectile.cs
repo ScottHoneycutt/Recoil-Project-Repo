@@ -92,8 +92,6 @@ namespace RecoilGame
             Game1.projectileManager.ReportExists(this);
         }
 
-
-
         /// <summary>
         /// Simulates the projectile's movement and calls CheckForCollisions for collision
         /// detection. Is meant to be run every frame----

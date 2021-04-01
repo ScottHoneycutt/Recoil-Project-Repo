@@ -34,6 +34,7 @@ namespace RecoilGame
             bool isActive, float cooldown, int numOfProjectiles, int damage) : 
             base(xPos, yPos, width, height, sprite, isActive)
         {
+            this.damage = damage;
             this.cooldown = cooldown;
             this.numOfProjectiles = numOfProjectiles;
             currentCooldown = 0;

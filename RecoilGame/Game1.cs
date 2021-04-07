@@ -51,10 +51,7 @@ namespace RecoilGame
         public static PlayerManager playerManager;
         public static EnemyManager enemyManager;
         public static LevelManager levelManager;
-
-        private Shotgun shotgun;
-        private PlayerWeapon currentWeapon;
-        private List<PlayerWeapon> weapons; 
+        public static WeaponManager weaponManager;
 
         //Player
         Texture2D playerSprite;
@@ -80,14 +77,13 @@ namespace RecoilGame
             projectileManager = new ProjectileManager();
             enemyManager = new EnemyManager(this);
             levelManager = new LevelManager(this);
+            weaponManager = new WeaponManager(this);
 
             //Setting up keyboard and mouse states----
             currentMouseState = Mouse.GetState();
             currentKeyboardState = Keyboard.GetState();
             prevMousState = currentMouseState;
             prevKeyboardState = currentKeyboardState;
-
-            weapons = new List<PlayerWeapon>();
 
             base.Initialize();
         }
@@ -111,10 +107,6 @@ namespace RecoilGame
             startHoverSprite = Content.Load<Texture2D>("start_ovr");
             startUpSprite = Content.Load<Texture2D>("start_up");
             startButton = new Button(startUpSprite, startHoverSprite, 150, 300, 200, 100);
-
-            shotgun = new Shotgun((int)player.XPos, (int)player.YPos, 40, 40, playerSprite, true, 1, 1, 20, 0, playerSprite);
-            currentWeapon = shotgun;
-            weapons.Add(shotgun);
         }
 
         protected override void Update(GameTime gameTime)
@@ -143,15 +135,24 @@ namespace RecoilGame
             else if (currentGameState == GameState.Level)
             {
                 //Updates the weapons position based on player's position
-                currentWeapon.XPos = player.XPos;
-                currentWeapon.CenteredY = player.CenteredY;
+                
+                if(weaponManager.CurrentWeapon != null)
+                {
+                    weaponManager.CurrentWeapon.XPos = player.XPos;
+                    weaponManager.CurrentWeapon.CenteredY = player.CenteredY;
+                }
+
+                if(currentMouseState.ScrollWheelValue != prevMousState.ScrollWheelValue)
+                {
+                    weaponManager.SwitchWeapon(currentMouseState.ScrollWheelValue, prevMousState.ScrollWheelValue);
+                }
 
                 if(currentMouseState.LeftButton == ButtonState.Pressed && prevMousState.LeftButton == ButtonState.Released)
                 {
-                    currentWeapon.Shoot();
+                    weaponManager.CurrentWeapon.Shoot();
                 }
 
-                foreach(PlayerWeapon weapon in weapons)
+                foreach(PlayerWeapon weapon in weaponManager.Weapons)
                 {
                     weapon.UpdateCooldown(gameTime);
                 }

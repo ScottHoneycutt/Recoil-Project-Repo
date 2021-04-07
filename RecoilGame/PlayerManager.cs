@@ -36,8 +36,6 @@ namespace RecoilGame
         /// </summary>
 
         private Player playerObject;
-        private List<PlayerWeapon> weaponList;
-        private PlayerWeapon currentWeapon;
         private KeyboardState prevKBState;
         private KeyboardState kbState;
         private MouseState prevMouseState;
@@ -89,6 +87,10 @@ namespace RecoilGame
             get { return playerState; }
             set { playerState = value; }
         }
+
+        
+
+        
 
         /// <summary>
         /// Constructor for the playermanager class. Contains a reference to the player----

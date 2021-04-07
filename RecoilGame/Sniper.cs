@@ -1,40 +1,65 @@
-﻿//Trevor Dunn       3/19/21
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
+﻿//Trevor Dunn       4/2/21
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace RecoilGame
 {
-    class RocketLauncher : PlayerWeapon
+    class Sniper : PlayerWeapon
     {
-        //Fields
         private Texture2D projectileTexture;
+        private float degreesTraveled;
+        private float range;
+        private int damage;
         private float cooldownAmt;
         private float currentCooldown;
-        private int damage;
+        private bool isTrickShot;
 
-        //Constructor
-        public RocketLauncher(int xPos, int yPos, int width, int height, Texture2D sprite, 
-            bool isActive, Texture2D projectileTexture) 
+        public Sniper(int xPos, int yPos, int width, int height, Texture2D sprite, bool isActive, Texture2D projectileTexture) 
             : base(xPos, yPos, width, height, sprite, isActive)
         {
             this.projectileTexture = projectileTexture;
+
+            degreesTraveled = 0;
+            damage = 25;
             cooldownAmt = 5;
             currentCooldown = 0;
-            damage = 30;
+            isTrickShot = false;
 
-            Type = WeaponType.RocketLauncher;
+            Type = WeaponType.Sniper;
         }
 
-        /// <summary>
-        /// Creates a new Projectile and Adds it to ListOfProjectiles
-        /// </summary>
+        public void CheckTrickShot(GameTime gameTime)
+        {
+            float timer = 5;
+
+            MouseState ms = Mouse.GetState();
+            MouseState previousState;
+
+            do
+            {
+                if (ms.RightButton == ButtonState.Released)
+                {
+                    return;
+                }
+
+                timer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                previousState = ms;
+                ms = Mouse.GetState();
+
+            } while (ms.RightButton == ButtonState.Pressed && timer > 0);
+
+            isTrickShot = true;
+        }
+
         public override void Shoot()
         {
-            if(currentCooldown > 0)
+            //If cooldown is greater than 0 still, cannot shoot so returns
+            if (currentCooldown > 0)
             {
                 return;
             }
@@ -59,16 +84,18 @@ namespace RecoilGame
             Vector2 direction = new Vector2(xNormalized * bulletSpeed, yNormalized * bulletSpeed);
 
             //Test to see if this will actually create a projectile and how it will work, then we'll add more since we want shotgun to have multiple projectiles
-            new Projectile(player.CenteredX, player.CenteredY, 20, 20, projectileTexture, true, direction, 20, 5, 10, true, true);
+            new Projectile(player.CenteredX, player.CenteredY, 7, 7, projectileTexture, true, direction, damage, 5, 0.75f, false, true);
 
+            //Calls playerManager's shooting capability method
             Game1.playerManager.ShootingCapability();
 
+            //Sets the cooldown
             currentCooldown = cooldownAmt;
         }
 
         public override void UpdateCooldown(GameTime gameTime)
         {
-            if(currentCooldown == 0)
+            if (currentCooldown == 0)
             {
                 return;
             }
@@ -77,6 +104,11 @@ namespace RecoilGame
             {
                 currentCooldown -= (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
+        }
+
+        public override void Draw(SpriteBatch sb, Color tint)
+        {
+            base.Draw(sb, tint);
         }
     }
 }

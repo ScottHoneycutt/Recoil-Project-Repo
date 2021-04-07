@@ -29,8 +29,6 @@ namespace RecoilGame
         //Debugged Collision Detection, Added an Add Velco
 
         private Player playerObject;
-        private List<PlayerWeapon> weaponList;
-        private PlayerWeapon currentWeapon;
         private KeyboardState prevKBState;
         private KeyboardState kbState;
         private MouseState prevMouseState;
@@ -74,6 +72,10 @@ namespace RecoilGame
             get { return playerState; }
             set { playerState = value; }
         }
+
+        
+
+        
 
         /// <summary>
         /// PlayerManger constructor takes in the player object and values for movement

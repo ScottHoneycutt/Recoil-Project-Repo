@@ -244,7 +244,6 @@ namespace RecoilGame
                             playerVelocity.Y = 0;
                             //System.Diagnostics.Debug.WriteLine("Wall above");
 
-
                         }
                     }
                     

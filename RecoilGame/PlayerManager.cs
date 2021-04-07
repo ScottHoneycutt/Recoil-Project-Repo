@@ -32,7 +32,7 @@ namespace RecoilGame
         /// Scott Honeycutt----
         /// 4/6/2021----
         /// Started work on movement acceleration, separating the player inputs from external
-        /// effect velocity vectors----
+        /// effect velocity vectors. Had to rework a lot of stuff for this.----
         /// </summary>
 
         private Player playerObject;
@@ -43,14 +43,10 @@ namespace RecoilGame
         private MouseState prevMouseState;
         private MouseState mState;
         private PlayerState playerState;
-        private float groundSpeedX;
-        private float airSpeedX;
-        private Vector2 playerVelocity;
-        private Vector2 jumpVelocity;
         private Vector2 playerGravity;
         private bool isColliding;
 
-        //Fields added by Scott----
+        //Fields created by Scott----
         private Vector2 inputsVelocity;
         private Vector2 effectsVelocity;
         private Vector2 gravityVelocity;
@@ -95,37 +91,42 @@ namespace RecoilGame
         }
 
         /// <summary>
-        /// PlayerManger constructor takes in the player object and values for movement
+        /// Constructor for the playermanager class. Contains a reference to the player----
         /// </summary>
-        /// <param name="player"></param> instance of player object
-        /// <param name="playerSpeedX"></param> the horizontal speed o fhte player
-        /// <param name="yJumpVelocity"></param> the jump velocity vector y value
-        /// <param name="yGravity"></param> the gravity vector y value
-        public PlayerManager(Player player, float groundSpeedX, float airSpeedX, float yJumpVelocity, float yGravity)
+        /// <param name="player">The player reference.</param>
+        /// <param name="maxInputGroundSpeed">The maximum speed the player can move on the ground
+        /// without an external force acting on them----</param>
+        /// <param name="maxInputAirSpeed">The maximum speed the player can move in the air
+        /// without an external force acting on them----</param>
+        /// <param name="yJumpVelocity">The initial velocity when jumping----</param>
+        /// <param name="yGravity">The acceleration from gravity----</param>
+        /// <param name="friction">The resistance applied to external effects on the ground----</param>
+        /// <param name="airResistance">The resistance applied to external effects in the air----</param>
+        /// <param name="inputAcceleration">The rate of acceleration for the player's inputs. Air 
+        /// acceleration is half the ground acceleration (ground is the value set here)----</param>
+        public PlayerManager(Player player, float maxInputGroundSpeed, float maxInputAirSpeed, float yJumpVelocity, 
+            float yGravity, float friction, float airResistance, float inputAcceleration)
         {
             playerObject = player;
             playerState = PlayerState.Grounded;
-            this.groundSpeedX = groundSpeedX;
-            this.airSpeedX = airSpeedX;
             isColliding = false;
             //creates the vectors using the passed in y values
-            jumpVelocity = new Vector2(0, yJumpVelocity);
             playerGravity = new Vector2(0, yGravity);
-            playerVelocity = Vector2.Zero;
 
-            //Scott's edits. Might delete later if it does not work----
+            //Two different velocity vectors that determine the overall velocity of the player
+            //(other than gravity)----
             inputsVelocity = new Vector2(0, 0);
             effectsVelocity = new Vector2(0, 0);
 
             //These variables only affect inputsVelocity----
-            maxGroundSpeed = 4;
-            maxAirSpeed = 4;
-            inputAcceleration = 1;
+            maxGroundSpeed = maxInputGroundSpeed;
+            maxAirSpeed = maxInputAirSpeed;
+            this.inputAcceleration = inputAcceleration;
             this.yJumpVelocity = yJumpVelocity;
 
             //These two variables only affect effectsVelocity----
-            groundFriction = 1f;
-            airResistance = .25f;
+            groundFriction = friction;
+            this.airResistance = .25f;
 
             //Total gravity accumulation----
             gravityVelocity = Vector2.Zero;
@@ -192,7 +193,6 @@ namespace RecoilGame
                     if (SingleKeyPress(Keys.W))
                     {
                         inputsVelocity.Y = yJumpVelocity;
-                        //playerVelocity.Y = jumpVelocity.Y;
                         playerState = PlayerState.Jump;
                     }
 
@@ -366,11 +366,14 @@ namespace RecoilGame
             isColliding = false;
             Rectangle playerRect = playerObject.ObjectRect;
             playerObject.ConvertPosToRect();
+
+            //Checking for collisions between the player and all maptiles----
             foreach (MapTile mapTile in Game1.levelManager.ListOfMapTiles)
             {
                 
                 Rectangle tileRect = mapTile.ObjectRect;
                 
+                //If a collision is detected between player and a maptile----
                 if (playerRect.Intersects(tileRect))
                 {
 
@@ -395,10 +398,11 @@ namespace RecoilGame
 
                         }
                     }
-                    //if height is less than width than the player is moved up or down
+                    //if height is less than width then the player is moved up or down
                     if (intersection.Height <= intersection.Width)
                     {
                         //checking to see which direction to move
+                        //Tile is below the player----
                         if (playerRect.Y <= tileRect.Y)
                         {
                             isColliding = true;
@@ -414,11 +418,13 @@ namespace RecoilGame
                             //System.Diagnostics.Debug.WriteLine($"{playerObject.ObjectRect.Y}");
 
                         }
+                        //Tile is above the player----
                         else
                         {
 
                             playerRect.Y += intersection.Height;
                             effectsVelocity.Y = 0;
+                            inputsVelocity.Y = 0;
                             //System.Diagnostics.Debug.WriteLine("Wall above");
                         }
                     }
@@ -447,7 +453,10 @@ namespace RecoilGame
         public void AddVelocity(Vector2 velocity)
         {
             effectsVelocity += velocity;
-            //playerVelocity += velocity;
+
+            //Resetting other velocity vectors----
+            inputsVelocity.Y = 0;
+            gravityVelocity = Vector2.Zero;
         }
 
         /// <summary>
@@ -457,10 +466,10 @@ namespace RecoilGame
         {
             float playerRecoil = 15;
             MouseState mouseState = Mouse.GetState();
+
+            //Checking for a single mouse click----
             if (mouseState.LeftButton == ButtonState.Pressed && prevMouseState.LeftButton != ButtonState.Pressed)
             {
-                //playerVelocity = Vector2.Zero;
-
                 //Reset input horizontal velocity----
                 inputsVelocity.X = 0; 
 

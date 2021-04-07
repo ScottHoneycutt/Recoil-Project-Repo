@@ -158,7 +158,6 @@ namespace RecoilGame
 
                 //Player Physics
                 playerManager.MovePlayer();
-                playerManager.ApplyPlayerGravity();
                 playerManager.CheckForCollisions();
 
                 //Running enemy behaviors----

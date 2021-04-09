@@ -100,15 +100,17 @@ namespace RecoilGame
                 return;
             }
 
-            else
-            {
-                currentCooldown -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-            }
+            currentCooldown -= (float)gameTime.ElapsedGameTime.TotalSeconds;
         }
 
         public override void Draw(SpriteBatch sb, Color tint)
         {
             base.Draw(sb, tint);
+        }
+
+        public override void UpdateCooldown(int amount)
+        {
+            currentCooldown = amount;
         }
     }
 }

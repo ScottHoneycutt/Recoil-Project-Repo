@@ -48,6 +48,11 @@ namespace RecoilGame
             numberOfLevels = 3;
         }
 
+        public int CurrentLevel
+        {
+            get { return currentLevel; }
+        }
+
         /// <summary>
         /// Generates a test level for... testing, duh----
         /// </summary>
@@ -83,6 +88,9 @@ namespace RecoilGame
             if (currentLevel == 0)
             {
                 currentLevel++;
+
+                Game1.weaponManager.AddWeapon(currentLevel);
+
                 //GenerateLevelFromFile();
                 GenerateTestLevel();
             }
@@ -91,6 +99,13 @@ namespace RecoilGame
             if (ObjectiveReached())
             {
                 currentLevel++;
+
+                foreach(PlayerWeapon weapon in Game1.weaponManager.Weapons)
+                {
+                    weapon.UpdateCooldown(0);
+                }
+
+                Game1.weaponManager.AddWeapon(currentLevel);
 
                 //Cleaning up the old level and transitioning to the new one----
                 listOfMapTiles.Clear();

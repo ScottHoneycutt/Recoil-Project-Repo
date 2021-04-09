@@ -36,8 +36,6 @@ namespace RecoilGame
         /// </summary>
 
         private Player playerObject;
-        private List<PlayerWeapon> weaponList;
-        private PlayerWeapon currentWeapon;
         private KeyboardState prevKBState;
         private KeyboardState kbState;
         private MouseState prevMouseState;
@@ -89,6 +87,10 @@ namespace RecoilGame
             get { return playerState; }
             set { playerState = value; }
         }
+
+        
+
+        
 
         /// <summary>
         /// Constructor for the playermanager class. Contains a reference to the player----
@@ -389,13 +391,31 @@ namespace RecoilGame
                             playerRect.X -= intersection.Width;
                             //System.Diagnostics.Debug.WriteLine("Wall to the right");
 
+                            //Resetting x velocity components moving towards the wall----
+                            if (effectsVelocity.X > 0)
+                            {
+                                effectsVelocity.X = 0;
+                            }
+                            if (inputsVelocity.X > 0)
+                            {
+                                inputsVelocity.X = 0;
+                            }
+
                         }
                         else
                         {
                             playerRect.X += intersection.Width;
                             //System.Diagnostics.Debug.WriteLine("Wall to the left");
 
-
+                            //Resetting x velocity components moving towards the wall----
+                            if (effectsVelocity.X < 0)
+                            {
+                                effectsVelocity.X = 0;
+                            }
+                            if (inputsVelocity.X < 0)
+                            {
+                                inputsVelocity.X = 0;
+                            }
                         }
                     }
                     //if height is less than width then the player is moved up or down

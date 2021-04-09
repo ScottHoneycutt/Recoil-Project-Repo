@@ -6,13 +6,17 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace RecoilGame
+namespace RecoilGame 
 {
     class Shotgun : PlayerWeapon
     {
         //Fields
         private float playerRecoil;
         private Texture2D projectileTexture;
+        private float cooldownAmt;
+        private float currentCooldown;
+        private int damage;
+        private int numProjectiles;
 
         //CONSTRUCTOR
 
@@ -28,12 +32,19 @@ namespace RecoilGame
         /// <param name="cooldown">Float For Cooldown Of Shotgun</param>
         /// <param name="numOfProjectiles">Int For Number Of Shotgun Projectiles</param>
         /// <param name="playerRecoil">Float For Shotgun's Recoil</param>
-        public Shotgun(int xPos, int yPos, int width, int height, Texture2D sprite, bool isActive, 
-            float cooldown, int numOfProjectiles, int damage, float playerRecoil, Texture2D projectileTexture) 
-            : base(xPos, yPos, width, height, sprite, isActive, cooldown, numOfProjectiles, damage)
+        public Shotgun(int xPos, int yPos, int width, int height, Texture2D sprite, bool isActive, Texture2D projectileTexture) 
+        : base(xPos, yPos, width, height, sprite, isActive)
         {
-            this.playerRecoil = playerRecoil;
             this.projectileTexture = projectileTexture;
+
+
+            playerRecoil = 5;
+            cooldownAmt = 3;
+            currentCooldown = 0;
+            damage = 15;
+            numProjectiles = 3;
+
+            Type = WeaponType.Shotgun;
         }
 
 
@@ -56,7 +67,7 @@ namespace RecoilGame
         public override void Shoot()
         {
             //If cooldown is greater than 0 still, cannot shoot so returns
-            if(CurrentCooldown > 0)
+            if(currentCooldown > 0)
             {
                 return;
             }
@@ -81,26 +92,31 @@ namespace RecoilGame
             Vector2 direction = new Vector2(xNormalized*bulletSpeed, yNormalized*bulletSpeed);
 
             //Test to see if this will actually create a projectile and how it will work, then we'll add more since we want shotgun to have multiple projectiles
-            new Projectile(player.CenteredX, player.CenteredY, 7, 7, projectileTexture, true, direction, Damage, 5, 0.75f, false, true);
+            new Projectile(player.CenteredX, player.CenteredY, 7, 7, projectileTexture, true, direction, damage, 5, 0.75f, false, true);
 
             //Calls playerManager's shooting capability method
             Game1.playerManager.ShootingCapability();
 
             //Sets the cooldown
-            this.CurrentCooldown = CooldownAmount;
+            currentCooldown = cooldownAmt;
         }
 
         //Update cooldown method
         public override void UpdateCooldown(GameTime gameTime)
         {
             //If cooldown is already 0 returns
-            if (CurrentCooldown == 0)
+            if (currentCooldown == 0)
             {
                 return;
             }
             
             //Subtracts elapsed time from current cooldown
-            CurrentCooldown -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+            currentCooldown -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+        }
+
+        public override void UpdateCooldown(int amount)
+        {
+            currentCooldown = amount;
         }
     }
 }

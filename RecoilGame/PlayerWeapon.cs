@@ -8,14 +8,17 @@ using System.Text;
 
 namespace RecoilGame
 {
-    abstract class PlayerWeapon : GameObject
+    public enum WeaponType
     {
-        //Fields
-        private float cooldown;
-        private float currentCooldown;
-        private int numOfProjectiles;
-        private int damage;
+        Shotgun,
+        RocketLauncher,
+        MachineGun,
+        Sniper
+    }
 
+    public abstract class PlayerWeapon : GameObject
+    {
+        private WeaponType weaponType;
 
         //CONSTRUCTOR
 
@@ -31,50 +34,12 @@ namespace RecoilGame
         /// <param name="cooldown">Float For Weapon Cooldown</param>
         /// <param name="numOfProjectiles">Int For Number Of Projectiles</param>
         public PlayerWeapon(int xPos, int yPos, int width, int height, Texture2D sprite, 
-            bool isActive, float cooldown, int numOfProjectiles, int damage) : 
-            base(xPos, yPos, width, height, sprite, isActive)
+            bool isActive) : base(xPos, yPos, width, height, sprite, isActive) { }
+
+        public WeaponType Type
         {
-            this.damage = damage;
-            this.cooldown = cooldown;
-            this.numOfProjectiles = numOfProjectiles;
-            currentCooldown = 0;
-        }
-
-
-        //PROPERTIES
-
-        /// <summary>
-        /// Property That Returns Weapon's Cooldown Amount when shot
-        /// </summary>
-        public float CooldownAmount
-        {
-            get { return cooldown; }
-        }
-
-        /// <summary>
-        /// Property For Weapon's Projectiles
-        /// </summary>
-        public int NumOfProjectiles
-        {
-            get { return numOfProjectiles; }
-        }
-
-        /// <summary>
-        /// Property that sets or gets the weapon's current cooldown
-        /// </summary>
-        public float CurrentCooldown
-        {
-            get { return currentCooldown; }
-            set { currentCooldown = value; }
-        }
-
-        /// <summary>
-        /// Property that sets or gets the weapon's damage
-        /// </summary>
-        public int Damage
-        {
-            get { return damage; }
-            set { damage = value; }
+            set { weaponType = value; }
+            get { return weaponType; }
         }
 
 
@@ -85,6 +50,17 @@ namespace RecoilGame
         /// </summary>
         public abstract void Shoot();
 
+        /// <summary>
+        /// Abstract Method For Cooldown Update
+        /// </summary>
+        /// <param name="gameTime"></param>
         public abstract void UpdateCooldown(GameTime gameTime);
+
+        public abstract void UpdateCooldown(int amount);
+
+        public override void Draw(SpriteBatch sb, Color tint)
+        {
+            base.Draw(sb, tint);
+        }
     }
 }

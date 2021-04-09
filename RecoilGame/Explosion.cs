@@ -23,8 +23,8 @@ namespace RecoilGame
         /// <summary>
         /// Creates an explosion with a specified radius, damage, and player knockback----
         /// </summary>
-        /// <param name="xPosition">The X coordinate of the object's rectangle (top left corner)----</param>
-        /// <param name="yPosition">The Y coordinate of the object's rectangle (top left corner)----</param>
+        /// <param name="xPosition">The X coordinate of the object's centered position----</param>
+        /// <param name="yPosition">The Y coordinate of the object's centered position----</param>
         /// <param name="width">The width of the rectangle----</param>
         /// <param name="height">The heigh of the rectangle----</param>
         /// <param name="texture">The texture to be displayed in the rectangle----</param>
@@ -46,6 +46,11 @@ namespace RecoilGame
             this.lifeTime = lifeTime;
             this.isFriendly = isFriendly;
 
+            //Setting the position of the explosion to be centered on the given coordinates
+            //(which were the centered coordinates of the projectile upon collision)----
+            CenteredX = xPosition;
+            CenteredY = yPosition;
+
             //Exploding and reporting to the ProjectileManager----
             Explode();
             Game1.projectileManager.ReportExists(this);
@@ -66,6 +71,8 @@ namespace RecoilGame
 
                 if (radius >= displacementVector.Length())
                 {
+
+                    System.Diagnostics.Debug.WriteLine(displacementVector.X + ", " + displacementVector.Y);
                     //Impart a velocity onto the player----
                     //Normalizing the displacement vector from the explosion to the player----
                     displacementVector.Normalize();

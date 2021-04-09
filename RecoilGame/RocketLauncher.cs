@@ -59,7 +59,8 @@ namespace RecoilGame
             Vector2 direction = new Vector2(xNormalized * bulletSpeed, yNormalized * bulletSpeed);
 
             //Test to see if this will actually create a projectile and how it will work, then we'll add more since we want shotgun to have multiple projectiles
-            new Projectile(player.CenteredX, player.CenteredY, 20, 20, projectileTexture, true, direction, 20, 5, 10, true, true);
+            Projectile proj = new Projectile(player.CenteredX, player.CenteredY, 20, 20, projectileTexture, true, direction, 20, 5, 10, true, true);
+
 
             currentCooldown = cooldownAmt;
         }

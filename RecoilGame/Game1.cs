@@ -74,7 +74,7 @@ namespace RecoilGame
             _graphics.ApplyChanges();
 
             //Setting up manager classes (except PlayerManager, which gets set up in load)----
-            projectileManager = new ProjectileManager();
+            projectileManager = new ProjectileManager(this);
             enemyManager = new EnemyManager(this);
             levelManager = new LevelManager(this);
             weaponManager = new WeaponManager(this);

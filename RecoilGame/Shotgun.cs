@@ -113,5 +113,10 @@ namespace RecoilGame
             //Subtracts elapsed time from current cooldown
             currentCooldown -= (float)gameTime.ElapsedGameTime.TotalSeconds;
         }
+
+        public override void UpdateCooldown(int amount)
+        {
+            currentCooldown = amount;
+        }
     }
 }

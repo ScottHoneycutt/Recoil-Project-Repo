@@ -100,6 +100,11 @@ namespace RecoilGame
             {
                 currentLevel++;
 
+                foreach(PlayerWeapon weapon in Game1.weaponManager.Weapons)
+                {
+                    weapon.UpdateCooldown(0);
+                }
+
                 Game1.weaponManager.AddWeapon(currentLevel);
 
                 //Cleaning up the old level and transitioning to the new one----

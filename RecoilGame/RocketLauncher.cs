@@ -61,8 +61,6 @@ namespace RecoilGame
             //Test to see if this will actually create a projectile and how it will work, then we'll add more since we want shotgun to have multiple projectiles
             new Projectile(player.CenteredX, player.CenteredY, 20, 20, projectileTexture, true, direction, 20, 5, 10, true, true);
 
-            Game1.playerManager.ShootingCapability();
-
             currentCooldown = cooldownAmt;
         }
 
@@ -77,6 +75,11 @@ namespace RecoilGame
             {
                 currentCooldown -= (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
+        }
+
+        public override void UpdateCooldown(int amount)
+        {
+            currentCooldown = amount;
         }
     }
 }

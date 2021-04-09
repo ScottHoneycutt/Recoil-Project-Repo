@@ -56,6 +56,8 @@ namespace RecoilGame
         /// <param name="gameTime"></param>
         public abstract void UpdateCooldown(GameTime gameTime);
 
+        public abstract void UpdateCooldown(int amount);
+
         public override void Draw(SpriteBatch sb, Color tint)
         {
             base.Draw(sb, tint);

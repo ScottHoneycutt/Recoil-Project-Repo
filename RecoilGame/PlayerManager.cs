@@ -146,7 +146,7 @@ namespace RecoilGame
                 //direction faced will instead be dependent on mouse location (for shooting)
                 case PlayerState.Grounded:
 
-                    System.Diagnostics.Debug.WriteLine("Grounded State");
+                    //System.Diagnostics.Debug.WriteLine("Grounded State");
                     //can move or jump
 
                     //Resetting inputsVector's Y to 0 until the player jumps again----
@@ -219,7 +219,7 @@ namespace RecoilGame
                     //Airborne----
                 case PlayerState.Airborn:
 
-                    System.Diagnostics.Debug.WriteLine("Airborn State");
+                    //System.Diagnostics.Debug.WriteLine("Airborn State");
 
                     //player has reduced aerial movement but can still jump
                     if (kbState.IsKeyDown(Keys.A))
@@ -283,7 +283,7 @@ namespace RecoilGame
                     //Jump has been expended----
                 case PlayerState.Jump:
 
-                    System.Diagnostics.Debug.WriteLine("Jump State");
+                    //System.Diagnostics.Debug.WriteLine("Jump State");
 
                     //can move when you jump but it is less useful (half as fast).
                     //can't jump again

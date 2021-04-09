@@ -22,7 +22,7 @@ namespace RecoilGame
             : base(xPos, yPos, width, height, sprite, isActive)
         {
             this.projectileTexture = projectileTexture;
-            cooldownAmt = 5;
+            cooldownAmt = 1;
             currentCooldown = 0;
             damage = 30;
 

@@ -53,6 +53,9 @@ namespace RecoilGame
         public static LevelManager levelManager;
         public static WeaponManager weaponManager;
 
+        //background
+        public static Texture2D background;
+
         //Player
         Texture2D playerSprite;
         Player player;
@@ -101,7 +104,8 @@ namespace RecoilGame
             playerManager = new PlayerManager(player, 4, 4, -10.5f, .6f, 1, .25f, 1);
 
             // TODO: use this.Content to load your game content here
-
+            //load bg
+            background = Content.Load<Texture2D>("GameBG");
 
             //Creating the start button for the main menu----
             startHoverSprite = Content.Load<Texture2D>("start_ovr");
@@ -205,6 +209,10 @@ namespace RecoilGame
             //Level state----
             else if (currentGameState == GameState.Level)
             {
+                //crops out a section of the background and fits it to the window
+                _spriteBatch.Draw(background,
+                    new Rectangle(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight),
+                    new Rectangle(0, 0, 300, 300), Color.White);
                 levelManager.DrawLevel(_spriteBatch);
 
                 enemyManager.Draw(_spriteBatch, Color.Red);

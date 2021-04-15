@@ -53,11 +53,8 @@ namespace RecoilGame
             //Projectile's spawn coordinates are centered----
             CenteredX = xPosition;
             CenteredY = yPosition;
-
-            System.Diagnostics.Debug.WriteLine(CenteredX);
-            System.Diagnostics.Debug.WriteLine(xPosition);
-            System.Diagnostics.Debug.WriteLine(CenteredY);
-            System.Diagnostics.Debug.WriteLine(yPosition);
+            //Updating the projectile's rectangle to match the position----
+            ConvertPosToRect();
 
             //Adding projectiles to ProjectileManager's list of projectiles to simulate----
             Game1.projectileManager.ReportExists(this);
@@ -98,12 +95,8 @@ namespace RecoilGame
             //Projectile's spawn coordinates are centered----
             CenteredX = xPosition;
             CenteredY = yPosition;
-
-            System.Diagnostics.Debug.WriteLine(CenteredX);
-            System.Diagnostics.Debug.WriteLine(xPosition);
-            System.Diagnostics.Debug.WriteLine(CenteredY);
-            System.Diagnostics.Debug.WriteLine(yPosition);
-
+            //Updating the projectile's rectangle to match the position----
+            ConvertPosToRect();
 
             //Adding projectiles to ProjectileManager's list of projectiles to simulate----
             Game1.projectileManager.ReportExists(this);
@@ -133,6 +126,9 @@ namespace RecoilGame
             objectRect.X = (int)position.X;
             objectRect.Y = (int)position.Y;
 
+            //Updating the projectile's rectangle to match the position----
+            ConvertPosToRect();
+
             //Checking for collisions----
             CheckForCollisions();
 
@@ -157,8 +153,8 @@ namespace RecoilGame
                         //Creating an explosion upon collision if the projectile is marked as explosive-----
                         if (isExplosive)
                         {
-                            new Explosion(CenteredX, CenteredY, 200, 200, Game1.projectileManager.ExplosionTexture,
-                                true, 20, 200, 17, 3, true);
+                            new Explosion((int)CenteredX, (int)CenteredY, 100, 100, Game1.projectileManager.ExplosionTexture,
+                                true, 20, 100, 17, 3, true);
                         }
 
                         Expire();
@@ -177,8 +173,8 @@ namespace RecoilGame
                     //Creating an explosion upon collision if the projectile is marked as explosive-----
                     if (isExplosive)
                     {
-                        new Explosion(CenteredX, CenteredY, 200, 200, Game1.projectileManager.ExplosionTexture,
-                            true, 20, 200, 17, 3, false);
+                        new Explosion((int)CenteredX, (int)CenteredY, 100, 100, Game1.projectileManager.ExplosionTexture,
+                            true, 20, 100, 17, 3, false);
                     }
 
                     //Expires after collision----
@@ -195,14 +191,14 @@ namespace RecoilGame
                     //Creating an explosion upon collision if the projectile is marked as explosive-----
                     if (isExplosive && isFriendly) 
                     {
-                        Explosion expl = new Explosion(CenteredX, CenteredY, 200, 200, Game1.projectileManager.ExplosionTexture,
-                            true, 20, 200, 17, 3, true);
+                        Explosion expl = new Explosion((int)CenteredX, (int)CenteredY, 100, 100, Game1.projectileManager.ExplosionTexture,
+                            true, 20, 100, 17, 3, true);
                     }
                     //Creating an explosion upon collision if the projectile is marked as explosive-----
                     else if (isExplosive && !isFriendly)
                     {
-                        new Explosion(CenteredX, CenteredY, 200, 200, Game1.projectileManager.ExplosionTexture,
-                            true, 20, 200, 17, 3, false);
+                        new Explosion((int)CenteredX, (int)CenteredY, 100, 100, Game1.projectileManager.ExplosionTexture,
+                            true, 20, 100, 17, 3, false);
                     }
 
                     Expire();

@@ -50,6 +50,8 @@ namespace RecoilGame
             //(which were the centered coordinates of the projectile upon collision)----
             CenteredX = xPosition;
             CenteredY = yPosition;
+            //Updating the projectile's rectangle to match the position----
+            ConvertPosToRect();
 
             //Exploding and reporting to the ProjectileManager----
             Explode();
@@ -71,8 +73,6 @@ namespace RecoilGame
 
                 if (radius >= displacementVector.Length())
                 {
-
-                    System.Diagnostics.Debug.WriteLine(displacementVector.X + ", " + displacementVector.Y);
                     //Impart a velocity onto the player----
                     //Normalizing the displacement vector from the explosion to the player----
                     displacementVector.Normalize();

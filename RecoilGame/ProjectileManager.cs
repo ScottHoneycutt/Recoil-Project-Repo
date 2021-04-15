@@ -145,5 +145,14 @@ namespace RecoilGame
                 explosion.Draw(sb, tint);
             }
         }
+
+        /// <summary>
+        /// Clears both the projectile list and the explosion list----
+        /// </summary>
+        public void ClearAll()
+        {
+            listOfExplosions.Clear();
+            listOfProjectiles.Clear();
+        }
     }
 }

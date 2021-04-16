@@ -64,9 +64,6 @@ namespace RecoilGame
         private Player player;
         private KeyboardState kbState;
 
-        //bullet textures
-        private Texture2D shotgunBulletTexture;
-        private Texture2D rocketBulletTexture;
 
         public Game1()
         {
@@ -125,9 +122,6 @@ namespace RecoilGame
             nextUpSprite = Content.Load<Texture2D>("next_up");
             nextButton = new Button(nextUpSprite, nextHoverSprite, 150, 300, 200, 100);
 
-            //loading the bullets
-            shotgunBulletTexture = Content.Load<Texture2D>("bulletTexture");
-            rocketBulletTexture = Content.Load<Texture2D>("rocketTexture");
         }
 
         protected override void Update(GameTime gameTime)

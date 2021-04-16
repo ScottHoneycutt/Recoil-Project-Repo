@@ -55,7 +55,7 @@ namespace RecoilGame
         private float yJumpVelocity;
         private float inputAcceleration;
 
-
+        //Properties----
         public Player PlayerObject
         {
             get

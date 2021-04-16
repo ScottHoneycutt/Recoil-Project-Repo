@@ -18,8 +18,25 @@ namespace RecoilGame
 
         //Fields
 
-
+        private int maxHealth;
         private int health;
+
+        //Health properties----
+        public int Health
+        {
+            get
+            {
+                return health;
+            }
+        }
+        public int MaxHealth
+        {
+            get
+            {
+                return maxHealth;
+            }
+        }
+
 
         /// <summary>
         /// Param Constructor for Player Object
@@ -29,13 +46,13 @@ namespace RecoilGame
         /// <param name="width"></param> width of rectangle
         /// <param name="height"></param> height of rectangle
         /// <param name="texture"></param> player texture
-        /// <param name="velocity"></param> player velocity
-        /// <param name="health"></param> player health value
-        public Player(int x, int y, int width, int height, Texture2D texture, bool isActive, int health)
+        /// <param name="maxHealth">Player's maximum health value----</param> 
+        public Player(int x, int y, int width, int height, Texture2D texture, bool isActive, int maxHealth)
             : base(x, y, width, height, texture, isActive)
 
         {
-            this.health = health;
+            this.maxHealth = maxHealth;
+            health = maxHealth;
         }
 
         /// <summary>

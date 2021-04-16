@@ -22,25 +22,6 @@ namespace RecoilGame
         private float cooldownAmt;
         private float currentCooldown;
 
-        //CONSTRUCTOR
-
-        /// <summary>
-        /// PlayerWeapon Constructor
-        /// </summary>
-        /// <param name="xPos">X Position of Weapon</param>
-        /// <param name="yPos">Y Position of Weapon</param>
-        /// <param name="width">Width of Weapon</param>
-        /// <param name="height">Height of Weapon</param>
-        /// <param name="sprite">Texture2D For Weapon Sprite</param>
-        /// <param name="isActive">Bool For If Weapon Is Active</param>
-        /// <param name="cooldown">Float For Weapon Cooldown</param>
-        /// <param name="numOfProjectiles">Int For Number Of Projectiles</param>
-        public PlayerWeapon(int xPos, int yPos, int width, int height, Texture2D sprite, 
-            bool isActive) : base(xPos, yPos, width, height, sprite, isActive)
-        {
-            this.cooldownAmt = 0;
-            this.currentCooldown = 0;
-        }
 
         public WeaponType Type
         {
@@ -64,6 +45,26 @@ namespace RecoilGame
         {
             get { return currentCooldown; }
             set { currentCooldown = value; }
+        }
+
+        //CONSTRUCTOR
+
+        /// <summary>
+        /// PlayerWeapon Constructor
+        /// </summary>
+        /// <param name="xPos">X Position of Weapon</param>
+        /// <param name="yPos">Y Position of Weapon</param>
+        /// <param name="width">Width of Weapon</param>
+        /// <param name="height">Height of Weapon</param>
+        /// <param name="sprite">Texture2D For Weapon Sprite</param>
+        /// <param name="isActive">Bool For If Weapon Is Active</param>
+        /// <param name="cooldown">Float For Weapon Cooldown</param>
+        /// <param name="numOfProjectiles">Int For Number Of Projectiles</param>
+        public PlayerWeapon(int xPos, int yPos, int width, int height, Texture2D sprite, 
+            bool isActive) : base(xPos, yPos, width, height, sprite, isActive)
+        {
+            this.cooldownAmt = 0;
+            this.currentCooldown = 0;
         }
 
 

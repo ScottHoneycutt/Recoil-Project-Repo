@@ -76,8 +76,8 @@ namespace RecoilGame
         {
             // TODO: Add your initialization logic here
             //Changing screen size----
-            _graphics.PreferredBackBufferWidth = 550;
-            _graphics.PreferredBackBufferHeight = 550;
+            _graphics.PreferredBackBufferWidth = 1500;
+            _graphics.PreferredBackBufferHeight = 1000;
             _graphics.ApplyChanges();
 
             //Setting up manager classes (except PlayerManager, which gets set up in load)----

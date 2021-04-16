@@ -89,10 +89,14 @@ namespace RecoilGame
             float bulletSpeed = 8;
 
             //Creates a new vector2 by multiplying the normalized values by bulletspeed
-            Vector2 direction = new Vector2(xNormalized*bulletSpeed, yNormalized*bulletSpeed);
+            Vector2 directionOne = new Vector2(xNormalized*bulletSpeed, yNormalized*bulletSpeed);
+            Vector2 directionTwo = new Vector2(directionOne.X + 3, directionOne.Y + 5);
+            Vector2 directionThree = new Vector2(directionOne.X - 3, directionOne.Y - 5);
 
             //Test to see if this will actually create a projectile and how it will work, then we'll add more since we want shotgun to have multiple projectiles
-            new Projectile((int)player.CenteredX, (int)player.CenteredY, 7, 7, projectileTexture, true, direction, damage, 5, 0.75f, false, true);
+            new Projectile((int)player.CenteredX, (int)player.CenteredY, 7, 7, projectileTexture, true, directionOne, damage, 5, 0.75f, false, true);
+            new Projectile((int)player.CenteredX, (int)player.CenteredY, 7, 7, projectileTexture, true, directionTwo, damage, 5, 0.75f, false, true);
+            new Projectile((int)player.CenteredX, (int)player.CenteredY, 7, 7, projectileTexture, true, directionThree, damage, 5, 0.75f, false, true);
 
             //Calls playerManager's shooting capability method
             Game1.playerManager.ShootingCapability();
@@ -117,6 +121,11 @@ namespace RecoilGame
         public override void UpdateCooldown(int amount)
         {
             currentCooldown = amount;
+        }
+
+        public override void Draw(SpriteBatch sb, Color tint)
+        {
+            //sb.Draw()
         }
     }
 }

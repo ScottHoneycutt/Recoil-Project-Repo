@@ -209,6 +209,7 @@ namespace RecoilGame
                 //Clicking the next button puts the game into the MainMenu state----
                 if (nextButton.CheckForClick(currentMouseState, prevMousState))
                 {
+                    weaponManager.Weapons.Clear();
                     currentGameState = GameState.MainMenu;
                 }
             }

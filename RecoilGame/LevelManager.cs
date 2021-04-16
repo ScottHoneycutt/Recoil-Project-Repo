@@ -28,9 +28,15 @@ namespace RecoilGame
         //UI elements----
         private Texture2D testSprite;
         private SpriteFont arial20;
+        //General----
         private Rectangle healthBarBackground;
         private Rectangle healthBar;
         private Text levelDisplay;
+        //Weapon statuses----
+        private Rectangle shotgunCDBackground;
+        private Rectangle shotgunCD;
+        private Rectangle rocketCDBackground;
+        private Rectangle rocketCD;
 
         //Property to easily get the list of all MapTiles----
         public List<MapTile> ListOfMapTiles
@@ -70,9 +76,15 @@ namespace RecoilGame
             arial20 = game.Content.Load<SpriteFont>("Arial20");
 
             //Setting up UI elements----
-            healthBarBackground = new Rectangle(20, 20, 300, 20);
-            healthBar = new Rectangle(20, 20, 300, 20);
+            healthBarBackground = new Rectangle(20, 20, 500, 20);
+            healthBar = new Rectangle(20, 20, 500, 20);
             levelDisplay = new Text(arial20, new Vector2(20, 45), "Level " + currentLevel);
+
+            //Setting up weapon cooldown displays for the UI----
+            shotgunCDBackground = new Rectangle(1290, 930, 50, 50);
+            shotgunCD = new Rectangle(1290, 930, 50, 0);
+            rocketCDBackground = new Rectangle(1360, 930, 50, 50);
+            rocketCD = new Rectangle(1360, 930, 50, 0);
         }
 
         /// <summary>
@@ -92,7 +104,6 @@ namespace RecoilGame
             objectiveTile = new MapTile(450, 450, 50, 50, testSprite, true, true);
 
             //Spawning in the player----
-            System.Diagnostics.Debug.WriteLine(currentLevel);
             Game1.playerManager.PlayerObject.Position = new Vector2(100, 100);
             Game1.playerManager.PlayerObject.ConvertPosToRect();
 
@@ -223,11 +234,44 @@ namespace RecoilGame
             Player player = Game1.playerManager.PlayerObject;
 
             //Updating player's health bar to match the player's health----
-            healthBar.Width = (int)((float)player.Health / (float)player.MaxHealth * (float)healthBarBackground.Width);
+            healthBar.Width = (int)((float)player.Health / (float)player.MaxHealth * 
+                (float)healthBarBackground.Width);
 
             //Updating level display----
             levelDisplay.TextString = "Level " + currentLevel;
 
+            //Updating weapon cooldown displays----
+            float shotgunMaxCD = Game1.weaponManager.Weapons.First.Value.CooldownAmt;
+            float shotgunCDfloat = Game1.weaponManager.Weapons.First.Value.CurrentCooldown;
+
+            //Shotgun cooldown display----
+            //Preventing division by 0----
+            if (shotgunCDfloat <= 0)
+            {
+                shotgunCD.Height = 0;
+            }
+            else
+            {
+                shotgunCD.Height = (int)((float)shotgunCDBackground.Height * shotgunCDfloat / shotgunMaxCD);
+            }
+
+            //Only continue if the rocket launcher exists in the player's list of weapons----
+            if (Game1.weaponManager.Weapons.First.Next != null)
+            {
+                float rocketMaxCD = Game1.weaponManager.Weapons.First.Next.Value.CooldownAmt;
+                float rocketCDfloat = Game1.weaponManager.Weapons.First.Next.Value.CurrentCooldown;
+
+                //Rocket Launcher cooldown display----
+                //Preventing division by 0----
+                if (rocketCDfloat <= 0)
+                {
+                    rocketCD.Height = 0;
+                }
+                else
+                {
+                    rocketCD.Height = (int)((float)rocketCDBackground.Height * rocketCDfloat / rocketMaxCD);
+                }
+            }
         }
 
         /// <summary>
@@ -241,13 +285,18 @@ namespace RecoilGame
             //Health bar background----
             sb.Draw(testSprite, healthBarBackground, Color.White);
             //Health bar (remaining health)----
-            sb.Draw(testSprite, healthBar, Color.Green);
+            sb.Draw(testSprite, healthBar, Color.DeepPink);
 
             //Current level display----
             levelDisplay.Draw(sb);
+
+            //Drawing the cooldowns for the weapons----
+            //Backgrounds----
+            sb.Draw(testSprite, shotgunCDBackground, Color.White);
+            sb.Draw(testSprite, rocketCDBackground, Color.White);
+            //Cooldowns----
+            sb.Draw(testSprite, shotgunCD, Color.Gray);
+            sb.Draw(testSprite, rocketCD, Color.Gray);
         }
-
-
-
     }
 }

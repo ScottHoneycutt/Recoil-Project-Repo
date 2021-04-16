@@ -223,10 +223,11 @@ namespace RecoilGame
             Player player = Game1.playerManager.PlayerObject;
 
             //Updating player's health bar to match the player's health----
-            healthBar.Width = player.Health / player.MaxHealth * healthBarBackground.Width;
+            healthBar.Width = (int)((float)player.Health / (float)player.MaxHealth * (float)healthBarBackground.Width);
 
             //Updating level display----
             levelDisplay.TextString = "Level " + currentLevel;
+
         }
 
         /// <summary>

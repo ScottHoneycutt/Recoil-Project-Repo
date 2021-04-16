@@ -160,10 +160,5 @@ namespace RecoilGame
         {
             CurrentCooldown = amount;
         }
-
-        public override void Draw(SpriteBatch sb, Color tint)
-        {
-            //sb.Draw()
-        }
     }
 }

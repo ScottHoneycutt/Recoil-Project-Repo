@@ -22,6 +22,7 @@ namespace RecoilGame
         private Texture2D testSprite;
         private int playerSpawnX;
         private int playerSpawnY;
+        private Game1 gameRef;
 
         //Property to easily get the list of all MapTiles----
         public List<MapTile> ListOfMapTiles
@@ -31,7 +32,6 @@ namespace RecoilGame
                 return listOfMapTiles;
             }
         }
-
 
         /// <summary>
         /// Constructor for the LevelManager class. Takes in the instance of Game1 so that
@@ -82,7 +82,8 @@ namespace RecoilGame
         /// <summary>
         /// The main method run in Update() that controls level generation and progression----
         /// </summary>
-        public void RunLevel()
+        /// <returns>True if the game should stay in level state, false if it should move to victory----</returns>
+        public bool RunLevel()
         {
             //Starting the first level----
             if (currentLevel == 0)
@@ -98,6 +99,16 @@ namespace RecoilGame
             //If the objective has been completed----
             if (ObjectiveReached())
             {
+                //Removing all explosions and projectiles----
+                Game1.projectileManager.ClearAll();
+
+
+                if (currentLevel == numberOfLevels)
+                {
+                    currentLevel = 0;
+                    return false;
+                }
+
                 currentLevel++;
 
                 foreach(PlayerWeapon weapon in Game1.weaponManager.Weapons)
@@ -114,6 +125,7 @@ namespace RecoilGame
                 //GenerateLevelFromFile();
                 GenerateTestLevel();
             }
+            return true;
         }
 
         /// <summary>

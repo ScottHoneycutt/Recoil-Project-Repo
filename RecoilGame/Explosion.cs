@@ -23,8 +23,8 @@ namespace RecoilGame
         /// <summary>
         /// Creates an explosion with a specified radius, damage, and player knockback----
         /// </summary>
-        /// <param name="xPosition">The X coordinate of the object's rectangle (top left corner)----</param>
-        /// <param name="yPosition">The Y coordinate of the object's rectangle (top left corner)----</param>
+        /// <param name="xPosition">The X coordinate of the object's centered position----</param>
+        /// <param name="yPosition">The Y coordinate of the object's centered position----</param>
         /// <param name="width">The width of the rectangle----</param>
         /// <param name="height">The heigh of the rectangle----</param>
         /// <param name="texture">The texture to be displayed in the rectangle----</param>
@@ -45,6 +45,13 @@ namespace RecoilGame
             this.playerKnockback = playerKnockback;
             this.lifeTime = lifeTime;
             this.isFriendly = isFriendly;
+
+            //Setting the position of the explosion to be centered on the given coordinates
+            //(which were the centered coordinates of the projectile upon collision)----
+            CenteredX = xPosition;
+            CenteredY = yPosition;
+            //Updating the projectile's rectangle to match the position----
+            ConvertPosToRect();
 
             //Exploding and reporting to the ProjectileManager----
             Explode();

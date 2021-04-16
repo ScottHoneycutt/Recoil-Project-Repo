@@ -20,15 +20,27 @@ namespace RecoilGame
         private List<Explosion> listOfExplosions;
         private List<Explosion> expiredExplosions;
 
+        private Texture2D explosionTexture;
+
+        public Texture2D ExplosionTexture
+        {
+            get
+            {
+                return explosionTexture;
+            }
+        }
+
         /// <summary>
         /// Constructor for the projectileManager class----
         /// </summary>
-        public ProjectileManager()
+        public ProjectileManager(Game1 game)
         {
             listOfProjectiles = new List<Projectile>();
             expiredProjectiles = new List<Projectile>();
             listOfExplosions = new List<Explosion>();
             expiredExplosions = new List<Explosion>();
+
+            explosionTexture = game.Content.Load<Texture2D>("square");
         }
 
         /// <summary>
@@ -41,12 +53,18 @@ namespace RecoilGame
             //Projectiles----
             foreach (Projectile proj in listOfProjectiles)
             {
-                proj.Simulate(gameTime);
+                if (proj.IsActive)
+                {
+                    proj.Simulate(gameTime);
+                }
             }
             //Explosions----
             foreach (Explosion explosion in listOfExplosions)
             {
-                explosion.CountDownLifeTime(gameTime);
+                if (explosion.IsActive)
+                {
+                    explosion.CountDownLifeTime(gameTime);
+                }
             }
         }
 
@@ -126,6 +144,15 @@ namespace RecoilGame
             {
                 explosion.Draw(sb, tint);
             }
+        }
+
+        /// <summary>
+        /// Clears both the projectile list and the explosion list----
+        /// </summary>
+        public void ClearAll()
+        {
+            listOfExplosions.Clear();
+            listOfProjectiles.Clear();
         }
     }
 }

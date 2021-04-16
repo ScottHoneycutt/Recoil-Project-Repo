@@ -41,10 +41,13 @@ namespace RecoilGame
         private KeyboardState currentKeyboardState;
         private KeyboardState prevKeyboardState;
 
-        //Start button for the main menu----
+        //Menu variables----
         private Button startButton;
         private Texture2D startHoverSprite;
         private Texture2D startUpSprite;
+        private Button nextButton;
+        private Texture2D nextHoverSprite;
+        private Texture2D nextUpSprite;
 
         //Manager classes----
         public static ProjectileManager projectileManager;
@@ -52,6 +55,9 @@ namespace RecoilGame
         public static EnemyManager enemyManager;
         public static LevelManager levelManager;
         public static WeaponManager weaponManager;
+
+        //background
+        public static Texture2D background;
 
         //Player
         Texture2D playerSprite;
@@ -74,7 +80,7 @@ namespace RecoilGame
             _graphics.ApplyChanges();
 
             //Setting up manager classes (except PlayerManager, which gets set up in load)----
-            projectileManager = new ProjectileManager();
+            projectileManager = new ProjectileManager(this);
             enemyManager = new EnemyManager(this);
             levelManager = new LevelManager(this);
             weaponManager = new WeaponManager(this);
@@ -101,12 +107,19 @@ namespace RecoilGame
             playerManager = new PlayerManager(player, 4, 4, -10.5f, .6f, 1, .25f, 1);
 
             // TODO: use this.Content to load your game content here
+            //load bg
+            background = Content.Load<Texture2D>("GameBG");
 
-
-            //Creating the start button for the main menu----
+            //Creating the main menu----
             startHoverSprite = Content.Load<Texture2D>("start_ovr");
             startUpSprite = Content.Load<Texture2D>("start_up");
             startButton = new Button(startUpSprite, startHoverSprite, 150, 300, 200, 100);
+
+
+            //Creating the victory menu----
+            nextHoverSprite = Content.Load<Texture2D>("next_ovr");
+            nextUpSprite = Content.Load<Texture2D>("next_up");
+            nextButton = new Button(nextUpSprite, nextHoverSprite, 150, 300, 200, 100);
         }
 
         protected override void Update(GameTime gameTime)
@@ -136,18 +149,18 @@ namespace RecoilGame
             {
                 //Updates the weapons position based on player's position
                 
-                if(weaponManager.CurrentWeapon != null)
+                if (weaponManager.CurrentWeapon != null)
                 {
                     weaponManager.CurrentWeapon.XPos = player.XPos;
                     weaponManager.CurrentWeapon.CenteredY = player.CenteredY;
                 }
 
-                if(currentMouseState.ScrollWheelValue != prevMousState.ScrollWheelValue)
+                if (currentMouseState.ScrollWheelValue != prevMousState.ScrollWheelValue)
                 {
                     weaponManager.SwitchWeapon(currentMouseState.ScrollWheelValue, prevMousState.ScrollWheelValue);
                 }
 
-                if(currentMouseState.LeftButton == ButtonState.Pressed && prevMousState.LeftButton == ButtonState.Released)
+                if (currentMouseState.LeftButton == ButtonState.Pressed && prevMousState.LeftButton == ButtonState.Released)
                 {
                     weaponManager.CurrentWeapon.Shoot();
                 }
@@ -169,16 +182,26 @@ namespace RecoilGame
                 projectileManager.Simulate(gameTime);
 
                 //Checking map objectives----
-                levelManager.RunLevel();
+                bool shouldStayLevel = levelManager.RunLevel();
 
                 //Garbage collection methods----
                 projectileManager.CollectGarbage();
                 enemyManager.RemoveDeadEnemies();
+
+                //Progress to the victory screen if all levels have been completed----
+                if (!shouldStayLevel)
+                {
+                    currentGameState = GameState.Victory;
+                }
             }
             //Victory screen----
             else if (currentGameState == GameState.Victory)
             {
-
+                //Clicking the next button puts the game into the MainMenu state----
+                if (nextButton.CheckForClick(currentMouseState, prevMousState))
+                {
+                    currentGameState = GameState.MainMenu;
+                }
             }
 
             //THIS SHOULD ALWAYS REMAIN LAST IN UPDATE. Refreshing previous inputs----
@@ -205,6 +228,10 @@ namespace RecoilGame
             //Level state----
             else if (currentGameState == GameState.Level)
             {
+                //crops out a section of the background and fits it to the window
+                _spriteBatch.Draw(background,
+                    new Rectangle(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight),
+                    new Rectangle(0, 0, 300, 300), Color.White);
                 levelManager.DrawLevel(_spriteBatch);
 
                 enemyManager.Draw(_spriteBatch, Color.Red);
@@ -218,7 +245,7 @@ namespace RecoilGame
             //Victory screen----
             else if (currentGameState == GameState.Victory)
             {
-
+                nextButton.Draw(_spriteBatch);
             }
 
             _spriteBatch.End();

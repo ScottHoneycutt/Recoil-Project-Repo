@@ -50,6 +50,12 @@ namespace RecoilGame
             this.isExplosive = isExplosive;
             this.isFriendly = isFriendly;
 
+            //Projectile's spawn coordinates are centered----
+            CenteredX = xPosition;
+            CenteredY = yPosition;
+            //Updating the projectile's rectangle to match the position----
+            ConvertPosToRect();
+
             //Adding projectiles to ProjectileManager's list of projectiles to simulate----
             Game1.projectileManager.ReportExists(this);
         }
@@ -58,10 +64,8 @@ namespace RecoilGame
         /// Projectile class constructor. Takes in a speed and an angle rather than a Vector2
         /// for velocity----
         /// </summary>
-        /// <param name="xPosition">X coordinate for the rectangle. Passed to GameObject 
-        /// (parent) class----</param>
-        /// <param name="yPosition">Y coordinate for the rectangle. Passed to GameObject 
-        /// (parent) class----</param>
+        /// <param name="xPosition">X coordinate for the center of the projectile----</param>
+        /// <param name="yPosition">Y coordinate for for center of the projectiles----</param>
         /// <param name="width">Width of the rectangle. Passed to GameObject (parent) class----</param>
         /// <param name="height">Height of the rectangle. Passed to GameObject (parent) class----</param>
         /// <param name="texture">Texture for the GameObject (parent) class----</param>
@@ -87,6 +91,12 @@ namespace RecoilGame
             this.lifetime = lifetime;
             this.isExplosive = isExplosive;
             this.isFriendly = isFriendly;
+
+            //Projectile's spawn coordinates are centered----
+            CenteredX = xPosition;
+            CenteredY = yPosition;
+            //Updating the projectile's rectangle to match the position----
+            ConvertPosToRect();
 
             //Adding projectiles to ProjectileManager's list of projectiles to simulate----
             Game1.projectileManager.ReportExists(this);
@@ -116,6 +126,9 @@ namespace RecoilGame
             objectRect.X = (int)position.X;
             objectRect.Y = (int)position.Y;
 
+            //Updating the projectile's rectangle to match the position----
+            ConvertPosToRect();
+
             //Checking for collisions----
             CheckForCollisions();
 
@@ -136,6 +149,14 @@ namespace RecoilGame
                     if (this.objectRect.Intersects(Game1.enemyManager.ListOfEnemies[i].ObjectRect))
                     {
                         Game1.enemyManager.ListOfEnemies[i].TakeDamage(damage);
+
+                        //Creating an explosion upon collision if the projectile is marked as explosive-----
+                        if (isExplosive)
+                        {
+                            new Explosion((int)CenteredX, (int)CenteredY, 100, 100, Game1.projectileManager.ExplosionTexture,
+                                true, 20, 100, 17, 3, true);
+                        }
+
                         Expire();
                         //Saving time by returning early----
                         return;
@@ -148,6 +169,14 @@ namespace RecoilGame
                 if (this.objectRect.Intersects(Game1.playerManager.PlayerObject.ObjectRect))
                 {
                     Game1.playerManager.PlayerObject.TakeDamage(damage);
+
+                    //Creating an explosion upon collision if the projectile is marked as explosive-----
+                    if (isExplosive)
+                    {
+                        new Explosion((int)CenteredX, (int)CenteredY, 100, 100, Game1.projectileManager.ExplosionTexture,
+                            true, 20, 100, 17, 3, false);
+                    }
+
                     //Expires after collision----
                     Expire();
                     //Saving time by returning early----
@@ -159,6 +188,19 @@ namespace RecoilGame
             {
                 if (this.objectRect.Intersects(Game1.levelManager.ListOfMapTiles[i].ObjectRect))
                 {
+                    //Creating an explosion upon collision if the projectile is marked as explosive-----
+                    if (isExplosive && isFriendly) 
+                    {
+                        Explosion expl = new Explosion((int)CenteredX, (int)CenteredY, 100, 100, Game1.projectileManager.ExplosionTexture,
+                            true, 20, 100, 17, 3, true);
+                    }
+                    //Creating an explosion upon collision if the projectile is marked as explosive-----
+                    else if (isExplosive && !isFriendly)
+                    {
+                        new Explosion((int)CenteredX, (int)CenteredY, 100, 100, Game1.projectileManager.ExplosionTexture,
+                            true, 20, 100, 17, 3, false);
+                    }
+
                     Expire();
                     //Saving time by returning early----
                     return;

@@ -42,26 +42,26 @@ namespace RecoilGame
             set { position = value; }
         }
         //Centered coordinate properties for the rectangle for easier use later----
-        public int CenteredX
+        public float CenteredX
         {
             get
             {
-                return objectRect.X + objectRect.Width / 2;
+                return position.X + objectRect.Width / 2;
             }
             set
             {
-                objectRect.X = value - objectRect.Width / 2;
+                position.X = value - objectRect.Width / 2;
             }
         }
-        public int CenteredY
+        public float CenteredY
         {
             get
             {
-                return objectRect.Y + objectRect.Height / 2;
+                return  position.Y + objectRect.Height / 2;
             }
             set
             {
-                objectRect.Y = value - objectRect.Height / 2;
+                position.Y = value - objectRect.Height / 2;
             }
         }
 

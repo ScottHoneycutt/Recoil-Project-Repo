@@ -39,7 +39,7 @@ namespace RecoilGame
 
 
             playerRecoil = 5;
-            cooldownAmt = 3;
+            cooldownAmt = 2;
             currentCooldown = 0;
             damage = 15;
             numProjectiles = 3;

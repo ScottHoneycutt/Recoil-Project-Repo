@@ -53,6 +53,10 @@ namespace RecoilGame
             }
         }
 
+        /// <summary>
+        /// Adds a new weapon based on the current level number
+        /// </summary>
+        /// <param name="currentLevel"></param>
         public void AddWeapon(int currentLevel)
         {
             switch(currentLevel)
@@ -100,6 +104,11 @@ namespace RecoilGame
             }
         }
 
+        /// <summary>
+        /// Switches the weapon based on the mouseWheel values
+        /// </summary>
+        /// <param name="currentWheelValue"></param>
+        /// <param name="prevWheelValue"></param>
         public void SwitchWeapon(int currentWheelValue, int prevWheelValue)
         {
             if(currentWheelValue < prevWheelValue)

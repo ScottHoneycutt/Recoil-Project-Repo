@@ -20,6 +20,7 @@ namespace RecoilGame
         private float lifetime;
         private bool isExplosive;
         private bool isFriendly;
+        private bool affectedByGravity;
 
         /// <summary>
         /// Projectile class constructor. Takes in a Vector2 for the velocity----
@@ -40,7 +41,7 @@ namespace RecoilGame
         /// <param name="isExplosive">Whether or not the projectile spawns an explosion----</param>
         /// <param name="isFriendly">Determines what the projectile can collide with----</param>
         public Projectile(int xPosition, int yPosition, int width, int height, Texture2D texture, bool active,
-            Vector2 velocity, int damage, float gravity, float lifetime, bool isExplosive, bool isFriendly) 
+            Vector2 velocity, int damage, float gravity, float lifetime, bool isExplosive, bool isFriendly, bool affectedByGravity) 
             : base(xPosition, yPosition, width, height, texture, active)
         {
             this.velocity = velocity;
@@ -49,6 +50,7 @@ namespace RecoilGame
             this.lifetime = lifetime;
             this.isExplosive = isExplosive;
             this.isFriendly = isFriendly;
+            this.affectedByGravity = affectedByGravity;
 
             //Projectile's spawn coordinates are centered----
             CenteredX = xPosition;
@@ -79,7 +81,7 @@ namespace RecoilGame
         /// <param name="isExplosive">Whether or not the projectile spawns an explosion----</param>
         /// <param name="isFriendly">Determines what the projectile can collide with----</param>
         public Projectile(int xPosition, int yPosition, int width, int height, Texture2D texture, bool active,
-            float speed, float angle, int damage, float gravity, float lifetime, bool isExplosive, bool isFriendly)
+            float speed, float angle, int damage, float gravity, float lifetime, bool isExplosive, bool isFriendly, bool affectedByGravity)
             : base(xPosition, yPosition, width, height, texture, active)
         {
             //Turning the angle and speed into a velocity vector----
@@ -91,6 +93,7 @@ namespace RecoilGame
             this.lifetime = lifetime;
             this.isExplosive = isExplosive;
             this.isFriendly = isFriendly;
+            this.affectedByGravity = affectedByGravity;
 
             //Projectile's spawn coordinates are centered----
             CenteredX = xPosition;
@@ -132,8 +135,11 @@ namespace RecoilGame
             //Checking for collisions----
             CheckForCollisions();
 
-            //Updating the velocity vector----
-            velocity.Y += gravity/150;
+            if(affectedByGravity == true)
+            {
+                //Updating the velocity vector----
+                velocity.Y += gravity / 150;
+            }
         }
 
         /// <summary>

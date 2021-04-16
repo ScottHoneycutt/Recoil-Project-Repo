@@ -13,8 +13,6 @@ namespace RecoilGame
         //Fields
         private float playerRecoil;
         private Texture2D projectileTexture;
-        private float cooldownAmt;
-        private float currentCooldown;
         private int damage;
         private int numProjectiles;
 
@@ -39,8 +37,7 @@ namespace RecoilGame
 
 
             playerRecoil = 5;
-            cooldownAmt = 2;
-            currentCooldown = 0;
+            CooldownAmt = 2;
             damage = 15;
             numProjectiles = 3;
 
@@ -67,7 +64,7 @@ namespace RecoilGame
         public override void Shoot()
         {
             //If cooldown is greater than 0 still, cannot shoot so returns
-            if(currentCooldown > 0)
+            if(CurrentCooldown > 0)
             {
                 return;
             }
@@ -88,39 +85,80 @@ namespace RecoilGame
 
             float bulletSpeed = 8;
 
-            //Creates a new vector2 by multiplying the normalized values by bulletspeed
-            Vector2 directionOne = new Vector2(xNormalized*bulletSpeed, yNormalized*bulletSpeed);
-            Vector2 directionTwo = new Vector2(directionOne.X + 3, directionOne.Y + 5);
-            Vector2 directionThree = new Vector2(directionOne.X - 3, directionOne.Y - 5);
+            Vector2 directionOne = new Vector2();
+            Vector2 directionTwo = new Vector2();
+            Vector2 directionThree = new Vector2();
+            
+            if(mouseX == player.CenteredX && mouseY == player.CenteredY)
+            {
+                return;
+            }
 
-            //Test to see if this will actually create a projectile and how it will work, then we'll add more since we want shotgun to have multiple projectiles
-            new Projectile((int)player.CenteredX, (int)player.CenteredY, 7, 7, projectileTexture, true, directionOne, damage, 5, 0.75f, false, true);
-            new Projectile((int)player.CenteredX, (int)player.CenteredY, 7, 7, projectileTexture, true, directionTwo, damage, 5, 0.75f, false, true);
-            new Projectile((int)player.CenteredX, (int)player.CenteredY, 7, 7, projectileTexture, true, directionThree, damage, 5, 0.75f, false, true);
+            if(mouseX > player.CenteredX)
+            {
+                directionOne.X = 0;
+                directionTwo.X = 0;
+                directionThree.X = 0;
+            }
+            else if(mouseX < player.CenteredX)
+            {
+                directionOne.X = 0;
+                directionTwo.X = 0;
+                directionThree.X = 0;
+            }
+            else if(mouseX == player.CenteredX)
+            {
+                directionOne.X = 0;
+                directionTwo.X = 0;
+                directionThree.X = 0;
+            }
+
+            if(mouseY > player.CenteredY)
+            {
+                directionOne.Y = 0;
+                directionTwo.Y = 0;
+                directionThree.Y = 0;
+            }
+            else if(mouseY < player.CenteredY)
+            {
+                directionOne.Y = 0;
+                directionTwo.Y = 0;
+                directionThree.Y = 0;
+            }
+            else if(mouseY == player.CenteredY)
+            {
+                directionOne.Y = 0;
+                directionTwo.Y = 0;
+                directionThree.Y = 0;
+            }
+
+            new Projectile((int)player.CenteredX, (int)player.CenteredY, 7, 7, projectileTexture, true, directionOne, damage, 5, 0.75f, false, true, false);
+            new Projectile((int)player.CenteredX, (int)player.CenteredY, 7, 7, projectileTexture, true, directionTwo, damage, 5, 0.75f, false, true, false);
+            new Projectile((int)player.CenteredX, (int)player.CenteredY, 7, 7, projectileTexture, true, directionThree, damage, 5, 0.75f, false, true, false);
 
             //Calls playerManager's shooting capability method
             Game1.playerManager.ShootingCapability();
 
             //Sets the cooldown
-            currentCooldown = cooldownAmt;
+            CurrentCooldown = CooldownAmt;
         }
 
         //Update cooldown method
         public override void UpdateCooldown(GameTime gameTime)
         {
             //If cooldown is already 0 returns
-            if (currentCooldown == 0)
+            if (CurrentCooldown == 0)
             {
                 return;
             }
             
             //Subtracts elapsed time from current cooldown
-            currentCooldown -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+            CurrentCooldown -= (float)gameTime.ElapsedGameTime.TotalSeconds;
         }
 
         public override void UpdateCooldown(int amount)
         {
-            currentCooldown = amount;
+            CurrentCooldown = amount;
         }
 
         public override void Draw(SpriteBatch sb, Color tint)

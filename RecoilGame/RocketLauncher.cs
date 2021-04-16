@@ -12,8 +12,6 @@ namespace RecoilGame
     {
         //Fields
         private Texture2D projectileTexture;
-        private float cooldownAmt;
-        private float currentCooldown;
         private int damage;
 
         //Constructor
@@ -22,8 +20,7 @@ namespace RecoilGame
             : base(xPos, yPos, width, height, sprite, isActive)
         {
             this.projectileTexture = projectileTexture;
-            cooldownAmt = 3;
-            currentCooldown = 0;
+            CooldownAmt = 3;
             damage = 30;
 
             Type = WeaponType.RocketLauncher;
@@ -34,7 +31,7 @@ namespace RecoilGame
         /// </summary>
         public override void Shoot()
         {
-            if(currentCooldown > 0)
+            if(CurrentCooldown > 0)
             {
                 return;
             }
@@ -58,28 +55,25 @@ namespace RecoilGame
             Vector2 direction = new Vector2(xNormalized * bulletSpeed, yNormalized * bulletSpeed);
 
             //Test to see if this will actually create a projectile and how it will work, then we'll add more since we want shotgun to have multiple projectiles
-            Projectile proj = new Projectile((int)player.CenteredX, (int)player.CenteredY, 20, 20, projectileTexture, true, direction, 20, 10, 10, true, true);
+            new Projectile((int)player.CenteredX, (int)player.CenteredY, 20, 20, projectileTexture, true, direction, 20, 10, 10, true, true, true);
 
 
-            currentCooldown = cooldownAmt;
+            CurrentCooldown = CooldownAmt;
         }
 
         public override void UpdateCooldown(GameTime gameTime)
         {
-            if(currentCooldown == 0)
+            if(CurrentCooldown == 0)
             {
                 return;
             }
 
-            else
-            {
-                currentCooldown -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-            }
+            CurrentCooldown -= (float)gameTime.ElapsedGameTime.TotalSeconds;
         }
 
         public override void UpdateCooldown(int amount)
         {
-            currentCooldown = amount;
+            CurrentCooldown = amount;
         }
     }
 }

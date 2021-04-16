@@ -89,7 +89,7 @@ namespace RecoilGame
 
                 //Creating the projectile----
                 new Projectile((int)CenteredX, (int)CenteredY, 10, 10, projectileSprite, true, normalizedVector, Damage,
-                    0, 2, false, false);
+                    0, 2, false, false, true);
             }
         }
 

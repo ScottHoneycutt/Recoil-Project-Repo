@@ -19,6 +19,8 @@ namespace RecoilGame
     public abstract class PlayerWeapon : GameObject
     {
         private WeaponType weaponType;
+        private float cooldownAmt;
+        private float currentCooldown;
 
         //CONSTRUCTOR
 
@@ -34,12 +36,34 @@ namespace RecoilGame
         /// <param name="cooldown">Float For Weapon Cooldown</param>
         /// <param name="numOfProjectiles">Int For Number Of Projectiles</param>
         public PlayerWeapon(int xPos, int yPos, int width, int height, Texture2D sprite, 
-            bool isActive) : base(xPos, yPos, width, height, sprite, isActive) { }
+            bool isActive) : base(xPos, yPos, width, height, sprite, isActive)
+        {
+            this.cooldownAmt = 0;
+            this.currentCooldown = 0;
+        }
 
         public WeaponType Type
         {
             set { weaponType = value; }
             get { return weaponType; }
+        }
+
+        /// <summary>
+        /// Property for the amount of cooldown caused when shooting
+        /// </summary>
+        public float CooldownAmt
+        {
+            get { return cooldownAmt; }
+            set { cooldownAmt = value; }
+        }
+
+        /// <summary>
+        /// Property for the weapons current cooldown value
+        /// </summary>
+        public float CurrentCooldown
+        {
+            get { return currentCooldown; }
+            set { currentCooldown = value; }
         }
 
 

@@ -181,8 +181,9 @@ namespace RecoilGame
                 //Simulating projectiles----
                 projectileManager.Simulate(gameTime);
 
-                //Checking map objectives----
+                //Checking map objectives and updating UI----
                 bool shouldStayLevel = levelManager.RunLevel();
+                levelManager.UpdateUI();
 
                 //Garbage collection methods----
                 projectileManager.CollectGarbage();
@@ -241,6 +242,9 @@ namespace RecoilGame
                 projectileManager.Simulate(gameTime);
                 
                 player.Draw(_spriteBatch, Color.Blue);
+
+                //Drawing UI----
+                levelManager.DrawUI(_spriteBatch);
             }
             //Victory screen----
             else if (currentGameState == GameState.Victory)

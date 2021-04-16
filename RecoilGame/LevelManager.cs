@@ -15,14 +15,22 @@ namespace RecoilGame
     /// </summary>
     public class LevelManager
     {
+        //Map stuff----
         private List<MapTile> listOfMapTiles;
+        private List<MapTile> textureTiles;
         private int currentLevel;
         private int numberOfLevels;
         private MapTile objectiveTile;
-        private Texture2D testSprite;
         private int playerSpawnX;
         private int playerSpawnY;
         private Game1 gameRef;
+
+        //UI elements----
+        private Texture2D testSprite;
+        private SpriteFont arial20;
+        private Rectangle healthBarBackground;
+        private Rectangle healthBar;
+        private Text levelDisplay;
 
         //Property to easily get the list of all MapTiles----
         public List<MapTile> ListOfMapTiles
@@ -30,6 +38,15 @@ namespace RecoilGame
             get
             {
                 return listOfMapTiles;
+            }
+        }
+
+        //Get property for the current level----
+        public int CurrentLevel
+        {
+            get
+            {
+                return currentLevel;
             }
         }
 
@@ -41,16 +58,21 @@ namespace RecoilGame
         public LevelManager(Game1 game)
         {
             listOfMapTiles = new List<MapTile>();
+            textureTiles = new List<MapTile>();
             currentLevel = 0;
-            testSprite = game.Content.Load<Texture2D>("square");
+            
             //Setting objectiveTile to null until one appears in a level----
             objectiveTile = null;
             numberOfLevels = 3;
-        }
 
-        public int CurrentLevel
-        {
-            get { return currentLevel; }
+            //Loading in sprites and spritefonts----
+            testSprite = game.Content.Load<Texture2D>("square");
+            arial20 = game.Content.Load<SpriteFont>("Arial20");
+
+            //Setting up UI elements----
+            healthBarBackground = new Rectangle(20, 20, 300, 20);
+            healthBar = new Rectangle(20, 20, 300, 20);
+            levelDisplay = new Text(arial20, new Vector2(20, 45), "Level " + currentLevel);
         }
 
         /// <summary>
@@ -191,6 +213,41 @@ namespace RecoilGame
             }
             
         }
+
+        /// <summary>
+        /// Updates the UI. The nuts and bolt of the UI that's handled in Update rather than Draw----
+        /// </summary>
+        public void UpdateUI()
+        {
+            //Grabbing a reference to the player----
+            Player player = Game1.playerManager.PlayerObject;
+
+            //Updating player's health bar to match the player's health----
+            healthBar.Width = (int)((float)player.Health / (float)player.MaxHealth * (float)healthBarBackground.Width);
+
+            //Updating level display----
+            levelDisplay.TextString = "Level " + currentLevel;
+
+        }
+
+        /// <summary>
+        /// Draws the player's UI to the screen. This should be called after every other draw method
+        /// because it should overlay over everything else----
+        /// </summary>
+        /// <param name="sb">Spritebatch used to draw everthing----</param>
+        public void DrawUI(SpriteBatch sb)
+        {
+            //Drawing the health bar in the top left corner----
+            //Health bar background----
+            sb.Draw(testSprite, healthBarBackground, Color.White);
+            //Health bar (remaining health)----
+            sb.Draw(testSprite, healthBar, Color.Green);
+
+            //Current level display----
+            levelDisplay.Draw(sb);
+        }
+
+
 
     }
 }

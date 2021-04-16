@@ -60,9 +60,13 @@ namespace RecoilGame
         public static Texture2D background;
 
         //Player
-        Texture2D playerSprite;
-        Player player;
-        KeyboardState kbState;
+        private Texture2D playerSprite;
+        private Player player;
+        private KeyboardState kbState;
+
+        //bullet textures
+        private Texture2D shotgunBulletTexture;
+        private Texture2D rocketBulletTexture;
 
         public Game1()
         {
@@ -120,6 +124,10 @@ namespace RecoilGame
             nextHoverSprite = Content.Load<Texture2D>("next_ovr");
             nextUpSprite = Content.Load<Texture2D>("next_up");
             nextButton = new Button(nextUpSprite, nextHoverSprite, 150, 300, 200, 100);
+
+            //loading the bullets
+            shotgunBulletTexture = Content.Load<Texture2D>("bulletTexture");
+            rocketBulletTexture = Content.Load<Texture2D>("rocketTexture");
         }
 
         protected override void Update(GameTime gameTime)
@@ -238,7 +246,7 @@ namespace RecoilGame
 
                 enemyManager.Draw(_spriteBatch, Color.Red);
 
-                projectileManager.Draw(_spriteBatch, Color.Red);
+                projectileManager.Draw(_spriteBatch, Color.White);
 
                 projectileManager.Simulate(gameTime);
                 

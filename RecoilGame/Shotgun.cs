@@ -94,9 +94,9 @@ namespace RecoilGame
             Vector2 directionThree = new Vector2(directionOne.X - 3, directionOne.Y - 5);
 
             //Test to see if this will actually create a projectile and how it will work, then we'll add more since we want shotgun to have multiple projectiles
-            new Projectile(player.CenteredX, player.CenteredY, 7, 7, projectileTexture, true, directionOne, damage, 5, 0.75f, false, true);
-            new Projectile(player.CenteredX, player.CenteredY, 7, 7, projectileTexture, true, directionTwo, damage, 5, 0.75f, false, true);
-            new Projectile(player.CenteredX, player.CenteredY, 7, 7, projectileTexture, true, directionThree, damage, 5, 0.75f, false, true);
+            new Projectile((int)player.CenteredX, (int)player.CenteredY, 7, 7, projectileTexture, true, directionOne, damage, 5, 0.75f, false, true);
+            new Projectile((int)player.CenteredX, (int)player.CenteredY, 7, 7, projectileTexture, true, directionTwo, damage, 5, 0.75f, false, true);
+            new Projectile((int)player.CenteredX, (int)player.CenteredY, 7, 7, projectileTexture, true, directionThree, damage, 5, 0.75f, false, true);
 
             //Calls playerManager's shooting capability method
             Game1.playerManager.ShootingCapability();

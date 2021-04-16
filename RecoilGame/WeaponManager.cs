@@ -26,10 +26,9 @@ namespace RecoilGame
                 weaponTextures.Add(game.Content.Load<Texture2D>("square"));
             }
 
-            for(int x = 0; x < 4; x++)
-            {
-                projectileTextures.Add(game.Content.Load<Texture2D>("square"));
-            }
+            projectileTextures.Add(game.Content.Load<Texture2D>("bulletTexture"));
+            projectileTextures.Add(game.Content.Load<Texture2D>("rocketTexture"));
+
         }
 
 
@@ -70,7 +69,7 @@ namespace RecoilGame
                     break;
 
                 case 2:
-
+                    System.Diagnostics.Debug.WriteLine(projectileTextures[0]);
                     RocketLauncher rocketLauncher = new RocketLauncher(0, 0, 50, 20, weaponTextures[1], true, projectileTextures[1]);
 
                     weapons.AddAfter(weapons.Last, rocketLauncher);

@@ -28,6 +28,8 @@ namespace RecoilGame
         //UI elements----
         private Texture2D testSprite;
         private SpriteFont arial20;
+        private Texture2D shotgunUI;
+        private Texture2D rocketLauncherUI;
         //General----
         private Rectangle healthBarBackground;
         private Rectangle healthBar;
@@ -73,6 +75,8 @@ namespace RecoilGame
 
             //Loading in sprites and spritefonts----
             testSprite = game.Content.Load<Texture2D>("square");
+            shotgunUI = game.Content.Load<Texture2D>("recoil shotgun UI");
+            rocketLauncherUI = game.Content.Load<Texture2D>("recoil rocket launcher UI");
             arial20 = game.Content.Load<SpriteFont>("Arial20");
 
             //Setting up UI elements----
@@ -292,8 +296,8 @@ namespace RecoilGame
 
             //Drawing the cooldowns for the weapons----
             //Backgrounds----
-            sb.Draw(testSprite, shotgunCDBackground, Color.White);
-            sb.Draw(testSprite, rocketCDBackground, Color.White);
+            sb.Draw(shotgunUI, shotgunCDBackground, Color.White);
+            sb.Draw(rocketLauncherUI, rocketCDBackground, Color.White);
             //Cooldowns----
             sb.Draw(testSprite, shotgunCD, Color.Gray);
             sb.Draw(testSprite, rocketCD, Color.Gray);

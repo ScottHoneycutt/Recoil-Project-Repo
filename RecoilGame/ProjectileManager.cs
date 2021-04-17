@@ -20,13 +20,13 @@ namespace RecoilGame
         private List<Explosion> listOfExplosions;
         private List<Explosion> expiredExplosions;
 
-        private Texture2D explosionTexture;
+        private List<Texture2D> explosionTextures;
 
-        public Texture2D ExplosionTexture
+        public List<Texture2D> ExplosionTextures
         {
             get
             {
-                return explosionTexture;
+                return explosionTextures;
             }
         }
 
@@ -40,7 +40,15 @@ namespace RecoilGame
             listOfExplosions = new List<Explosion>();
             expiredExplosions = new List<Explosion>();
 
-            explosionTexture = game.Content.Load<Texture2D>("square");
+            //Adding in the explosion textures----
+            explosionTextures = new List<Texture2D>();
+            explosionTextures.Add(game.Content.Load<Texture2D>("explosion7"));
+            explosionTextures.Add(game.Content.Load<Texture2D>("explosion6"));
+            explosionTextures.Add(game.Content.Load<Texture2D>("explosion5"));
+            explosionTextures.Add(game.Content.Load<Texture2D>("explosion4"));
+            explosionTextures.Add(game.Content.Load<Texture2D>("explosion3"));
+            explosionTextures.Add(game.Content.Load<Texture2D>("explosion2"));
+            explosionTextures.Add(game.Content.Load<Texture2D>("explosion1"));
         }
 
         /// <summary>

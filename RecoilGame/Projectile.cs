@@ -159,8 +159,8 @@ namespace RecoilGame
                         //Creating an explosion upon collision if the projectile is marked as explosive-----
                         if (isExplosive)
                         {
-                            new Explosion((int)CenteredX, (int)CenteredY, 100, 100, Game1.projectileManager.ExplosionTexture,
-                                true, 20, 100, 17, 3, true);
+                            new Explosion((int)CenteredX, (int)CenteredY, 100, 100, Game1.projectileManager.ExplosionTextures,
+                                true, 20, 100, 17, 1, true);
                         }
 
                         Expire();
@@ -179,8 +179,8 @@ namespace RecoilGame
                     //Creating an explosion upon collision if the projectile is marked as explosive-----
                     if (isExplosive)
                     {
-                        new Explosion((int)CenteredX, (int)CenteredY, 100, 100, Game1.projectileManager.ExplosionTexture,
-                            true, 20, 100, 17, 3, false);
+                        new Explosion((int)CenteredX, (int)CenteredY, 100, 100, Game1.projectileManager.ExplosionTextures,
+                            true, 20, 100, 17, 1, false);
                     }
 
                     //Expires after collision----
@@ -197,14 +197,14 @@ namespace RecoilGame
                     //Creating an explosion upon collision if the projectile is marked as explosive-----
                     if (isExplosive && isFriendly) 
                     {
-                        Explosion expl = new Explosion((int)CenteredX, (int)CenteredY, 100, 100, Game1.projectileManager.ExplosionTexture,
-                            true, 20, 100, 17, 3, true);
+                        Explosion expl = new Explosion((int)CenteredX, (int)CenteredY, 100, 100, Game1.projectileManager.ExplosionTextures,
+                            true, 20, 100, 17, 1, true);
                     }
                     //Creating an explosion upon collision if the projectile is marked as explosive-----
                     else if (isExplosive && !isFriendly)
                     {
-                        new Explosion((int)CenteredX, (int)CenteredY, 100, 100, Game1.projectileManager.ExplosionTexture,
-                            true, 20, 100, 17, 3, false);
+                        new Explosion((int)CenteredX, (int)CenteredY, 100, 100, Game1.projectileManager.ExplosionTextures,
+                            true, 20, 100, 17, 1, false);
                     }
 
                     Expire();

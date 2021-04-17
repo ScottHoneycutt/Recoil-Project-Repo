@@ -99,12 +99,12 @@ namespace RecoilGame
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            playerSprite = Content.Load<Texture2D>("square");
+            playerSprite = Content.Load<Texture2D>("PinkGuyMid");
 
             //Aidan - I had to initialize these after the player sprite was loaded or
             //I'd get a null pointer error for the sprite texture
             
-            player = new Player(200, 200, 40, 40, playerSprite, true, 100);
+            player = new Player(200, 200, 60, 80, playerSprite, true, 100);
             playerManager = new PlayerManager(player, 4, 4, -10.5f, .6f, 1, .25f, 1);
 
             // TODO: use this.Content to load your game content here
@@ -244,7 +244,7 @@ namespace RecoilGame
 
                 projectileManager.Simulate(gameTime);
                 
-                player.Draw(_spriteBatch, Color.Blue);
+                player.Draw(_spriteBatch, Color.White);
 
                 //Drawing UI----
                 levelManager.DrawUI(_spriteBatch);

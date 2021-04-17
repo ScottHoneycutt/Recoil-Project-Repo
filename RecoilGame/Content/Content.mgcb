@@ -164,6 +164,7 @@
 /processorParam:TextureFormat=Color
 /build:next_up.png
 
+#begin PinkGuy mid size.png
 #begin recoil rocket launcher UI.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -174,6 +175,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
+/build:PinkGuy mid size.png;PinkGuyMid.png
 /build:recoil rocket launcher UI.png
 
 #begin recoil rocket launcher unequipped.png
@@ -224,6 +226,18 @@
 /processorParam:TextureFormat=Color
 /build:rocketTexture.png
 
+#begin rocketTexture.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:rocketTexture.png
+
 #begin square.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -259,4 +273,16 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:start_up.png
+
+#begin tinyPinkGuy.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:tinyPinkGuy.png
 

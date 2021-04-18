@@ -4,6 +4,14 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.ComponentModel;
+using System.Data;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using System.IO;
+using System.Reflection;
+using System.Diagnostics;
 
 namespace RecoilGame
 {
@@ -96,8 +104,8 @@ namespace RecoilGame
                 listOfMapTiles.Clear();
                 objectiveTile = null;
                 Game1.enemyManager.ListOfEnemies.Clear();
-                //GenerateLevelFromFile();
-                GenerateTestLevel();
+                GenerateLevelFromFile(game, "testLevel");
+                //GenerateTestLevel();
             }
         }
 
@@ -127,7 +135,100 @@ namespace RecoilGame
         /// <param name="fileName">The name of the file to access for the level to generate----</param>
         private void GenerateLevelFromFile(string fileName)
         {
-            //NEEDS TO BE WORKED ON IN THE FUTURE----
+
+            StreamReader input = null;
+            try
+            {
+                //get file path
+                String path = Path.GetDirectoryName(
+                    Assembly.GetExecutingAssembly().Location);
+                if (String.Compare(path.Substring(path.Length-1, 1), "\\") != 0)
+                {
+                    path += "\\";
+                }
+
+                Stream inStream = new FileStream(path + "..\\data\\" + fileName, FileMode.Open);
+                input = new StreamReader(inStream);
+
+                // first two pieces are length / width of map
+                int tilesAcross = Convert.ToInt32(input.ReadLine());
+                int tilesDown = Convert.ToInt32(input.ReadLine());
+
+                Vector2 playerPos = default;
+
+                // convert character to enum
+                for (int i = 0; i < tilesAcross; i++)
+                {
+                    string rowOfChar = input.ReadLine();
+                    for (int j = 0; j < tilesDown; j++)
+                    {
+                        char charTileToPlace = rowOfChar[j];
+
+                        Texture2D textureFromChar =
+                            GetTextureFromChar(charTileToPlace, game);
+
+                        listOfMapTiles.Add(
+                            new MapTile(
+                                i,
+                                j,
+                                16,
+                                16,
+                                textureFromChar,
+                                true,
+                                charTileToPlace == 'o'
+                                ));
+
+                        if (charTileToPlace == 'p')
+                        {
+                            playerPos = new Vector2(i * 16, j * 16);
+                        }
+
+                    }
+                }
+
+                Game1.playerManager.PlayerObject.Position = playerPos;
+                Game1.playerManager.PlayerObject.ConvertPosToRect();
+            } catch (Exception e)
+            {
+
+            }
+        }
+
+        private Texture2D GetTextureFromChar(char charRepresentingTexture)
+        {
+            Texture2D charAsTexture = null;
+            switch (charRepresentingTexture)
+            {
+                case 'w':
+                    charAsTexture = Game1. // Content.Load<Texture2D>("wall");
+                    break;
+                case 'f':
+                    charAsTexture = game.Content.Load<Texture2D>("floor");
+                    break;
+                case 'a':
+                    charAsTexture = game.Content.Load<Texture2D>("air");
+                    break;
+                case 'l':
+                    charAsTexture = game.Content.Load<Texture2D>("platformleft");
+                    break;
+                case 'm':
+                    charAsTexture = game.Content.Load<Texture2D>("platformmiddle");
+                    break;
+                case 'r':
+                    charAsTexture = game.Content.Load<Texture2D>("platformright");
+                    break;
+                case 'o':
+                    charAsTexture = game.Content.Load<Texture2D>("objective");
+                    break;
+                case 'p':
+                    charAsTexture = game.Content.Load<Texture2D>("player");
+                    break;
+                case 'e':
+                    charAsTexture = game.Content.Load<Texture2D>("enemy");
+                    break;
+            }
+
+            return charAsTexture;
         }
 
         /// <summary>

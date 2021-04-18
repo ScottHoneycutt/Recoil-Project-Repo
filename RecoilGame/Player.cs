@@ -21,6 +21,7 @@ namespace RecoilGame
         private int maxHealth;
         private int health;
 
+
         //Health properties----
         public int Health
         {
@@ -69,6 +70,28 @@ namespace RecoilGame
             else
             {
                 health -= damage;
+            }
+        }
+        /// <summary>
+        /// Used for player animation, takes in sprite effect and properly flips the player depending on direction the player is facing
+        /// </summary>
+        /// <param name="sb"></param>
+        /// <param name="tint"></param>
+        /// <param name="flip"></param>
+        public void DrawSpecial(SpriteBatch sb, Texture2D sprite, SpriteEffects flip)
+        {
+            if (isActive)
+            {
+                sb.Draw(
+                    sprite, 
+                    position, 
+                    new Rectangle(0, 0, objectRect.Width, objectRect.Height), 
+                    Color.White, 
+                    0.0f, 
+                    Vector2.Zero, 
+                    1.0f, 
+                    flip, 
+                    0.0f);
             }
         }
     }

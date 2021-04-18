@@ -9,14 +9,19 @@ namespace RecoilGame
 {
     public enum PlayerState
     {
-        FaceLeft,
-        FaceRight,
-        WalkLeft,
-        WalkRight,
         Grounded,
         Airborn,
         Jump
     }
+
+    public enum MovementState
+    {
+        FaceLeft,
+        FaceRight,
+        WalkLeft,
+        WalkRight,
+    }
+
     public class PlayerManager
     {
         //Aidan Kamp
@@ -35,7 +40,12 @@ namespace RecoilGame
         /// effect velocity vectors. Had to rework a lot of stuff for this.----
         /// </summary>
 
+        //Aidan Kamp
+        //4/17/21
+        //Adding some animations
+
         private Player playerObject;
+        private Game1 game;
         private KeyboardState prevKBState;
         private KeyboardState kbState;
         private MouseState prevMouseState;
@@ -43,6 +53,12 @@ namespace RecoilGame
         private PlayerState playerState;
         private Vector2 playerGravity;
         private bool isColliding;
+        private MovementState movementState;
+        private float secondsPerFrame;
+        //fields for animation
+        private float timeCounter;
+        private List<Texture2D> standingTextures;
+        private int standingIndex;
 
         //Fields created by Scott----
         private Vector2 inputsVelocity;
@@ -54,6 +70,8 @@ namespace RecoilGame
         private float groundFriction;
         private float yJumpVelocity;
         private float inputAcceleration;
+
+
 
         //Properties----
         public Player PlayerObject
@@ -88,9 +106,9 @@ namespace RecoilGame
             set { playerState = value; }
         }
 
-        
 
-        
+
+
 
         /// <summary>
         /// Constructor for the playermanager class. Contains a reference to the player----
@@ -106,10 +124,11 @@ namespace RecoilGame
         /// <param name="airResistance">The resistance applied to external effects in the air----</param>
         /// <param name="inputAcceleration">The rate of acceleration for the player's inputs. Air 
         /// acceleration is half the ground acceleration (ground is the value set here)----</param>
-        public PlayerManager(Player player, float maxInputGroundSpeed, float maxInputAirSpeed, float yJumpVelocity, 
-            float yGravity, float friction, float airResistance, float inputAcceleration)
+        public PlayerManager(Player player, float maxInputGroundSpeed, float maxInputAirSpeed, float yJumpVelocity,
+            float yGravity, float friction, float airResistance, float inputAcceleration, Game1 game)
         {
             playerObject = player;
+            this.game = game;
             playerState = PlayerState.Grounded;
             isColliding = false;
             //creates the vectors using the passed in y values
@@ -132,6 +151,20 @@ namespace RecoilGame
 
             //Total gravity accumulation----
             gravityVelocity = Vector2.Zero;
+
+            //starting direction
+            movementState = MovementState.FaceRight;
+
+            //animation is 4 frames per second
+            secondsPerFrame = .25f;
+
+            //standing animation texture:
+            standingTextures = new List<Texture2D>();
+            standingTextures.Add(game.Content.Load<Texture2D>("PinkGuyMid"));
+            standingTextures.Add(game.Content.Load<Texture2D>("PinkGuyMid"));
+            standingTextures.Add(game.Content.Load<Texture2D>("PinkGuyMidCrouch"));
+            standingTextures.Add(game.Content.Load<Texture2D>("PinkGuyMidCrouch"));
+
         }
 
         /// <summary>
@@ -156,6 +189,7 @@ namespace RecoilGame
                     //Moving left----
                     if (kbState.IsKeyDown(Keys.A))
                     {
+
                         //Cannot exceed the maximum ground input speed----
                         if (inputsVelocity.X > -maxGroundSpeed)
                         {
@@ -216,7 +250,7 @@ namespace RecoilGame
 
                     break;
 
-                    //Airborne----
+                //Airborne----
                 case PlayerState.Airborn:
 
                     //System.Diagnostics.Debug.WriteLine("Airborn State");
@@ -280,7 +314,7 @@ namespace RecoilGame
                     }
                     break;
 
-                    //Jump has been expended----
+                //Jump has been expended----
                 case PlayerState.Jump:
 
                     //System.Diagnostics.Debug.WriteLine("Jump State");
@@ -372,9 +406,9 @@ namespace RecoilGame
             //Checking for collisions between the player and all maptiles----
             foreach (MapTile mapTile in Game1.levelManager.ListOfMapTiles)
             {
-                
+
                 Rectangle tileRect = mapTile.ObjectRect;
-                
+
                 //If a collision is detected between player and a maptile----
                 if (playerRect.Intersects(tileRect))
                 {
@@ -448,7 +482,7 @@ namespace RecoilGame
                             //System.Diagnostics.Debug.WriteLine("Wall above");
                         }
                     }
-                    
+
                 }
 
             }
@@ -458,7 +492,7 @@ namespace RecoilGame
 
             //Converting the position vector to a rectangle
             playerObject.ConvertPosToRect();
-            
+
             if (isColliding == false && playerState != PlayerState.Jump)
             {
                 //System.Diagnostics.Debug.WriteLine("The Game Thinks we're in the air");
@@ -491,7 +525,7 @@ namespace RecoilGame
             if (mouseState.LeftButton == ButtonState.Pressed && prevMouseState.LeftButton != ButtonState.Pressed)
             {
                 //Reset input horizontal velocity----
-                inputsVelocity.X = 0; 
+                inputsVelocity.X = 0;
 
                 //get direction of vector
                 int xMouse = mouseState.X;
@@ -523,6 +557,143 @@ namespace RecoilGame
                 */
 
             }
+        }
+
+        /// <summary>
+        /// Changes the movement state of the player depending on the direction inputted
+        /// </summary>
+        /// <param name="sb"></param>
+        public void HandleMovementState()
+        {
+            if (playerState == PlayerState.Grounded)
+            {
+                switch (movementState)
+                {
+                    case MovementState.FaceLeft:
+                        //either changes to walk left or face right
+                        if ((Keyboard.GetState()).IsKeyDown(Keys.A))
+                        {
+
+                            movementState = MovementState.WalkLeft;
+                        }
+                        if ((Keyboard.GetState()).IsKeyDown(Keys.D))
+                        {
+
+                            movementState = MovementState.FaceRight;
+                        }
+                        break;
+
+                    case MovementState.FaceRight:
+                        //either changes to walk right or face left
+                        if (Keyboard.GetState().IsKeyDown(Keys.D))
+                        {
+
+                            movementState = MovementState.WalkRight;
+                        }
+                        if ((Keyboard.GetState()).IsKeyDown(Keys.A))
+                        {
+
+                            movementState = MovementState.FaceLeft;
+                        }
+                        break;
+
+                    case MovementState.WalkLeft:
+                        //stops moving if if key is released
+                        if ((Keyboard.GetState()).IsKeyUp(Keys.A))
+                        {
+
+                            movementState = MovementState.FaceLeft;
+                        }
+                        break;
+                    case MovementState.WalkRight:
+                        //turns around if right key is pressed
+                        if ((Keyboard.GetState()).IsKeyUp(Keys.D))
+                        {
+
+                            movementState = MovementState.FaceRight;
+                        }
+                        break;
+
+                }
+            }
+        }
+
+        /// <summary>
+        /// Updates how fast the animation goes through each frame and allows it to cycle
+        /// </summary>
+        /// <param name="gameTime"></param>
+        public void UpdateAnimation(GameTime gameTime)
+        {
+            timeCounter += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (timeCounter >= secondsPerFrame)
+            {
+                standingIndex++;
+                if (standingIndex >= 3) //walking animation will be 4 frames;
+                {
+                    standingIndex = 0;
+                }
+
+                timeCounter -= secondsPerFrame;
+            }
+        }
+
+        /// <summary>
+        /// Animates the player properly depending on the PlayerState (Grounded or Jump)
+        /// and the Movement State (standing, walking, facing different directions etc)
+        /// </summary>
+        /// <param name="sb"></param>
+        public void AnimatePlayer(SpriteBatch sb)
+        {
+            //this is the animation done while the player is grounded
+            if (playerState == PlayerState.Grounded)
+            {
+                switch (movementState)
+                {
+                    //Changes direction and does standing animation
+                    case MovementState.FaceLeft:
+                        playerObject.DrawSpecial(sb, standingTextures[standingIndex], SpriteEffects.FlipHorizontally);
+                        break;
+
+                    case MovementState.FaceRight:
+                        playerObject.DrawSpecial(sb, standingTextures[standingIndex], SpriteEffects.None);
+                        break;
+
+                    //No walking animations yet so it plays the sprites default look but changes direction
+                    case MovementState.WalkLeft:
+                        playerObject.DrawSpecial(sb, playerObject.Sprite, SpriteEffects.FlipHorizontally);
+                        break;
+                    case MovementState.WalkRight:
+                        playerObject.DrawSpecial(sb, playerObject.Sprite, SpriteEffects.None);
+                        break;
+
+                }
+            }
+
+            //this is the animation that is done while the player is airborn
+            else
+            {
+                switch (movementState)
+                {
+                    case MovementState.FaceLeft:
+                        playerObject.DrawSpecial(sb, playerObject.Sprite, SpriteEffects.FlipHorizontally);
+                        break;
+
+                    case MovementState.FaceRight:
+                        playerObject.DrawSpecial(sb, playerObject.Sprite, SpriteEffects.None);
+                        break;
+
+                    case MovementState.WalkLeft:
+                        playerObject.DrawSpecial(sb, playerObject.Sprite, SpriteEffects.FlipHorizontally);
+                        break;
+                    case MovementState.WalkRight:
+                        playerObject.DrawSpecial(sb, playerObject.Sprite, SpriteEffects.None);
+                        break;
+
+                }
+            }
+
+
         }
     }
 }

@@ -71,7 +71,13 @@ namespace RecoilGame
             get { return isActive; }
             set { isActive = value; }
         }
-
+        
+        //allows to get or change the sprite of the game object
+        public Texture2D Sprite
+        {
+            get { return sprite; }
+            set { sprite = value; }
+        }
         /// <summary>
         /// Creates a new basic GameObject----
         /// </summary>

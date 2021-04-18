@@ -21,6 +21,9 @@ namespace RecoilGame
         private int maxHealth;
         private int health;
 
+        //Second health stat to retain the original if god mode is enabled and then disabled----
+        private int originalHealth;
+
         //Health properties----
         public int Health
         {
@@ -53,6 +56,7 @@ namespace RecoilGame
         {
             this.maxHealth = maxHealth;
             health = maxHealth;
+            originalHealth = maxHealth;
         }
 
         /// <summary>
@@ -69,6 +73,24 @@ namespace RecoilGame
             else
             {
                 health -= damage;
+            }
+        }
+
+        /// <summary>
+        /// Toggles god mode on or off. If on, the player gets the maximum integer value for their health----
+        /// </summary>
+        /// <param name="isEnabled">Whether or not god mode is on----</param>
+        public void SetGodMode(bool isEnabled)
+        {
+            if (isEnabled)
+            {
+                health = int.MaxValue;
+                maxHealth = int.MaxValue;
+            }
+            else
+            {
+                health = originalHealth;
+                maxHealth = originalHealth;
             }
         }
     }

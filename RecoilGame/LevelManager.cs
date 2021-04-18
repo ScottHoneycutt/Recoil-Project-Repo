@@ -303,7 +303,7 @@ namespace RecoilGame
             //Drawing the UI for the weapons----
             //Backgrounds, color based upon whether or not they are selected----
 
-            if (Game1.weaponManager.CurrentWeapon != null && Game1.weaponManager.Weapons.First.Value != null)
+            if (Game1.weaponManager.CurrentWeapon != null && Game1.weaponManager.Weapons.First != null)
             {
                 if (Game1.weaponManager.CurrentWeapon == Game1.weaponManager.Weapons.First.Value)
                 {

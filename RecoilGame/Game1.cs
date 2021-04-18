@@ -45,6 +45,18 @@ namespace RecoilGame
         private Button startButton;
         private Texture2D startHoverSprite;
         private Texture2D startUpSprite;
+
+        private Texture2D onHoverSprite;
+        private Texture2D onUpSprite;
+        private Texture2D offHoverSprite;
+        private Texture2D offUpSprite;
+        private Button godModeToggleOn;
+        private Button godModeToggleOff;
+
+        private Texture2D menuBGSprite;
+        private Rectangle menuBGRect;
+
+        //Victory variables----
         private Button nextButton;
         private Texture2D nextHoverSprite;
         private Texture2D nextUpSprite;
@@ -56,7 +68,7 @@ namespace RecoilGame
         public static LevelManager levelManager;
         public static WeaponManager weaponManager;
 
-        //background
+        //Level background
         public static Texture2D background;
 
         //Player
@@ -108,14 +120,27 @@ namespace RecoilGame
             playerManager = new PlayerManager(player, 4, 4, -10.5f, .6f, 1, .25f, 1);
 
             // TODO: use this.Content to load your game content here
-            //load bg
+            //load bg for levels
             background = Content.Load<Texture2D>("GameBG");
 
             //Creating the main menu----
+            //Start button----
             startHoverSprite = Content.Load<Texture2D>("start_ovr");
             startUpSprite = Content.Load<Texture2D>("start_up");
-            startButton = new Button(startUpSprite, startHoverSprite, 150, 300, 200, 100);
+            startButton = new Button(startUpSprite, startHoverSprite, 600, 800, 300, 150);
 
+            //God mode toggle----
+            onHoverSprite = Content.Load<Texture2D>("on button hover");
+            onUpSprite = Content.Load<Texture2D>("on button up");
+            offHoverSprite = Content.Load<Texture2D>("off button hover");
+            offUpSprite = Content.Load<Texture2D>("off button up");
+            godModeToggleOn = new Button(onUpSprite, onHoverSprite, 940, 630, 200, 100);
+            godModeToggleOn.IsActive = false;
+            godModeToggleOff = new Button(offUpSprite, offHoverSprite, 940, 630, 200, 100);
+
+            //Background image for main menu----
+            menuBGSprite = Content.Load<Texture2D>("Recoil start menu");
+            menuBGRect = new Rectangle(0, 0, 1500, 1000);
 
             //Creating the victory menu----
             nextHoverSprite = Content.Load<Texture2D>("next_ovr");
@@ -140,6 +165,24 @@ namespace RecoilGame
             //Main menu----
             if (currentGameState == GameState.MainMenu)
             {
+                //Toggle god mode buttons----
+                //Turning god mode on----
+                if (godModeToggleOff.CheckForClick(currentMouseState, prevMousState))
+                {
+                    playerManager.PlayerObject.SetGodMode(true);
+                    //Swapping active buttons----
+                    godModeToggleOff.IsActive = false;
+                    godModeToggleOn.IsActive = true;
+                }
+                //Turning god mode off----
+                else if (godModeToggleOn.CheckForClick(currentMouseState, prevMousState))
+                {
+                    playerManager.PlayerObject.SetGodMode(false);
+                    //Swapping active buttons----
+                    godModeToggleOff.IsActive = true;
+                    godModeToggleOn.IsActive = false;
+                }
+
                 //Clicking the start button puts the game into the Level state----
                 if (startButton.CheckForClick(currentMouseState, prevMousState))
                 {
@@ -227,7 +270,15 @@ namespace RecoilGame
             //Main menu----
             if (currentGameState == GameState.MainMenu)
             {
+                //Draw the background image first----
+                _spriteBatch.Draw(menuBGSprite, menuBGRect, Color.White);
+
+                //Start button----
                 startButton.Draw(_spriteBatch);
+
+                //God mode buttons (draw method handles whether they should be drawn based upon active/inactive)----
+                godModeToggleOff.Draw(_spriteBatch);
+                godModeToggleOn.Draw(_spriteBatch);
             }
             //Level state----
             else if (currentGameState == GameState.Level)

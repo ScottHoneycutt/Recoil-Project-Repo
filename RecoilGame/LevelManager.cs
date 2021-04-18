@@ -29,15 +29,18 @@ namespace RecoilGame
         private Texture2D testSprite;
         private SpriteFont arial20;
         private Texture2D shotgunUI;
+        private Texture2D shotgunUIUnequipped;
         private Texture2D rocketLauncherUI;
+        private Texture2D rocketUIUnequipped;
+
         //General----
         private Rectangle healthBarBackground;
         private Rectangle healthBar;
         private Text levelDisplay;
         //Weapon statuses----
-        private Rectangle shotgunCDBackground;
+        private Rectangle shotgunBG;
         private Rectangle shotgunCD;
-        private Rectangle rocketCDBackground;
+        private Rectangle rocketBG;
         private Rectangle rocketCD;
 
         //Property to easily get the list of all MapTiles----
@@ -76,7 +79,10 @@ namespace RecoilGame
             //Loading in sprites and spritefonts----
             testSprite = game.Content.Load<Texture2D>("square");
             shotgunUI = game.Content.Load<Texture2D>("recoil shotgun UI");
+            shotgunUIUnequipped = game.Content.Load<Texture2D>("recoil shotgun UI unequipped");
             rocketLauncherUI = game.Content.Load<Texture2D>("recoil rocket launcher UI");
+            rocketUIUnequipped = game.Content.Load<Texture2D>("recoil rocket launcher Unequipped");
+
             arial20 = game.Content.Load<SpriteFont>("Arial20");
 
             //Setting up UI elements----
@@ -85,9 +91,9 @@ namespace RecoilGame
             levelDisplay = new Text(arial20, new Vector2(20, 45), "Level " + currentLevel);
 
             //Setting up weapon cooldown displays for the UI----
-            shotgunCDBackground = new Rectangle(1290, 930, 50, 50);
+            shotgunBG = new Rectangle(1290, 930, 50, 50);
             shotgunCD = new Rectangle(1290, 930, 50, 0);
-            rocketCDBackground = new Rectangle(1360, 930, 50, 50);
+            rocketBG = new Rectangle(1360, 930, 50, 50);
             rocketCD = new Rectangle(1360, 930, 50, 0);
         }
 
@@ -256,7 +262,7 @@ namespace RecoilGame
             }
             else
             {
-                shotgunCD.Height = (int)((float)shotgunCDBackground.Height * shotgunCDfloat / shotgunMaxCD);
+                shotgunCD.Height = (int)((float)shotgunBG.Height * shotgunCDfloat / shotgunMaxCD);
             }
 
             //Only continue if the rocket launcher exists in the player's list of weapons----
@@ -273,7 +279,7 @@ namespace RecoilGame
                 }
                 else
                 {
-                    rocketCD.Height = (int)((float)rocketCDBackground.Height * rocketCDfloat / rocketMaxCD);
+                    rocketCD.Height = (int)((float)rocketBG.Height * rocketCDfloat / rocketMaxCD);
                 }
             }
         }
@@ -294,13 +300,28 @@ namespace RecoilGame
             //Current level display----
             levelDisplay.Draw(sb);
 
-            //Drawing the cooldowns for the weapons----
-            //Backgrounds----
-            sb.Draw(shotgunUI, shotgunCDBackground, Color.White);
-            sb.Draw(rocketLauncherUI, rocketCDBackground, Color.White);
-            //Cooldowns----
-            sb.Draw(testSprite, shotgunCD, Color.Gray);
-            sb.Draw(testSprite, rocketCD, Color.Gray);
+            //Drawing the UI for the weapons----
+            //Backgrounds, color based upon whether or not they are selected----
+
+            if (Game1.weaponManager.CurrentWeapon != null && Game1.weaponManager.Weapons.First != null)
+            {
+                if (Game1.weaponManager.CurrentWeapon == Game1.weaponManager.Weapons.First.Value)
+                {
+                    //Current weapon is the shotgun----
+                    sb.Draw(shotgunUI, shotgunBG, Color.White);
+                    sb.Draw(rocketUIUnequipped, rocketBG, Color.White);
+                }
+                else
+                {
+                    //Current weapon is the rocket launcher----
+                    sb.Draw(rocketLauncherUI, rocketBG, Color.White);
+                    sb.Draw(shotgunUIUnequipped, shotgunBG, Color.White);
+                }
+
+                //Cooldowns----
+                sb.Draw(testSprite, shotgunCD, Color.LightGray);
+                sb.Draw(testSprite, rocketCD, Color.LightGray);
+            }
         }
     }
 }

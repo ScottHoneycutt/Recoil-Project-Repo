@@ -162,6 +162,8 @@ namespace RecoilGame
             standingTextures = new List<Texture2D>();
             standingTextures.Add(game.Content.Load<Texture2D>("PinkGuyMid"));
             standingTextures.Add(game.Content.Load<Texture2D>("PinkGuyMid"));
+            standingTextures.Add(game.Content.Load<Texture2D>("PinkGuyMid"));
+            standingTextures.Add(game.Content.Load<Texture2D>("PinkGuyMidCrouch"));
             standingTextures.Add(game.Content.Load<Texture2D>("PinkGuyMidCrouch"));
             standingTextures.Add(game.Content.Load<Texture2D>("PinkGuyMidCrouch"));
 
@@ -624,18 +626,20 @@ namespace RecoilGame
         /// <param name="gameTime"></param>
         public void UpdateAnimation(GameTime gameTime)
         {
-            timeCounter += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            //keeping track of the time
+                timeCounter += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (timeCounter >= secondsPerFrame)
-            {
-                standingIndex++;
-                if (standingIndex >= 3) //walking animation will be 4 frames;
+                if (timeCounter >= secondsPerFrame)
                 {
-                    standingIndex = 0;
-                }
+                    standingIndex++;
+                    if (standingIndex >= 5) //walking animation will be 4 frames;
+                    {
+                        standingIndex = 0;
+                    }
 
-                timeCounter -= secondsPerFrame;
-            }
+                    timeCounter -= secondsPerFrame;
+                }
+            
         }
 
         /// <summary>
@@ -675,6 +679,7 @@ namespace RecoilGame
             {
                 switch (movementState)
                 {
+                    //quite simple, just draws the static sprite depending on the direction that player is facing
                     case MovementState.FaceLeft:
                         playerObject.DrawSpecial(sb, playerObject.Sprite, SpriteEffects.FlipHorizontally);
                         break;

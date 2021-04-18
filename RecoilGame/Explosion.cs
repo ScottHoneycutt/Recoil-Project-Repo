@@ -17,14 +17,16 @@ namespace RecoilGame
         private int damage;
         private float radius;
         private float playerKnockback;
+        private float startLifeTime;
         private float lifeTime;
         private bool isFriendly;
+        private List<Texture2D> textures;
 
         /// <summary>
         /// Creates an explosion with a specified radius, damage, and player knockback----
         /// </summary>
-        /// <param name="xPosition">The X coordinate of the object's rectangle (top left corner)----</param>
-        /// <param name="yPosition">The Y coordinate of the object's rectangle (top left corner)----</param>
+        /// <param name="xPosition">The X coordinate of the object's centered position----</param>
+        /// <param name="yPosition">The Y coordinate of the object's centered position----</param>
         /// <param name="width">The width of the rectangle----</param>
         /// <param name="height">The heigh of the rectangle----</param>
         /// <param name="texture">The texture to be displayed in the rectangle----</param>
@@ -36,15 +38,24 @@ namespace RecoilGame
         /// <param name="lifeTime">How long the explosion sprite lingers----</param>
         /// <param name="isFriendly">Whether or not the explosiond deals damage to enemies or
         /// the player----</param>
-        public Explosion(int xPosition, int yPosition, int width, int height, Texture2D texture, bool active,
+        public Explosion(int xPosition, int yPosition, int width, int height, List<Texture2D> textures, bool active,
             int damage, float radius, float playerKnockback, float lifeTime, bool isFriendly)
-            : base(xPosition, yPosition, width, height, texture, active)
+            : base(xPosition, yPosition, width, height, textures[0], active)
         {
+            this.textures = textures;
             this.damage = damage;
             this.radius = radius;
             this.playerKnockback = playerKnockback;
             this.lifeTime = lifeTime;
+            startLifeTime = lifeTime;
             this.isFriendly = isFriendly;
+
+            //Setting the position of the explosion to be centered on the given coordinates
+            //(which were the centered coordinates of the projectile upon collision)----
+            CenteredX = xPosition;
+            CenteredY = yPosition;
+            //Updating the projectile's rectangle to match the position----
+            ConvertPosToRect();
 
             //Exploding and reporting to the ProjectileManager----
             Explode();
@@ -100,6 +111,8 @@ namespace RecoilGame
         {
             lifeTime -= (float)gameTime.ElapsedGameTime.TotalSeconds;
 
+            //Playing through the different frames of the 
+
             //Reporting expiration to the ProjectileManager----
             if (lifeTime <= 0)
             {
@@ -108,5 +121,18 @@ namespace RecoilGame
             }
         }
 
+        /// <summary>
+        /// Draws/animates the explosion as it goes through its lifetime----
+        /// </summary>
+        /// <param name="sb">The spritebatch sused to draw this object----</param>
+        /// <param name="tint">The color to draw this object----</param>
+        public override void Draw(SpriteBatch sb, Color tint)
+        {
+            int currentFrameIndex = (int)(lifeTime / startLifeTime * 7);
+            sprite = textures[currentFrameIndex];
+
+            //Letting GameObject's draw method handle it after updating the texture to draw----
+            base.Draw(sb, tint);
+        }
     }
 }

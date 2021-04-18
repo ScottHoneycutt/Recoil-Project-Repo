@@ -20,15 +20,35 @@ namespace RecoilGame
         private List<Explosion> listOfExplosions;
         private List<Explosion> expiredExplosions;
 
+        private List<Texture2D> explosionTextures;
+
+        public List<Texture2D> ExplosionTextures
+        {
+            get
+            {
+                return explosionTextures;
+            }
+        }
+
         /// <summary>
         /// Constructor for the projectileManager class----
         /// </summary>
-        public ProjectileManager()
+        public ProjectileManager(Game1 game)
         {
             listOfProjectiles = new List<Projectile>();
             expiredProjectiles = new List<Projectile>();
             listOfExplosions = new List<Explosion>();
             expiredExplosions = new List<Explosion>();
+
+            //Adding in the explosion textures----
+            explosionTextures = new List<Texture2D>();
+            explosionTextures.Add(game.Content.Load<Texture2D>("explosion7"));
+            explosionTextures.Add(game.Content.Load<Texture2D>("explosion6"));
+            explosionTextures.Add(game.Content.Load<Texture2D>("explosion5"));
+            explosionTextures.Add(game.Content.Load<Texture2D>("explosion4"));
+            explosionTextures.Add(game.Content.Load<Texture2D>("explosion3"));
+            explosionTextures.Add(game.Content.Load<Texture2D>("explosion2"));
+            explosionTextures.Add(game.Content.Load<Texture2D>("explosion1"));
         }
 
         /// <summary>
@@ -41,12 +61,18 @@ namespace RecoilGame
             //Projectiles----
             foreach (Projectile proj in listOfProjectiles)
             {
-                proj.Simulate(gameTime);
+                if (proj.IsActive)
+                {
+                    proj.Simulate(gameTime);
+                }
             }
             //Explosions----
             foreach (Explosion explosion in listOfExplosions)
             {
-                explosion.CountDownLifeTime(gameTime);
+                if (explosion.IsActive)
+                {
+                    explosion.CountDownLifeTime(gameTime);
+                }
             }
         }
 
@@ -126,6 +152,15 @@ namespace RecoilGame
             {
                 explosion.Draw(sb, tint);
             }
+        }
+
+        /// <summary>
+        /// Clears both the projectile list and the explosion list----
+        /// </summary>
+        public void ClearAll()
+        {
+            listOfExplosions.Clear();
+            listOfProjectiles.Clear();
         }
     }
 }

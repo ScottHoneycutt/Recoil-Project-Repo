@@ -16,6 +16,20 @@ namespace RecoilGame
         private Texture2D normalSprite;
         private Texture2D hoverSprite;
         private Rectangle position;
+        private bool isActive;
+
+        //Property to turn the button on/off----
+        public bool IsActive
+        {
+            get
+            {
+                return isActive;
+            }
+            set
+            {
+                isActive = value;
+            }
+        }
 
         /// <summary>
         /// Constructor for button using components of rectangle
@@ -44,6 +58,9 @@ namespace RecoilGame
             this.normalSprite = normalSprite;
             this.hoverSprite = hoverSprite;
             this.position = position;
+
+            //Starts off active by default----
+            isActive = true;
         }
 
         /// <summary>
@@ -52,19 +69,23 @@ namespace RecoilGame
         /// <param name="sb"> SpriteBatch button is in </param>
         public void Draw(SpriteBatch sb)
         {
-            MouseState mouseState = Mouse.GetState();
+            //Only draw if the button is active----
+            if (isActive)
+            { 
+                MouseState mouseState = Mouse.GetState();
 
-            //if x and y pos of mouse is within position width / height
-            if (mouseState.X >= position.X &&
-                mouseState.X <= position.X + position.Width &&
-                mouseState.Y >= position.Y &&
-                mouseState.Y <= position.Y + position.Height)
-            {
-                sb.Draw(hoverSprite, position, Color.White);
-            }
-            else
-            {
-                sb.Draw(normalSprite, position, Color.White);
+                //if x and y pos of mouse is within position width / height
+                if (mouseState.X >= position.X &&
+                    mouseState.X <= position.X + position.Width &&
+                    mouseState.Y >= position.Y &&
+                    mouseState.Y <= position.Y + position.Height)
+                {
+                    sb.Draw(hoverSprite, position, Color.White);
+                }
+                else
+                {
+                    sb.Draw(normalSprite, position, Color.White);
+                }
             }
         }
 
@@ -75,22 +96,31 @@ namespace RecoilGame
         /// <returns>True if the user clicked on the button in this frame, false otherwise----</returns>
         public bool CheckForClick(MouseState currentMouseState, MouseState previousMouseState)
         {
-            //If the mouse is pressed now and was not pressed in the previous frame,
-            //AND the cursor is within the bounds of the button, then the button has 
-            //been clicked----
-            if (currentMouseState.LeftButton == ButtonState.Pressed && 
-                previousMouseState.LeftButton == ButtonState.Released &&
-                currentMouseState.X >= position.X &&
-                currentMouseState.X <= position.X + position.Width &&
-                currentMouseState.Y >= position.Y &&
-                currentMouseState.Y <= position.Y + position.Height)
+            //Only bother checking if the button is active----
+            if (isActive)
             {
-                return true;
+                //If the mouse is pressed now and was not pressed in the previous frame,
+                //AND the cursor is within the bounds of the button, then the button has 
+                //been clicked----
+                if (currentMouseState.LeftButton == ButtonState.Pressed &&
+                    previousMouseState.LeftButton == ButtonState.Released &&
+                    currentMouseState.X >= position.X &&
+                    currentMouseState.X <= position.X + position.Width &&
+                    currentMouseState.Y >= position.Y &&
+                    currentMouseState.Y <= position.Y + position.Height)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             else
             {
                 return false;
             }
+           
         }
     }
 }

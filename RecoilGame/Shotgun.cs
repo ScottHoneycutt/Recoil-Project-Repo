@@ -6,13 +6,15 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace RecoilGame
+namespace RecoilGame 
 {
     class Shotgun : PlayerWeapon
     {
         //Fields
         private float playerRecoil;
         private Texture2D projectileTexture;
+        private int damage;
+        private int numProjectiles;
 
         //CONSTRUCTOR
 
@@ -28,12 +30,18 @@ namespace RecoilGame
         /// <param name="cooldown">Float For Cooldown Of Shotgun</param>
         /// <param name="numOfProjectiles">Int For Number Of Shotgun Projectiles</param>
         /// <param name="playerRecoil">Float For Shotgun's Recoil</param>
-        public Shotgun(int xPos, int yPos, int width, int height, Texture2D sprite, bool isActive, 
-            float cooldown, int numOfProjectiles, int damage, float playerRecoil, Texture2D projectileTexture) 
-            : base(xPos, yPos, width, height, sprite, isActive, cooldown, numOfProjectiles, damage)
+        public Shotgun(int xPos, int yPos, int width, int height, Texture2D sprite, bool isActive, Texture2D projectileTexture) 
+        : base(xPos, yPos, width, height, sprite, isActive)
         {
-            this.playerRecoil = playerRecoil;
             this.projectileTexture = projectileTexture;
+
+
+            playerRecoil = 5;
+            CooldownAmt = 2;
+            damage = 15;
+            numProjectiles = 3;
+
+            Type = WeaponType.Shotgun;
         }
 
 
@@ -77,17 +85,62 @@ namespace RecoilGame
 
             float bulletSpeed = 8;
 
-            //Creates a new vector2 by multiplying the normalized values by bulletspeed
-            Vector2 direction = new Vector2(xNormalized*bulletSpeed, yNormalized*bulletSpeed);
+            Vector2 directionOne = new Vector2();
+            Vector2 directionTwo = new Vector2();
+            Vector2 directionThree = new Vector2();
+            
+            if(mouseX == player.CenteredX && mouseY == player.CenteredY)
+            {
+                return;
+            }
 
-            //Test to see if this will actually create a projectile and how it will work, then we'll add more since we want shotgun to have multiple projectiles
-            new Projectile(player.CenteredX, player.CenteredY, 7, 7, projectileTexture, true, direction, Damage, 5, 0.75f, false, true);
+            if(mouseX > player.CenteredX)
+            {
+                directionOne.X = 0;
+                directionTwo.X = 0;
+                directionThree.X = 0;
+            }
+            else if(mouseX < player.CenteredX)
+            {
+                directionOne.X = 0;
+                directionTwo.X = 0;
+                directionThree.X = 0;
+            }
+            else if(mouseX == player.CenteredX)
+            {
+                directionOne.X = 0;
+                directionTwo.X = 0;
+                directionThree.X = 0;
+            }
+
+            if(mouseY > player.CenteredY)
+            {
+                directionOne.Y = 0;
+                directionTwo.Y = 0;
+                directionThree.Y = 0;
+            }
+            else if(mouseY < player.CenteredY)
+            {
+                directionOne.Y = 0;
+                directionTwo.Y = 0;
+                directionThree.Y = 0;
+            }
+            else if(mouseY == player.CenteredY)
+            {
+                directionOne.Y = 0;
+                directionTwo.Y = 0;
+                directionThree.Y = 0;
+            }
+
+            new Projectile((int)player.CenteredX, (int)player.CenteredY, 7, 7, projectileTexture, true, directionOne, damage, 5, 0.75f, false, true, false);
+            new Projectile((int)player.CenteredX, (int)player.CenteredY, 7, 7, projectileTexture, true, directionTwo, damage, 5, 0.75f, false, true, false);
+            new Projectile((int)player.CenteredX, (int)player.CenteredY, 7, 7, projectileTexture, true, directionThree, damage, 5, 0.75f, false, true, false);
 
             //Calls playerManager's shooting capability method
             Game1.playerManager.ShootingCapability();
 
             //Sets the cooldown
-            this.CurrentCooldown = CooldownAmount;
+            CurrentCooldown = CooldownAmt;
         }
 
         //Update cooldown method
@@ -101,6 +154,11 @@ namespace RecoilGame
             
             //Subtracts elapsed time from current cooldown
             CurrentCooldown -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+        }
+
+        public override void UpdateCooldown(int amount)
+        {
+            CurrentCooldown = amount;
         }
     }
 }

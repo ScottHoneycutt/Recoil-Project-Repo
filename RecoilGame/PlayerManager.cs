@@ -28,21 +28,34 @@ namespace RecoilGame
         //3/29/21
         //Debugged Collision Detection, Added an Add Velco
 
+        /// <summary>
+        /// Scott Honeycutt----
+        /// 4/6/2021----
+        /// Started work on movement acceleration, separating the player inputs from external
+        /// effect velocity vectors. Had to rework a lot of stuff for this.----
+        /// </summary>
+
         private Player playerObject;
-        private List<PlayerWeapon> weaponList;
-        private PlayerWeapon currentWeapon;
         private KeyboardState prevKBState;
         private KeyboardState kbState;
         private MouseState prevMouseState;
         private MouseState mState;
         private PlayerState playerState;
-        private float groundSpeedX;
-        private float airSpeedX;
-        private Vector2 playerVelocity;
-        private Vector2 jumpVelocity;
         private Vector2 playerGravity;
         private bool isColliding;
 
+        //Fields created by Scott----
+        private Vector2 inputsVelocity;
+        private Vector2 effectsVelocity;
+        private Vector2 gravityVelocity;
+        private float maxGroundSpeed;
+        private float maxAirSpeed;
+        private float airResistance;
+        private float groundFriction;
+        private float yJumpVelocity;
+        private float inputAcceleration;
+
+        //Properties----
         public Player PlayerObject
         {
             get
@@ -75,24 +88,50 @@ namespace RecoilGame
             set { playerState = value; }
         }
 
+        
+
+        
+
         /// <summary>
-        /// PlayerManger constructor takes in the player object and values for movement
+        /// Constructor for the playermanager class. Contains a reference to the player----
         /// </summary>
-        /// <param name="player"></param> instance of player object
-        /// <param name="playerSpeedX"></param> the horizontal speed o fhte player
-        /// <param name="yJumpVelocity"></param> the jump velocity vector y value
-        /// <param name="yGravity"></param> the gravity vector y value
-        public PlayerManager(Player player, float groundSpeedX, float airSpeedX, float yJumpVelocity, float yGravity)
+        /// <param name="player">The player reference.</param>
+        /// <param name="maxInputGroundSpeed">The maximum speed the player can move on the ground
+        /// without an external force acting on them----</param>
+        /// <param name="maxInputAirSpeed">The maximum speed the player can move in the air
+        /// without an external force acting on them----</param>
+        /// <param name="yJumpVelocity">The initial velocity when jumping----</param>
+        /// <param name="yGravity">The acceleration from gravity----</param>
+        /// <param name="friction">The resistance applied to external effects on the ground----</param>
+        /// <param name="airResistance">The resistance applied to external effects in the air----</param>
+        /// <param name="inputAcceleration">The rate of acceleration for the player's inputs. Air 
+        /// acceleration is half the ground acceleration (ground is the value set here)----</param>
+        public PlayerManager(Player player, float maxInputGroundSpeed, float maxInputAirSpeed, float yJumpVelocity, 
+            float yGravity, float friction, float airResistance, float inputAcceleration)
         {
             playerObject = player;
             playerState = PlayerState.Grounded;
-            this.groundSpeedX = groundSpeedX;
-            this.airSpeedX = airSpeedX;
             isColliding = false;
             //creates the vectors using the passed in y values
-            jumpVelocity = new Vector2(0, yJumpVelocity);
             playerGravity = new Vector2(0, yGravity);
-            playerVelocity = Vector2.Zero;
+
+            //Two different velocity vectors that determine the overall velocity of the player
+            //(other than gravity)----
+            inputsVelocity = new Vector2(0, 0);
+            effectsVelocity = new Vector2(0, 0);
+
+            //These variables only affect inputsVelocity----
+            maxGroundSpeed = maxInputGroundSpeed;
+            maxAirSpeed = maxInputAirSpeed;
+            this.inputAcceleration = inputAcceleration;
+            this.yJumpVelocity = yJumpVelocity;
+
+            //These two variables only affect effectsVelocity----
+            groundFriction = friction;
+            this.airResistance = .25f;
+
+            //Total gravity accumulation----
+            gravityVelocity = Vector2.Zero;
         }
 
         /// <summary>
@@ -110,20 +149,74 @@ namespace RecoilGame
                     //System.Diagnostics.Debug.WriteLine("Grounded State");
                     //can move or jump
 
+                    //Resetting inputsVector's Y to 0 until the player jumps again----
+                    inputsVelocity.Y = 0;
+                    gravityVelocity = Vector2.Zero;
+
+                    //Moving left----
                     if (kbState.IsKeyDown(Keys.A))
                     {
-                        playerObject.XPos -= groundSpeedX;
+                        //Cannot exceed the maximum ground input speed----
+                        if (inputsVelocity.X > -maxGroundSpeed)
+                        {
+                            inputsVelocity.X -= inputAcceleration;
+                        }
                     }
+
+                    //Moving right----
                     if (kbState.IsKeyDown(Keys.D))
                     {
-                        playerObject.XPos += groundSpeedX;
+                        //Cannot exceed the maximum ground input speed----
+                        if (inputsVelocity.X < maxGroundSpeed)
+                        {
+                            inputsVelocity.X += inputAcceleration;
+                        }
                     }
+
+                    //No inputs result in movement stopping at the same rate as if the direction was reversed----
+                    if (!kbState.IsKeyDown(Keys.D) && !kbState.IsKeyDown(Keys.A))
+                    {
+                        if (inputsVelocity.X > inputAcceleration)
+                        {
+                            inputsVelocity.X -= inputAcceleration;
+                        }
+                        else if (inputsVelocity.X < -inputAcceleration)
+                        {
+                            inputsVelocity.X += inputAcceleration;
+                        }
+                        //Preventing the acceleration from "overshooting" 0----
+                        else
+                        {
+                            inputsVelocity.X = 0;
+                        }
+                    }
+
+                    //Jumping----
                     if (SingleKeyPress(Keys.W))
                     {
-                        playerVelocity.Y = jumpVelocity.Y;
+                        inputsVelocity.Y = yJumpVelocity;
                         playerState = PlayerState.Jump;
                     }
+
+                    //Applying ground friction to the effectsVelocity vector to prevent a sudden rigid stop----
+                    if (effectsVelocity.X > groundFriction)
+                    {
+                        effectsVelocity.X -= groundFriction;
+                    }
+                    else if (effectsVelocity.X < -groundFriction)
+                    {
+                        effectsVelocity.X += groundFriction;
+                    }
+                    //Preventing the friction from "overshooting" 0----
+                    else
+                    {
+                        effectsVelocity.X = 0;
+                    }
+
+
                     break;
+
+                    //Airborne----
                 case PlayerState.Airborn:
 
                     //System.Diagnostics.Debug.WriteLine("Airborn State");
@@ -131,35 +224,126 @@ namespace RecoilGame
                     //player has reduced aerial movement but can still jump
                     if (kbState.IsKeyDown(Keys.A))
                     {
-                        playerObject.XPos -= (airSpeedX);
+                        //Cannot exceed the maximum air input speed. Acceleration is half as fast----
+                        if (inputsVelocity.X > -maxAirSpeed)
+                        {
+                            inputsVelocity.X -= inputAcceleration / 2;
+                        }
                     }
                     if (kbState.IsKeyDown(Keys.D))
                     {
-                        playerObject.XPos += (airSpeedX);
+                        // Cannot exceed the maximum air input speed. Acceleration is half as fast----
+                        if (inputsVelocity.X < maxAirSpeed)
+                        {
+                            inputsVelocity.X += inputAcceleration / 2;
+                        }
                     }
                     if (SingleKeyPress(Keys.W))
                     {
-                        playerVelocity.Y = jumpVelocity.Y;
+                        inputsVelocity.Y = yJumpVelocity;
                         playerState = PlayerState.Jump;
+                        gravityVelocity = Vector2.Zero;
+                        effectsVelocity.Y = 0;
+                    }
+
+                    //No inputs result in movement stopping at the same rate as if the direction was reversed----
+                    if (!kbState.IsKeyDown(Keys.D) && !kbState.IsKeyDown(Keys.A))
+                    {
+                        if (inputsVelocity.X > inputAcceleration / 2)
+                        {
+                            inputsVelocity.X -= inputAcceleration / 2;
+                        }
+                        else if (inputsVelocity.X < -inputAcceleration / 2)
+                        {
+                            inputsVelocity.X += inputAcceleration / 2;
+                        }
+                        //Preventing the acceleration from "overshooting" 0----
+                        else
+                        {
+                            inputsVelocity.X = 0;
+                        }
+                    }
+
+                    //Applying air resistance to the effectsVelocity vector to cause decay before hitting the ground----
+                    if (effectsVelocity.X > airResistance)
+                    {
+                        effectsVelocity.X -= airResistance;
+                    }
+                    else if (effectsVelocity.X < -airResistance)
+                    {
+                        effectsVelocity.X += airResistance;
+                    }
+                    //Preventing the air resistance from "overshooting" 0----
+                    else
+                    {
+                        effectsVelocity.X = 0;
                     }
                     break;
+
+                    //Jump has been expended----
                 case PlayerState.Jump:
+
                     //System.Diagnostics.Debug.WriteLine("Jump State");
 
                     //can move when you jump but it is less useful (half as fast).
                     //can't jump again
                     if (kbState.IsKeyDown(Keys.A))
                     {
-                        playerObject.XPos -= (airSpeedX);
+                        //Cannot exceed the maximum air input speed. Acceleration is half as fast----
+                        if (inputsVelocity.X > -maxAirSpeed)
+                        {
+                            inputsVelocity.X -= inputAcceleration / 2;
+                        }
                     }
                     if (kbState.IsKeyDown(Keys.D))
                     {
-                        playerObject.XPos += (airSpeedX);
+                        // Cannot exceed the maximum air input speed. Acceleration is half as fast----
+                        if (inputsVelocity.X < maxAirSpeed)
+                        {
+                            inputsVelocity.X += inputAcceleration / 2;
+                        }
+                        //playerObject.XPos += (airSpeedX);
                     }
+
+                    //No inputs result in input movements stopping at the same rate as if the direction was reversed----
+                    if (!kbState.IsKeyDown(Keys.D) && !kbState.IsKeyDown(Keys.A))
+                    {
+                        if (inputsVelocity.X > inputAcceleration / 2)
+                        {
+                            inputsVelocity.X -= inputAcceleration / 2;
+                        }
+                        else if (inputsVelocity.X < -inputAcceleration / 2)
+                        {
+                            inputsVelocity.X += inputAcceleration / 2;
+                        }
+                        //Preventing the acceleration from "overshooting" 0----
+                        else
+                        {
+                            inputsVelocity.X = 0;
+                        }
+                    }
+
+                    //Applying air resistance to the effectsVelocity vector to cause decay before hitting the ground----
+                    if (effectsVelocity.X > airResistance)
+                    {
+                        effectsVelocity.X -= airResistance;
+                    }
+                    else if (effectsVelocity.X < -airResistance)
+                    {
+                        effectsVelocity.X += airResistance;
+                    }
+                    //Preventing the air resistance from "overshooting" 0----
+                    else
+                    {
+                        effectsVelocity.X = 0;
+                    }
+
                     break;
             }
 
-            //moving the rectangle
+            //Applying gravity, adding all the vectors up, and simulating movement----
+            gravityVelocity += playerGravity;
+            playerObject.Position += effectsVelocity + inputsVelocity + gravityVelocity;
             playerObject.ConvertPosToRect();
 
         }
@@ -184,11 +368,14 @@ namespace RecoilGame
             isColliding = false;
             Rectangle playerRect = playerObject.ObjectRect;
             playerObject.ConvertPosToRect();
+
+            //Checking for collisions between the player and all maptiles----
             foreach (MapTile mapTile in Game1.levelManager.ListOfMapTiles)
             {
                 
                 Rectangle tileRect = mapTile.ObjectRect;
                 
+                //If a collision is detected between player and a maptile----
                 if (playerRect.Intersects(tileRect))
                 {
 
@@ -202,23 +389,40 @@ namespace RecoilGame
                         if (playerRect.X < tileRect.X)
                         {
                             playerRect.X -= intersection.Width;
-                            playerVelocity.X = 0;
                             //System.Diagnostics.Debug.WriteLine("Wall to the right");
+
+                            //Resetting x velocity components moving towards the wall----
+                            if (effectsVelocity.X > 0)
+                            {
+                                effectsVelocity.X = 0;
+                            }
+                            if (inputsVelocity.X > 0)
+                            {
+                                inputsVelocity.X = 0;
+                            }
 
                         }
                         else
                         {
                             playerRect.X += intersection.Width;
-                            playerVelocity.X = 0;
                             //System.Diagnostics.Debug.WriteLine("Wall to the left");
 
-
+                            //Resetting x velocity components moving towards the wall----
+                            if (effectsVelocity.X < 0)
+                            {
+                                effectsVelocity.X = 0;
+                            }
+                            if (inputsVelocity.X < 0)
+                            {
+                                inputsVelocity.X = 0;
+                            }
                         }
                     }
-                    //if height is less than width than the player is moved up or down
+                    //if height is less than width then the player is moved up or down
                     if (intersection.Height <= intersection.Width)
                     {
                         //checking to see which direction to move
+                        //Tile is below the player----
                         if (playerRect.Y <= tileRect.Y)
                         {
                             isColliding = true;
@@ -226,32 +430,26 @@ namespace RecoilGame
                             playerRect.Y -= intersection.Height;
                             //Velocity has to add to 1.0 with gravity to maintain consistent collision detection
                             //with the floor
-                            playerVelocity.Y = 1 - playerGravity.Y;
-                            playerVelocity.X = 0;
-
+                            effectsVelocity.Y = 1 - playerGravity.Y;
 
                             playerState = PlayerState.Grounded;
                             //System.Diagnostics.Debug.WriteLine($"{isColliding}");
                             //System.Diagnostics.Debug.WriteLine($"{playerObject.YPos}");
                             //System.Diagnostics.Debug.WriteLine($"{playerObject.ObjectRect.Y}");
 
-
                         }
+                        //Tile is above the player----
                         else
                         {
 
                             playerRect.Y += intersection.Height;
-                            playerVelocity.Y = 0;
+                            effectsVelocity.Y = 0;
+                            inputsVelocity.Y = 0;
                             //System.Diagnostics.Debug.WriteLine("Wall above");
-
-
                         }
                     }
                     
                 }
-
-
-
 
             }
             //setting final positions
@@ -269,24 +467,16 @@ namespace RecoilGame
         }
 
         /// <summary>
-        /// Applies gravity to the player
-        /// </summary>
-        public void ApplyPlayerGravity()
-        {
-
-            playerVelocity += playerGravity;
-            playerObject.Position += playerVelocity;
-            playerObject.ConvertPosToRect();
-
-        }
-
-        /// <summary>
         /// Takes in a velocity vector and adds it to the current player velocity
         /// </summary>
         /// <param name="velocity"></param>
         public void AddVelocity(Vector2 velocity)
         {
-            playerVelocity += velocity;
+            effectsVelocity += velocity;
+
+            //Resetting other velocity vectors----
+            inputsVelocity.Y = 0;
+            gravityVelocity = Vector2.Zero;
         }
 
         /// <summary>
@@ -296,9 +486,13 @@ namespace RecoilGame
         {
             float playerRecoil = 15;
             MouseState mouseState = Mouse.GetState();
+
+            //Checking for a single mouse click----
             if (mouseState.LeftButton == ButtonState.Pressed && prevMouseState.LeftButton != ButtonState.Pressed)
             {
-                playerVelocity = Vector2.Zero;
+                //Reset input horizontal velocity----
+                inputsVelocity.X = 0; 
+
                 //get direction of vector
                 int xMouse = mouseState.X;
                 int yMouse = mouseState.Y;
@@ -311,11 +505,14 @@ namespace RecoilGame
                 double magnitude = Math.Sqrt((xDirection * xDirection) + (yDirection * yDirection));
                 float xNormalized = xDirection / (float)magnitude;
                 float yNormalized = yDirection / (float)magnitude;
-                Vector2 recoil = new Vector2(xNormalized * (playerRecoil / 2), yNormalized * playerRecoil);
+                Vector2 recoil = new Vector2(xNormalized * (playerRecoil), yNormalized * playerRecoil);
 
-                //Add velocity and adjust location
-                playerVelocity += recoil;
-                playerObject.ConvertPosToRect();
+                //Add velocity
+                effectsVelocity = recoil;
+
+                //Resetting other velocity vectors----
+                inputsVelocity.Y = 0;
+                gravityVelocity = Vector2.Zero;
 
                 //changes playerState to airborn (can still use jump) if done from the ground
                 /*
@@ -324,7 +521,7 @@ namespace RecoilGame
                     playerState = PlayerState.Airborn;
                 }
                 */
-                
+
             }
         }
     }

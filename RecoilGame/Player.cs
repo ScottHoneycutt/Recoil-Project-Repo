@@ -18,8 +18,28 @@ namespace RecoilGame
 
         //Fields
 
-
+        private int maxHealth;
         private int health;
+
+        //Second health stat to retain the original if god mode is enabled and then disabled----
+        private int originalHealth;
+
+        //Health properties----
+        public int Health
+        {
+            get
+            {
+                return health;
+            }
+        }
+        public int MaxHealth
+        {
+            get
+            {
+                return maxHealth;
+            }
+        }
+
 
         /// <summary>
         /// Param Constructor for Player Object
@@ -29,13 +49,14 @@ namespace RecoilGame
         /// <param name="width"></param> width of rectangle
         /// <param name="height"></param> height of rectangle
         /// <param name="texture"></param> player texture
-        /// <param name="velocity"></param> player velocity
-        /// <param name="health"></param> player health value
-        public Player(int x, int y, int width, int height, Texture2D texture, bool isActive, int health)
+        /// <param name="maxHealth">Player's maximum health value----</param> 
+        public Player(int x, int y, int width, int height, Texture2D texture, bool isActive, int maxHealth)
             : base(x, y, width, height, texture, isActive)
 
         {
-            this.health = health;
+            this.maxHealth = maxHealth;
+            health = maxHealth;
+            originalHealth = maxHealth;
         }
 
         /// <summary>
@@ -52,6 +73,24 @@ namespace RecoilGame
             else
             {
                 health -= damage;
+            }
+        }
+
+        /// <summary>
+        /// Toggles god mode on or off. If on, the player gets the maximum integer value for their health----
+        /// </summary>
+        /// <param name="isEnabled">Whether or not god mode is on----</param>
+        public void SetGodMode(bool isEnabled)
+        {
+            if (isEnabled)
+            {
+                health = int.MaxValue;
+                maxHealth = int.MaxValue;
+            }
+            else
+            {
+                health = originalHealth;
+                maxHealth = originalHealth;
             }
         }
     }

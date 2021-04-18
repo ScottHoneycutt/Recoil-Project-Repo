@@ -75,6 +75,28 @@ namespace RecoilGame
                 health -= damage;
             }
         }
+        /// <summary>
+        /// Used for player animation, takes in sprite effect and properly flips the player depending on direction the player is facing
+        /// </summary>
+        /// <param name="sb"></param>
+        /// <param name="tint"></param>
+        /// <param name="flip"></param>
+        public void DrawSpecial(SpriteBatch sb, Texture2D sprite, SpriteEffects flip)
+        {
+            if (isActive)
+            {
+                sb.Draw(
+                    sprite, 
+                    position, 
+                    new Rectangle(0, 0, objectRect.Width, objectRect.Height), 
+                    Color.White, 
+                    0.0f, 
+                    Vector2.Zero, 
+                    1.0f, 
+                    flip, 
+                    0.0f);
+            }
+        }
 
         /// <summary>
         /// Toggles god mode on or off. If on, the player gets the maximum integer value for their health----

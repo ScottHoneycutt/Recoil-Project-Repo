@@ -117,7 +117,7 @@ namespace RecoilGame
             //I'd get a null pointer error for the sprite texture
             
             player = new Player(200, 200, 60, 80, playerSprite, true, 100);
-            playerManager = new PlayerManager(player, 4, 4, -10.5f, .6f, 1, .25f, 1);
+            playerManager = new PlayerManager(player, 4, 4, -10.5f, .6f, 1, .25f, 1, this);
 
             // TODO: use this.Content to load your game content here
             //load bg for levels
@@ -218,6 +218,8 @@ namespace RecoilGame
                 //Player Physics
                 playerManager.MovePlayer();
                 playerManager.CheckForCollisions();
+                playerManager.UpdateAnimation(gameTime);
+                playerManager.HandleMovementState();
 
                 //Running enemy behaviors----
                 enemyManager.MoveEnemies();
@@ -294,8 +296,9 @@ namespace RecoilGame
                 projectileManager.Draw(_spriteBatch, Color.White);
 
                 projectileManager.Simulate(gameTime);
-                
-                player.Draw(_spriteBatch, Color.White);
+
+                //player.Draw(_spriteBatch, Color.White);
+                playerManager.AnimatePlayer(_spriteBatch);
 
                 //Drawing UI----
                 levelManager.DrawUI(_spriteBatch);

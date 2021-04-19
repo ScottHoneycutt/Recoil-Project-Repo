@@ -294,7 +294,7 @@ namespace RecoilGame
                     new Rectangle(0, 0, 300, 300), Color.White);
                 levelManager.DrawLevel(_spriteBatch);
 
-                enemyManager.Draw(_spriteBatch, Color.Red);
+                enemyManager.Draw(_spriteBatch, Color.White);
 
                 projectileManager.Draw(_spriteBatch, Color.White);
 

@@ -216,8 +216,8 @@ namespace RecoilGame
                     path += "\\";
                 }
 
-                /*Stream inStream = new FileStream(path + 
-                    "..\\..\\RecoilGame\\Content\\levels\\" + fileName, FileMode.Open);*/
+                Stream inStream = new FileStream(path + 
+                    "..\\..\\RecoilGame\\Content\\levels\\" + fileName, FileMode.Open);
 
                 // first two pieces are length / width of map
                 int tilesAcross = Convert.ToInt32(input.ReadLine());

@@ -32,6 +32,18 @@
 /processorParam:TextureFormat=Color
 /build:bulletTexture.png
 
+#begin EnemyTexture.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:EnemyTexture.png
+
 #begin explosion1.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -296,7 +308,7 @@
 /processorParam:TextureFormat=Color
 /build:rocketTexture.png
 
-#begin square.png
+#begin rpgSprite.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -306,9 +318,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:square.png
+/build:rpgSprite.png
 
-#begin start_ovr.png
+#begin shotgunSprite.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255

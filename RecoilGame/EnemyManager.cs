@@ -37,6 +37,7 @@ namespace RecoilGame
             deadEnemies = new List<Enemy>();
             projectileSprite = game.Content.Load<Texture2D>("square");
             enemyGravity = gravity;
+
         }
 
         /// <summary>

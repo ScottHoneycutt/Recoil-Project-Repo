@@ -71,6 +71,7 @@ namespace RecoilGame
             this.attackPeriod = attackPeriod;
             this.damage = damage;
             attackTimer = 0;
+            
 
             //Reporting this enemy's existence to the EnemyManager;
             Game1.enemyManager.ReportExists(this);

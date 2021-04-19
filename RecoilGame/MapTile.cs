@@ -29,6 +29,7 @@ namespace RecoilGame
         /// <param name="texture"></param> sprite texture
         /// <param name="isActive"></param> whether the tile appears on screen
         /// <param name="isObjective"></param> whether the tile acts an objective
+
         public MapTile(int xPosition, int yPosition, int width, int height, Texture2D texture, bool isActive, bool isObjective)
             : base(xPosition, yPosition, width, height, texture, isActive)
         {

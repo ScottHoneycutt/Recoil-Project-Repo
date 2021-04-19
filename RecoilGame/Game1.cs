@@ -96,7 +96,7 @@ namespace RecoilGame
 
             //Setting up manager classes (except PlayerManager, which gets set up in load)----
             projectileManager = new ProjectileManager(this);
-            enemyManager = new EnemyManager(this);
+            enemyManager = new EnemyManager(this, .6f);
             levelManager = new LevelManager(this);
             weaponManager = new WeaponManager(this);
 
@@ -221,13 +221,16 @@ namespace RecoilGame
                 }
 
                 //Player Physics
+                
                 playerManager.MovePlayer();
                 playerManager.CheckForCollisions();
                 playerManager.UpdateAnimation(gameTime);
                 playerManager.HandleMovementState();
 
                 //Running enemy behaviors----
+                
                 enemyManager.MoveEnemies();
+                enemyManager.CheckForCollisions();
                 enemyManager.SimulateBehaviors(gameTime);
 
                 //Simulating projectiles----

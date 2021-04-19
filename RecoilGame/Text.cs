@@ -49,9 +49,9 @@ namespace RecoilGame
         /// Draws the text to the screen----
         /// </summary>
         /// <param name="sb">Spritebatch used to draw the text----</param>
-        public void Draw(SpriteBatch sb)
+        public void Draw(SpriteBatch sb, Color color)
         {
-            sb.DrawString(spriteFont, text, fontPos, Color.White);
+            sb.DrawString(spriteFont, text, fontPos, color);
         }
     }
 }

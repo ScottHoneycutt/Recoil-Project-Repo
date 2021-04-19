@@ -144,13 +144,17 @@ namespace RecoilGame
             currentWeapon.Draw(sb, tint);
         }
 
+        /// <summary>
+        /// draws a sprite of a crosshair where the mouse is
+        /// </summary>
+        /// <param name="sb"></param>
         public void DrawCrosshair(SpriteBatch sb)
         {
             MouseState mouseState = Mouse.GetState();
             int x = mouseState.X;
             int y = mouseState.Y;
             sb.Draw(crosshairSprite,
-                new Rectangle(x - 7, y - 7, 15, 15),
+                new Rectangle(x - 15, y - 15, 30, 30),
                 Color.White);
         }
     }

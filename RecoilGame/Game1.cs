@@ -197,7 +197,7 @@ namespace RecoilGame
             else if (currentGameState == GameState.Level)
             {
                 //Updates the weapons position based on player's position
-                
+                IsMouseVisible = false;
                 if (weaponManager.CurrentWeapon != null)
                 {
                     weaponManager.CurrentWeapon.XPos = player.XPos;
@@ -311,7 +311,7 @@ namespace RecoilGame
                 levelManager.DrawUI(_spriteBatch);
 
                 //Draw crosshair
-                //weaponManager.DrawCrosshair(_spriteBatch);
+                weaponManager.DrawCrosshair(_spriteBatch);
             }
             //Victory screen----
             else if (currentGameState == GameState.Victory)

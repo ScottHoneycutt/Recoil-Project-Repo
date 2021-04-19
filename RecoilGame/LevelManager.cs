@@ -67,10 +67,14 @@ namespace RecoilGame
             }
         }
 
+        /// <summary>
+        /// Method to be called by the Player class whenever the player dies. Resets the current level
+        /// by re-generating it----
+        /// </summary>
         public void ResetCurrentLevel()
         {
-            currentLevel--;
-            //GenerateLevelFromFile("level" +currentLevel);
+            GenerateLevelFromFile("level" + currentLevel);
+            Game1.playerManager.PlayerObject.ResetHealth();
         }
 
         /// <summary>
@@ -158,7 +162,10 @@ namespace RecoilGame
                 //Removing all explosions and projectiles----
                 Game1.projectileManager.ClearAll();
 
+                //Resetting player HP----
+                Game1.playerManager.PlayerObject.ResetHealth();
 
+                //If there are no more levels, return false----
                 if (currentLevel == numberOfLevels)
                 {
                     currentLevel = 0;

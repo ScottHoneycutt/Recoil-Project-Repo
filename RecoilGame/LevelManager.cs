@@ -225,12 +225,19 @@ namespace RecoilGame
 
                 Vector2 playerPos = default;
                 string[] mapArray = null;
+                char[,] charMapArray = null;
 
                 // get each tile and add it to group
                 for (int i = 0; i < tilesAcross; i++)
                 {
                     string rowOfChar = input.ReadLine();
-                    mapArray[i] = rowOfChar; 
+
+                    int countOfChar = 0;
+                    foreach (char tileChar in rowOfChar.ToCharArray())
+                    {
+                        charMapArray[i, countOfChar] = tileChar;
+                        countOfChar++;
+                    }
 
                     for (int j = 0; j < tilesDown; j++)
                     {
@@ -268,8 +275,34 @@ namespace RecoilGame
 
                 // border rectangles
 
-/*                collisionRects.Add(new Rectangle(
-                    -1))*/
+                // left border
+                collisionRects.Add(new Rectangle(
+                     -1,
+                     -1,
+                     1,
+                     16 * tilesDown + 1));
+
+                // right border
+                collisionRects.Add(new Rectangle(
+                     tilesAcross * 16,
+                     -1,
+                     1,
+                     16 * tilesDown + 1));
+
+
+                // Top border
+                collisionRects.Add(new Rectangle(
+                     -1,
+                     -1,
+                     16 * tilesAcross + 1,
+                     1));
+
+                // bottom border
+                collisionRects.Add(new Rectangle(
+                     -1,
+                     tilesDown * 16,
+                     16 * tilesAcross + 1,
+                     1));
 
                 // go through walls - if two connected, connect boxes
 
@@ -277,7 +310,13 @@ namespace RecoilGame
 
                 for(int i = 0; i < tilesAcross; i++)
                 {
-                    
+                    for (int j = 0; i < tilesDown; j++)
+                    {
+                        if (charMapArray[i,j] == 'w')
+                        {
+
+                        }
+                    }
                 }
 
 

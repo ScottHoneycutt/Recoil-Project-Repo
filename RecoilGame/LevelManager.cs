@@ -39,7 +39,6 @@ namespace RecoilGame
         private Texture2D shotgunUIUnequipped;
         private Texture2D rocketLauncherUI;
         private Texture2D rocketUIUnequipped;
-
         //General----
         private Rectangle healthBarBackground;
         private Rectangle healthBar;

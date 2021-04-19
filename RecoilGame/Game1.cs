@@ -105,7 +105,6 @@ namespace RecoilGame
             currentKeyboardState = Keyboard.GetState();
             prevMousState = currentMouseState;
             prevKeyboardState = currentKeyboardState;
-
             base.Initialize();
         }
 
@@ -310,6 +309,9 @@ namespace RecoilGame
 
                 //Drawing UI----
                 levelManager.DrawUI(_spriteBatch);
+
+                //Draw crosshair
+                //weaponManager.DrawCrosshair(_spriteBatch);
             }
             //Victory screen----
             else if (currentGameState == GameState.Victory)

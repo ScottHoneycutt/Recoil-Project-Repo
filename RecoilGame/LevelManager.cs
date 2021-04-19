@@ -176,7 +176,7 @@ namespace RecoilGame
                 collisionTiles.Clear();
                 objectiveTile = null;
                 Game1.enemyManager.ListOfEnemies.Clear();
-                GenerateLevelFromFile("testLevel");
+                GenerateLevelFromFile("testLevel.rlv");
                 //GenerateTestLevel();
             }
             return true;
@@ -220,15 +220,14 @@ namespace RecoilGame
                     path += "\\";
                 }
 
-                Stream inStream = new FileStream(path + "..\\data\\" + fileName, FileMode.Open);
-                input = new StreamReader(inStream);
+                /*Stream inStream = new FileStream(path + 
+                    "..\\..\\RecoilGame\\Content\\levels\\" + fileName, FileMode.Open);*/
 
                 // first two pieces are length / width of map
                 int tilesAcross = Convert.ToInt32(input.ReadLine());
                 int tilesDown = Convert.ToInt32(input.ReadLine());
 
                 Vector2 playerPos = default;
-                string[] mapArray = null;
                 char[,] charMapArray = null;
 
                 // get each tile and add it to group
@@ -308,28 +307,159 @@ namespace RecoilGame
                      16 * tilesAcross + 1,
                      1));
 
-                // go through walls - if two connected, connect boxes
+                
 
-                bool newWall = true;
+                bool newBox = true;
+                bool boxCreated = false;
+                Vector2 positionOfBox = new Vector2();
+                int width = 0;
+                int height = 0;
+                MapTile headMapTile = null;
 
-                for(int i = 0; i < tilesAcross; i++)
+                // create for walls
+                for (int i = 0; i < tilesAcross; i++)
                 {
                     for (int j = 0; i < tilesDown; j++)
                     {
                         if (charMapArray[i,j] == 'w')
                         {
-
+                            if (newBox)
+                            {
+                                headMapTile =
+                                    textureTiles[i * tilesAcross + j];
+                                newBox = false;
+                                boxCreated = true;
+                                positionOfBox = headMapTile.Position;
+                                width = headMapTile.ObjectRect.Width;
+                                height = headMapTile.ObjectRect.Height;
+                            } else
+                            {
+                                height += headMapTile.ObjectRect.Height;
+                            }
                         }
+                        else if (!newBox && boxCreated)
+                        {
+                            collisionRects.Add(new Rectangle(
+                                (int)positionOfBox.X,
+                                (int)positionOfBox.Y,
+                                width,
+                                height));
+                            newBox = true;
+                            boxCreated = false;
+                        }
+                    }
+                    // edge case for bottom right
+                    if (boxCreated)
+                    {
+                        collisionRects.Add(new Rectangle(
+                        (int)positionOfBox.X,
+                        (int)positionOfBox.Y,
+                        width,
+                        height));
                     }
                 }
 
+                // create for floors
+
+                for (int i = 0; i < tilesDown; i++)
+                {
+                    for (int j = 0; i < tilesAcross; j++)
+                    {
+                        if (charMapArray[i, j] == 'f')
+                        {
+                            if (newBox)
+                            {
+                                headMapTile =
+                                    textureTiles[i * tilesAcross + j];
+                                newBox = false;
+                                boxCreated = true;
+                                positionOfBox = headMapTile.Position;
+                                width = headMapTile.ObjectRect.Width;
+                                height = headMapTile.ObjectRect.Height;
+                            }
+                            else
+                            {
+                                width += headMapTile.ObjectRect.Width;
+                            }
+                        }
+                        else if (!newBox && boxCreated)
+                        {
+                            collisionRects.Add(new Rectangle(
+                                (int)positionOfBox.X,
+                                (int)positionOfBox.Y,
+                                width,
+                                height));
+                            newBox = true;
+                            boxCreated = false;
+                        }
+                    }
+                    // edge case for bottom right
+                    if (boxCreated)
+                    {
+                        collisionRects.Add(new Rectangle(
+                        (int)positionOfBox.X,
+                        (int)positionOfBox.Y,
+                        width,
+                        height));
+                    }
+                }
+
+                // create for platforms
+                for (int i = 0; i < tilesDown; i++)
+                {
+                    for (int j = 0; i < tilesAcross; j++)
+                    {
+                        if (IsPlatform(charMapArray[i, j]))
+                        {
+                            if (newBox)
+                            {
+                                headMapTile =
+                                    textureTiles[i * tilesAcross + j];
+                                newBox = false;
+                                boxCreated = true;
+                                positionOfBox = headMapTile.Position;
+                                width = headMapTile.ObjectRect.Width;
+                                height = headMapTile.ObjectRect.Height;
+                            }
+                            else
+                            {
+                                width += headMapTile.ObjectRect.Width;
+                            }
+                        }
+                        else if (!newBox && boxCreated)
+                        {
+                            collisionRects.Add(new Rectangle(
+                                (int)positionOfBox.X,
+                                (int)positionOfBox.Y,
+                                width,
+                                height));
+                            newBox = true;
+                            boxCreated = false;
+                        }
+                    }
+                    // edge case for bottom right
+                    if (boxCreated)
+                    {
+                        collisionRects.Add(new Rectangle(
+                        (int)positionOfBox.X,
+                        (int)positionOfBox.Y,
+                        width,
+                        height));
+                    }
+                }
 
                 Game1.playerManager.PlayerObject.Position = playerPos;
                 Game1.playerManager.PlayerObject.ConvertPosToRect();
             } catch (Exception e)
             {
-
+                throw new Exception("Level loading failed.");
             }
+        }
+
+
+        private bool IsPlatform(char tileToCheck)
+        {
+            return tileToCheck == 'l' || tileToCheck == 'm' || tileToCheck == 'r';
         }
 
         /// <summary>

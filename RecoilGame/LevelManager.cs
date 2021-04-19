@@ -4,6 +4,13 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.ComponentModel;
+using System.Data;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using System.IO;
+using System.Reflection;
 
 namespace RecoilGame
 {
@@ -16,7 +23,7 @@ namespace RecoilGame
     public class LevelManager
     {
         //Map stuff----
-        private List<MapTile> listOfMapTiles;
+        private List<MapTile> collisionTiles;
         private List<MapTile> textureTiles;
         private int currentLevel;
         private int numberOfLevels;
@@ -32,7 +39,6 @@ namespace RecoilGame
         private Texture2D shotgunUIUnequipped;
         private Texture2D rocketLauncherUI;
         private Texture2D rocketUIUnequipped;
-
         //General----
         private Rectangle healthBarBackground;
         private Rectangle healthBar;
@@ -48,7 +54,7 @@ namespace RecoilGame
         {
             get
             {
-                return listOfMapTiles;
+                return collisionTiles;
             }
         }
 
@@ -68,9 +74,10 @@ namespace RecoilGame
         /// <param name="game">The instance of Game1 used to access Content----</param>
         public LevelManager(Game1 game)
         {
-            listOfMapTiles = new List<MapTile>();
+            collisionTiles = new List<MapTile>();
             textureTiles = new List<MapTile>();
             currentLevel = 0;
+            gameRef = game;
             
             //Setting objectiveTile to null until one appears in a level----
             objectiveTile = null;
@@ -103,13 +110,13 @@ namespace RecoilGame
         public void GenerateTestLevel()
         {
             //Left boundary----
-            listOfMapTiles.Add(new MapTile(0, 0, 50, 500, testSprite, true, false));
+            collisionTiles.Add(new MapTile(0, 0, 50, 500, testSprite, true, false));
             //Floor----
-            listOfMapTiles.Add(new MapTile(0, 500, 550, 50, testSprite, true, false));
+            collisionTiles.Add(new MapTile(0, 500, 550, 50, testSprite, true, false));
             //Right boundary----
-            listOfMapTiles.Add(new MapTile(500, 0, 50, 500, testSprite, true, false));
+            collisionTiles.Add(new MapTile(500, 0, 50, 500, testSprite, true, false));
             //Platform----
-            listOfMapTiles.Add(new MapTile(150, 300, 200, 50, testSprite, true, false));
+            collisionTiles.Add(new MapTile(150, 300, 200, 50, testSprite, true, false));
             //Objective----
             objectiveTile = new MapTile(450, 450, 50, 50, testSprite, true, true);
 
@@ -162,11 +169,11 @@ namespace RecoilGame
                 Game1.weaponManager.AddWeapon(currentLevel);
 
                 //Cleaning up the old level and transitioning to the new one----
-                listOfMapTiles.Clear();
+                collisionTiles.Clear();
                 objectiveTile = null;
                 Game1.enemyManager.ListOfEnemies.Clear();
-                //GenerateLevelFromFile();
-                GenerateTestLevel();
+                GenerateLevelFromFile("testLevel");
+                //GenerateTestLevel();
             }
             return true;
         }
@@ -184,7 +191,7 @@ namespace RecoilGame
             }
 
             //Drawing all other tiles----
-            foreach (MapTile tile in listOfMapTiles)
+            foreach (MapTile tile in collisionTiles)
             {
                 tile.Draw(sb, Color.White);
             }
@@ -197,7 +204,131 @@ namespace RecoilGame
         /// <param name="fileName">The name of the file to access for the level to generate----</param>
         private void GenerateLevelFromFile(string fileName)
         {
-            //NEEDS TO BE WORKED ON IN THE FUTURE----
+
+            StreamReader input = null;
+            try
+            {
+                //get file path
+                String path = Path.GetDirectoryName(
+                    Assembly.GetExecutingAssembly().Location);
+                if (String.Compare(path.Substring(path.Length-1, 1), "\\") != 0)
+                {
+                    path += "\\";
+                }
+
+                Stream inStream = new FileStream(path + "..\\data\\" + fileName, FileMode.Open);
+                input = new StreamReader(inStream);
+
+                // first two pieces are length / width of map
+                int tilesAcross = Convert.ToInt32(input.ReadLine());
+                int tilesDown = Convert.ToInt32(input.ReadLine());
+
+                Vector2 playerPos = default;
+                string[] mapArray = null;
+
+                // get each tile and add it to group
+                for (int i = 0; i < tilesAcross; i++)
+                {
+                    string rowOfChar = input.ReadLine();
+                    mapArray[i] = rowOfChar; 
+
+                    for (int j = 0; j < tilesDown; j++)
+                    {
+                        char charTileToPlace = rowOfChar[j];
+
+                        Texture2D textureFromChar =
+                            GetTextureFromChar(charTileToPlace);
+
+                        // if not air tile
+                        if (charTileToPlace != 'a')
+                        {
+                            textureTiles.Add(
+                            new MapTile(
+                                i,
+                                j,
+                                16,
+                                16,
+                                textureFromChar,
+                                true,
+                                charTileToPlace == 'o'
+                                ));
+
+
+                            if (charTileToPlace == 'p')
+                            {
+                                playerPos = new Vector2(i * 16, j * 16);
+                            }
+                        }
+                    }
+                }
+
+                // collision assumptions
+
+                List<Rectangle> collisionRects = new List<Rectangle>();
+
+                // border rectangles
+
+/*                collisionRects.Add(new Rectangle(
+                    -1))*/
+
+                // go through walls - if two connected, connect boxes
+
+                bool newWall = true;
+
+                for(int i = 0; i < tilesAcross; i++)
+                {
+                    
+                }
+
+
+                Game1.playerManager.PlayerObject.Position = playerPos;
+                Game1.playerManager.PlayerObject.ConvertPosToRect();
+            } catch (Exception e)
+            {
+
+            }
+        }
+
+        /// <summary>
+        /// Gets related texture from character in level editor
+        /// </summary>
+        /// <param name="charRepresentingTexture"> character representing 
+        /// texture </param>
+        /// <returns> Texture2D of map tile</returns>
+        private Texture2D GetTextureFromChar(char charRepresentingTexture)
+        {
+            Texture2D charAsTexture = null;
+            switch (charRepresentingTexture)
+            {
+                case 'w':
+                    charAsTexture = gameRef.Content.Load<Texture2D>("wall");
+                    break;
+                case 'f':
+                    charAsTexture = gameRef.Content.Load<Texture2D>("floor");
+                    break;
+                case 'a':
+                    charAsTexture = gameRef.Content.Load<Texture2D>("air");
+                    break;
+                case 'l':
+                    charAsTexture = gameRef.Content.Load<Texture2D>("platformleft");
+                    break;
+                case 'm':
+                    charAsTexture = gameRef.Content.Load<Texture2D>("platformmiddle");
+                    break;
+                case 'r':
+                    charAsTexture = gameRef.Content.Load<Texture2D>("platformright");
+                    break;
+                case 'o':
+                    charAsTexture = gameRef.Content.Load<Texture2D>("objective");
+                    break;
+                case 'p':
+                    charAsTexture = gameRef.Content.Load<Texture2D>("player");
+                    break;
+                case 'e':
+                    charAsTexture = gameRef.Content.Load<Texture2D>("enemy");
+                    break;
+            }
+            return charAsTexture;
         }
 
         /// <summary>

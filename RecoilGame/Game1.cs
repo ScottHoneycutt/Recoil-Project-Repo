@@ -61,6 +61,8 @@ namespace RecoilGame
         private Texture2D nextHoverSprite;
         private Texture2D nextUpSprite;
 
+        private Texture2D victoryBGSprite;
+
         //Manager classes----
         public static ProjectileManager projectileManager;
         public static PlayerManager playerManager;
@@ -143,10 +145,13 @@ namespace RecoilGame
             menuBGRect = new Rectangle(0, 0, 1500, 1000);
 
             //Creating the victory menu----
+            //Next button
             nextHoverSprite = Content.Load<Texture2D>("next_ovr");
             nextUpSprite = Content.Load<Texture2D>("next_up");
-            nextButton = new Button(nextUpSprite, nextHoverSprite, 150, 300, 200, 100);
+            nextButton = new Button(nextUpSprite, nextHoverSprite, 650, 700, 200, 100);
 
+            //Victory background----
+            victoryBGSprite = Content.Load<Texture2D>("Victory background");
         }
 
         protected override void Update(GameTime gameTime)
@@ -309,6 +314,10 @@ namespace RecoilGame
             //Victory screen----
             else if (currentGameState == GameState.Victory)
             {
+                //Drawing the background----
+                _spriteBatch.Draw(victoryBGSprite, menuBGRect, Color.White);
+
+                //Drawing the "next" button----
                 nextButton.Draw(_spriteBatch);
             }
 

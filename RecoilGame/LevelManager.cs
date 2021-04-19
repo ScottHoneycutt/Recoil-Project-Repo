@@ -71,6 +71,16 @@ namespace RecoilGame
         }
 
         /// <summary>
+        /// Method to be called by the Player class whenever the player dies. Resets the current level
+        /// by re-generating it----
+        /// </summary>
+        public void ResetCurrentLevel()
+        {
+            GenerateLevelFromFile("level" + currentLevel);
+            Game1.playerManager.PlayerObject.ResetHealth();
+        }
+
+        /// <summary>
         /// Constructor for the LevelManager class. Takes in the instance of Game1 so that
         /// assets can be loaded in from Content----
         /// </summary>
@@ -156,7 +166,10 @@ namespace RecoilGame
                 //Removing all explosions and projectiles----
                 Game1.projectileManager.ClearAll();
 
+                //Resetting player HP----
+                Game1.playerManager.PlayerObject.ResetHealth();
 
+                //If there are no more levels, return false----
                 if (currentLevel == numberOfLevels)
                 {
                     currentLevel = 0;
@@ -210,7 +223,7 @@ namespace RecoilGame
         {
 
             StreamReader input = null;
-            try
+            //try
             {
                 //get file path
                 String path = Path.GetDirectoryName(
@@ -220,8 +233,10 @@ namespace RecoilGame
                     path += "\\";
                 }
 
-                /*Stream inStream = new FileStream(path + 
-                    "..\\..\\RecoilGame\\Content\\levels\\" + fileName, FileMode.Open);*/
+                Stream inStream = new FileStream(
+                    "../../../testLevel.rlv", FileMode.Open);
+
+                input = new StreamReader(inStream);
 
                 // first two pieces are length / width of map
                 int tilesAcross = Convert.ToInt32(input.ReadLine());
@@ -450,10 +465,10 @@ namespace RecoilGame
 
                 Game1.playerManager.PlayerObject.Position = playerPos;
                 Game1.playerManager.PlayerObject.ConvertPosToRect();
-            } catch (Exception e)
+            } /*catch (Exception e)
             {
                 throw new Exception("Level loading failed.");
-            }
+            }*/
         }
 
 

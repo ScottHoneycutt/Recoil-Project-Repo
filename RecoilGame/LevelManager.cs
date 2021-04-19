@@ -49,6 +49,9 @@ namespace RecoilGame
         private Rectangle rocketBG;
         private Rectangle rocketCD;
 
+        //enemy texture
+        private Texture2D enemyTexture;
+
         //Property to easily get the list of all MapTiles----
         public List<MapTile> ListOfMapTiles
         {
@@ -65,6 +68,16 @@ namespace RecoilGame
             {
                 return currentLevel;
             }
+        }
+
+        /// <summary>
+        /// Method to be called by the Player class whenever the player dies. Resets the current level
+        /// by re-generating it----
+        /// </summary>
+        public void ResetCurrentLevel()
+        {
+            GenerateLevelFromFile("level" + currentLevel);
+            Game1.playerManager.PlayerObject.ResetHealth();
         }
 
         /// <summary>
@@ -89,6 +102,7 @@ namespace RecoilGame
             shotgunUIUnequipped = game.Content.Load<Texture2D>("recoil shotgun UI unequipped");
             rocketLauncherUI = game.Content.Load<Texture2D>("recoil rocket launcher UI");
             rocketUIUnequipped = game.Content.Load<Texture2D>("recoil rocket launcher Unequipped");
+            enemyTexture = game.Content.Load<Texture2D>("EnemyTexture");
 
             arial20 = game.Content.Load<SpriteFont>("Arial20");
 
@@ -126,7 +140,7 @@ namespace RecoilGame
 
             //Creating a single enemy for testing purposes (does not need to be stored because
             //it automatically stores itself in the EnemyManager)----
-            new Enemy(250, 150, 50, 50, testSprite, true, new Vector2(0, 0), 10, 3, 10);
+            new Enemy(250, 150, 50, 50, enemyTexture, true, new Vector2(0, 0), 10, 3, 10);
         }
 
         /// <summary>
@@ -152,7 +166,10 @@ namespace RecoilGame
                 //Removing all explosions and projectiles----
                 Game1.projectileManager.ClearAll();
 
+                //Resetting player HP----
+                Game1.playerManager.PlayerObject.ResetHealth();
 
+                //If there are no more levels, return false----
                 if (currentLevel == numberOfLevels)
                 {
                     currentLevel = 0;
@@ -206,7 +223,7 @@ namespace RecoilGame
         {
 
             StreamReader input = null;
-            try
+            //try
             {
                 //get file path
                 String path = Path.GetDirectoryName(
@@ -216,8 +233,10 @@ namespace RecoilGame
                     path += "\\";
                 }
 
-                Stream inStream = new FileStream(path + 
-                    "..\\..\\RecoilGame\\Content\\levels\\" + fileName, FileMode.Open);
+                Stream inStream = new FileStream(
+                    "../../../testLevel.rlv", FileMode.Open);
+
+                input = new StreamReader(inStream);
 
                 // first two pieces are length / width of map
                 int tilesAcross = Convert.ToInt32(input.ReadLine());
@@ -446,10 +465,10 @@ namespace RecoilGame
 
                 Game1.playerManager.PlayerObject.Position = playerPos;
                 Game1.playerManager.PlayerObject.ConvertPosToRect();
-            } catch (Exception e)
+            } /*catch (Exception e)
             {
                 throw new Exception("Level loading failed.");
-            }
+            }*/
         }
 
 

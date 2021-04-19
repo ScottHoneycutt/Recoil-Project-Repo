@@ -69,6 +69,8 @@ namespace RecoilGame
             if ((health - damage) <= 0)
             {
                 health = 0;
+                //If the player is dead (has no remaining health), reset the current level----
+                Game1.levelManager.ResetCurrentLevel();
             }
             else
             {
@@ -114,6 +116,14 @@ namespace RecoilGame
                 health = originalHealth;
                 maxHealth = originalHealth;
             }
+        }
+
+        /// <summary>
+        /// Resets the player's health to full----
+        /// </summary>
+        public void ResetHealth()
+        {
+            health = maxHealth;
         }
     }
 }

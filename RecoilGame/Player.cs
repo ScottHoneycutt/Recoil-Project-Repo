@@ -69,6 +69,7 @@ namespace RecoilGame
             if ((health - damage) <= 0)
             {
                 health = 0;
+                //If the player is dead (has no remaining health), reset the current level----
             }
             else
             {

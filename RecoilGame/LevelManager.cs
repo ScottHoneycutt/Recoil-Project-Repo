@@ -60,6 +60,12 @@ namespace RecoilGame
             }
         }
 
+        public void ResetCurrentLevel()
+        {
+            currentLevel--;
+            //GenerateLevelFromFile("level" +currentLevel);
+        }
+
         /// <summary>
         /// Constructor for the LevelManager class. Takes in the instance of Game1 so that
         /// assets can be loaded in from Content----

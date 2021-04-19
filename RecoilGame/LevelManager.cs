@@ -219,7 +219,7 @@ namespace RecoilGame
         {
 
             StreamReader input = null;
-            try
+            //try
             {
                 //get file path
                 String path = Path.GetDirectoryName(
@@ -229,8 +229,10 @@ namespace RecoilGame
                     path += "\\";
                 }
 
-                /*Stream inStream = new FileStream(path + 
-                    "..\\..\\RecoilGame\\Content\\levels\\" + fileName, FileMode.Open);*/
+                Stream inStream = new FileStream(
+                    "../../../testLevel.rlv", FileMode.Open);
+
+                input = new StreamReader(inStream);
 
                 // first two pieces are length / width of map
                 int tilesAcross = Convert.ToInt32(input.ReadLine());
@@ -459,10 +461,10 @@ namespace RecoilGame
 
                 Game1.playerManager.PlayerObject.Position = playerPos;
                 Game1.playerManager.PlayerObject.ConvertPosToRect();
-            } catch (Exception e)
+            } /*catch (Exception e)
             {
                 throw new Exception("Level loading failed.");
-            }
+            }*/
         }
 
 

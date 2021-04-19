@@ -32,6 +32,18 @@ namespace RecoilGame
             set { velocity = value; }
         }
 
+        public float XVelocity
+        {
+            get { return velocity.X; }
+            set { velocity.X = value; }
+        }
+
+        public float YVelocity
+        {
+            get { return velocity.Y; }
+            set { velocity.Y = value; }
+        }
+
         public int Damage
         {
             get { return damage; }
@@ -91,18 +103,6 @@ namespace RecoilGame
                 new Projectile((int)CenteredX, (int)CenteredY, 10, 10, projectileSprite, true, normalizedVector, Damage,
                     0, 2, false, false, true);
             }
-        }
-
-        /// <summary>
-        /// Move enemy according to velocity 
-        /// </summary>
-        public void Move()
-        {
-            position = new Vector2(
-                position.X + velocity.X,
-                position.Y + velocity.Y);
-
-            ConvertPosToRect();
         }
 
         /// <summary>

@@ -14,6 +14,8 @@ namespace RecoilGame
         private List<Texture2D> weaponTextures;
         private List<Texture2D> projectileTextures;
         private Texture2D crosshairSprite;
+        private Texture2D shotgunTexture;
+        private Texture2D rpgTexture;
 
         public WeaponManager(Game1 game)
         {

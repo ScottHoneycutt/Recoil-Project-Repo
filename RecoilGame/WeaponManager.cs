@@ -122,7 +122,7 @@ namespace RecoilGame
                     CurrentWeapon = weapons.Find(currentWeapon).Previous.Value;
                 }
             }
-            else if(currentWheelValue > prevWheelValue)
+            else
             {
                 if(weapons.Find(currentWeapon).Next == null)
                 {

@@ -479,8 +479,12 @@ namespace RecoilGame
                         {
 
                             playerRect.Y += intersection.Height;
+
+                            //Resetting velocity vectors----
                             effectsVelocity.Y = 0;
                             inputsVelocity.Y = 0;
+                            gravityVelocity.Y = 0;
+
                             //System.Diagnostics.Debug.WriteLine("Wall above");
                         }
                     }

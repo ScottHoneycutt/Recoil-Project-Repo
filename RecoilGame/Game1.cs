@@ -61,6 +61,8 @@ namespace RecoilGame
         private Texture2D nextHoverSprite;
         private Texture2D nextUpSprite;
 
+        private Texture2D victoryBGSprite;
+
         //Manager classes----
         public static ProjectileManager projectileManager;
         public static PlayerManager playerManager;
@@ -94,7 +96,7 @@ namespace RecoilGame
 
             //Setting up manager classes (except PlayerManager, which gets set up in load)----
             projectileManager = new ProjectileManager(this);
-            enemyManager = new EnemyManager(this);
+            enemyManager = new EnemyManager(this, .6f);
             levelManager = new LevelManager(this);
             weaponManager = new WeaponManager(this);
 
@@ -103,7 +105,6 @@ namespace RecoilGame
             currentKeyboardState = Keyboard.GetState();
             prevMousState = currentMouseState;
             prevKeyboardState = currentKeyboardState;
-
             base.Initialize();
         }
 
@@ -143,10 +144,13 @@ namespace RecoilGame
             menuBGRect = new Rectangle(0, 0, 1500, 1000);
 
             //Creating the victory menu----
+            //Next button
             nextHoverSprite = Content.Load<Texture2D>("next_ovr");
             nextUpSprite = Content.Load<Texture2D>("next_up");
-            nextButton = new Button(nextUpSprite, nextHoverSprite, 150, 300, 200, 100);
+            nextButton = new Button(nextUpSprite, nextHoverSprite, 650, 700, 200, 100);
 
+            //Victory background----
+            victoryBGSprite = Content.Load<Texture2D>("Victory background");
         }
 
         protected override void Update(GameTime gameTime)
@@ -195,6 +199,12 @@ namespace RecoilGame
                 //Updates the weapons position based on player's position
 
                 weaponManager.UpdatePosition();
+                IsMouseVisible = false;
+                if (weaponManager.CurrentWeapon != null)
+                {
+                    weaponManager.CurrentWeapon.XPos = player.XPos;
+                    weaponManager.CurrentWeapon.CenteredY = player.CenteredY;
+                }
 
                 if (currentMouseState.ScrollWheelValue != prevMousState.ScrollWheelValue)
                 {
@@ -212,13 +222,16 @@ namespace RecoilGame
                 }
 
                 //Player Physics
+                
                 playerManager.MovePlayer();
                 playerManager.CheckForCollisions();
                 playerManager.UpdateAnimation(gameTime);
                 playerManager.HandleMovementState();
 
                 //Running enemy behaviors----
+                
                 enemyManager.MoveEnemies();
+                enemyManager.CheckForCollisions();
                 enemyManager.SimulateBehaviors(gameTime);
 
                 //Simulating projectiles----
@@ -287,7 +300,7 @@ namespace RecoilGame
                     new Rectangle(0, 0, 300, 300), Color.White);
                 levelManager.DrawLevel(_spriteBatch);
 
-                enemyManager.Draw(_spriteBatch, Color.Red);
+                enemyManager.Draw(_spriteBatch, Color.White);
 
                 projectileManager.Draw(_spriteBatch, Color.White);
 
@@ -303,10 +316,17 @@ namespace RecoilGame
 
                 //Drawing UI----
                 levelManager.DrawUI(_spriteBatch);
+
+                //Draw crosshair
+                weaponManager.DrawCrosshair(_spriteBatch);
             }
             //Victory screen----
             else if (currentGameState == GameState.Victory)
             {
+                //Drawing the background----
+                _spriteBatch.Draw(victoryBGSprite, menuBGRect, Color.White);
+
+                //Drawing the "next" button----
                 nextButton.Draw(_spriteBatch);
             }
 

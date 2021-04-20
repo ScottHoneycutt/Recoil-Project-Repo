@@ -146,16 +146,17 @@ namespace RecoilGame
 
         public void UpdatePosition()
         {
-            Rectangle rectangle;
-
             foreach(PlayerWeapon weapon in weapons)
             {
-                rectangle = weapon.ObjectRect;
+                int x = (int)Game1.playerManager.PlayerObject.XPos + 55;
+                
+                int y = (int)Game1.playerManager.PlayerObject.YPos + 45;
 
-                rectangle.X= (int)Game1.playerManager.PlayerObject.XPos + 55;
-                rectangle.Y = (int)Game1.playerManager.PlayerObject.YPos + 45;
+                Vector2 newPos = new Vector2(x, y);
 
-                weapon.ObjectRect = rectangle;
+                weapon.Position = newPos;
+
+                weapon.ConvertPosToRect();
             }
         }
 
@@ -171,6 +172,27 @@ namespace RecoilGame
             sb.Draw(crosshairSprite,
                 new Rectangle(x - 15, y - 15, 30, 30),
                 Color.White);
+        }
+
+        public void UpdateRotation()
+        {
+            if(CurrentWeapon != null)
+            {
+                Game1.weaponManager.UpdatePosition();
+
+                MouseState mouse = Mouse.GetState();
+
+                Vector2 mousePosition = new Vector2(mouse.Y, mouse.X);
+
+                Vector2 distancePosition = currentWeapon.Position - mousePosition;
+
+                float rotation = (float)(4.75 - Math.Atan2(distancePosition.Y, distancePosition.X));
+
+                foreach (PlayerWeapon weapon in weapons)
+                {
+                    weapon.CurrentAngle = rotation;
+                }
+            }
         }
     }
 }

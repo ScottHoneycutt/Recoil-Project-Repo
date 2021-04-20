@@ -24,12 +24,8 @@ namespace RecoilGame
             weaponTextures = new List<Texture2D>();
             projectileTextures = new List<Texture2D>();
 
-            //adding weapon textures
-            rpgTexture = game.Content.Load<Texture2D>("rpgSprite");
-            shotgunTexture = game.Content.Load<Texture2D>("shotgunSprite");
-
-            weaponTextures.Add(shotgunTexture);
-            weaponTextures.Add(rpgTexture);
+            weaponTextures.Add(game.Content.Load<Texture2D>("shotgunSprite"));
+            weaponTextures.Add(game.Content.Load<Texture2D>("rpgSprite"));
 
             projectileTextures.Add(game.Content.Load<Texture2D>("bulletTexture"));
             projectileTextures.Add(game.Content.Load<Texture2D>("rocketTexture"));

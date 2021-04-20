@@ -37,7 +37,7 @@ namespace RecoilGame
 
         //User input containers----
         private MouseState currentMouseState;
-        private MouseState prevMousState;
+        private MouseState prevMouseState;
         private KeyboardState currentKeyboardState;
         private KeyboardState prevKeyboardState;
 
@@ -103,7 +103,7 @@ namespace RecoilGame
             //Setting up keyboard and mouse states----
             currentMouseState = Mouse.GetState();
             currentKeyboardState = Keyboard.GetState();
-            prevMousState = currentMouseState;
+            prevMouseState = currentMouseState;
             prevKeyboardState = currentKeyboardState;
             base.Initialize();
         }
@@ -171,7 +171,7 @@ namespace RecoilGame
             {
                 //Toggle god mode buttons----
                 //Turning god mode on----
-                if (godModeToggleOff.CheckForClick(currentMouseState, prevMousState))
+                if (godModeToggleOff.CheckForClick(currentMouseState, prevMouseState))
                 {
                     playerManager.PlayerObject.SetGodMode(true);
                     //Swapping active buttons----
@@ -179,7 +179,7 @@ namespace RecoilGame
                     godModeToggleOn.IsActive = true;
                 }
                 //Turning god mode off----
-                else if (godModeToggleOn.CheckForClick(currentMouseState, prevMousState))
+                else if (godModeToggleOn.CheckForClick(currentMouseState, prevMouseState))
                 {
                     playerManager.PlayerObject.SetGodMode(false);
                     //Swapping active buttons----
@@ -188,7 +188,7 @@ namespace RecoilGame
                 }
 
                 //Clicking the start button puts the game into the Level state----
-                if (startButton.CheckForClick(currentMouseState, prevMousState))
+                if (startButton.CheckForClick(currentMouseState, prevMouseState))
                 {
                     currentGameState = GameState.Level;
                 }
@@ -201,12 +201,14 @@ namespace RecoilGame
                 weaponManager.UpdatePosition();
                 IsMouseVisible = false;
 
-                if (currentMouseState.ScrollWheelValue != prevMousState.ScrollWheelValue)
+                //Scroll wheel or spacebar can switch player's weapon----
+                if (currentMouseState.ScrollWheelValue != prevMouseState.ScrollWheelValue || 
+                    (currentKeyboardState.IsKeyDown(Keys.Space) && !prevKeyboardState.IsKeyDown(Keys.Space)))
                 {
-                    weaponManager.SwitchWeapon(currentMouseState.ScrollWheelValue, prevMousState.ScrollWheelValue);
+                    weaponManager.SwitchWeapon(currentMouseState.ScrollWheelValue, prevMouseState.ScrollWheelValue);
                 }
 
-                if (currentMouseState.LeftButton == ButtonState.Pressed && prevMousState.LeftButton == ButtonState.Released)
+                if (currentMouseState.LeftButton == ButtonState.Pressed && prevMouseState.LeftButton == ButtonState.Released)
                 {
                     weaponManager.CurrentWeapon.Shoot();
                 }
@@ -250,7 +252,7 @@ namespace RecoilGame
             else if (currentGameState == GameState.Victory)
             {
                 //Clicking the next button puts the game into the MainMenu state----
-                if (nextButton.CheckForClick(currentMouseState, prevMousState))
+                if (nextButton.CheckForClick(currentMouseState, prevMouseState))
                 {
                     weaponManager.Weapons.Clear();
                     currentGameState = GameState.MainMenu;
@@ -258,10 +260,10 @@ namespace RecoilGame
             }
 
             //THIS SHOULD ALWAYS REMAIN LAST IN UPDATE. Refreshing previous inputs----
-            prevMousState = currentMouseState;
+            prevMouseState = currentMouseState;
             prevKeyboardState = currentKeyboardState;
             playerManager.PrevKB = currentKeyboardState;
-            playerManager.PrevMouse = prevMousState;
+            playerManager.PrevMouse = prevMouseState;
             base.Update(gameTime);
         }
 

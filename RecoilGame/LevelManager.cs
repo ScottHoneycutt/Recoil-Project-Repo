@@ -634,7 +634,7 @@ namespace RecoilGame
             sb.Draw(testSprite, healthBar, Color.DeepPink);
 
             //Current level display----
-            levelDisplay.Draw(sb);
+            levelDisplay.Draw(sb, Color.Black);
 
             //Drawing the UI for the weapons----
             //Backgrounds, color based upon whether or not they are selected----

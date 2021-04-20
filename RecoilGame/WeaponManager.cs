@@ -13,6 +13,7 @@ namespace RecoilGame
         private PlayerWeapon currentWeapon;
         private List<Texture2D> weaponTextures;
         private List<Texture2D> projectileTextures;
+        private Texture2D crosshairSprite;
 
         public WeaponManager(Game1 game)
         {
@@ -28,7 +29,7 @@ namespace RecoilGame
 
             projectileTextures.Add(game.Content.Load<Texture2D>("bulletTexture"));
             projectileTextures.Add(game.Content.Load<Texture2D>("rocketTexture"));
-
+            crosshairSprite = game.Content.Load<Texture2D>("crosshair");
         }
 
 
@@ -133,10 +134,28 @@ namespace RecoilGame
                 }
             }
         }
-
+        /// <summary>
+        /// draws the current weapon held
+        /// </summary>
+        /// <param name="sb"></param>
+        /// <param name="tint"></param>
         public void Draw(SpriteBatch sb, Color tint)
         {
             currentWeapon.Draw(sb, tint);
+        }
+
+        /// <summary>
+        /// draws a sprite of a crosshair where the mouse is
+        /// </summary>
+        /// <param name="sb"></param>
+        public void DrawCrosshair(SpriteBatch sb)
+        {
+            MouseState mouseState = Mouse.GetState();
+            int x = mouseState.X;
+            int y = mouseState.Y;
+            sb.Draw(crosshairSprite,
+                new Rectangle(x - 15, y - 15, 30, 30),
+                Color.White);
         }
     }
 }

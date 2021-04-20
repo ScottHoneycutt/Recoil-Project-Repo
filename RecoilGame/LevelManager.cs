@@ -189,7 +189,7 @@ namespace RecoilGame
                 collisionTiles.Clear();
                 objectiveTile = null;
                 Game1.enemyManager.ListOfEnemies.Clear();
-                GenerateLevelFromFile("testLevel.rlv");
+                GenerateLevelFromFile("testPlayerWallsFloorsObjectiveEnemy.rlv");
                 //GenerateTestLevel();
             }
             return true;
@@ -230,16 +230,9 @@ namespace RecoilGame
             StreamReader input = null;
             try
             {
-                //get file path
-                String path = Path.GetDirectoryName(
-                    Assembly.GetExecutingAssembly().Location);
-                if (String.Compare(path.Substring(path.Length-1, 1), "\\") != 0)
-                {
-                    path += "\\";
-                }
 
                 Stream inStream = new FileStream(
-                    "../../../testLevel.rlv", FileMode.Open);
+                    "../../../" + fileName, FileMode.Open);
 
                 input = new StreamReader(inStream);
 
@@ -270,10 +263,10 @@ namespace RecoilGame
                         // if not air tile
                             textureTiles.Add(
                             new MapTile(
-                                i,
-                                j,
-                                16,
-                                16,
+                                i * 8,
+                                j * 8,
+                                8,
+                                8,
                                 textureFromChar,
                                 true,
                                 charTileToPlace == 'o'
@@ -505,25 +498,25 @@ namespace RecoilGame
             switch (charRepresentingTexture)
             {
                 case 'w':
-                    charAsTexture = gameRef.Content.Load<Texture2D>("square");
+                    charAsTexture = gameRef.Content.Load<Texture2D>("wallTile");
                     break;
                 case 'f':
-                    charAsTexture = gameRef.Content.Load<Texture2D>("square");
+                    charAsTexture = gameRef.Content.Load<Texture2D>("floorTile");
                     break;
                 case 'a':
-                    charAsTexture = gameRef.Content.Load<Texture2D>("square");
+                    charAsTexture = gameRef.Content.Load<Texture2D>("emptyTile");
                     break;
                 case 'l':
-                    charAsTexture = gameRef.Content.Load<Texture2D>("square");
+                    charAsTexture = gameRef.Content.Load<Texture2D>("leftTile");
                     break;
                 case 'm':
-                    charAsTexture = gameRef.Content.Load<Texture2D>("square");
+                    charAsTexture = gameRef.Content.Load<Texture2D>("middleTile");
                     break;
                 case 'r':
-                    charAsTexture = gameRef.Content.Load<Texture2D>("square");
+                    charAsTexture = gameRef.Content.Load<Texture2D>("rightTile");
                     break;
                 case 'o':
-                    charAsTexture = gameRef.Content.Load<Texture2D>("square");
+                    charAsTexture = gameRef.Content.Load<Texture2D>("rocketTexture");
                     break;
                 case 'p':
                     charAsTexture = gameRef.Content.Load<Texture2D>("PinkGuyMid");

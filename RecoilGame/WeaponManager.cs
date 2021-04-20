@@ -146,16 +146,17 @@ namespace RecoilGame
 
         public void UpdatePosition()
         {
-            Rectangle rectangle;
-
             foreach(PlayerWeapon weapon in weapons)
             {
-                rectangle = weapon.ObjectRect;
+                int x = (int)Game1.playerManager.PlayerObject.XPos + 55;
+                
+                int y = (int)Game1.playerManager.PlayerObject.YPos + 45;
 
-                rectangle.X = (int)Game1.playerManager.PlayerObject.XPos + 55;
-                rectangle.Y = (int)Game1.playerManager.PlayerObject.YPos + 45;
+                Vector2 newPos = new Vector2(x, y);
 
-                weapon.ObjectRect = rectangle;
+                weapon.Position = newPos;
+
+                weapon.ConvertPosToRect();
             }
         }
 

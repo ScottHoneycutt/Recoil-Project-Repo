@@ -95,12 +95,12 @@ namespace RecoilGame
         public override void Draw(SpriteBatch sb, Color tint)
         {
             Game1.weaponManager.UpdatePosition();
-            System.Diagnostics.Debug.WriteLine(this.Position.X);
-            System.Diagnostics.Debug.WriteLine(this.ObjectRect.X);
+            System.Diagnostics.Debug.WriteLine(this.Position.Y);
+            System.Diagnostics.Debug.WriteLine(this.ObjectRect.Y);
 
             Rectangle weaponRect = objectRect;
 
-            Point origin = new Point(0, 0);
+            Point origin = new Point(0, weaponRect.Height/2);
 
             Game1.weaponManager.UpdateRotation();
 

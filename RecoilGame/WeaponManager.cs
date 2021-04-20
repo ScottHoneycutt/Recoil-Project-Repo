@@ -14,6 +14,8 @@ namespace RecoilGame
         private List<Texture2D> weaponTextures;
         private List<Texture2D> projectileTextures;
         private Texture2D crosshairSprite;
+        private Texture2D shotgunTexture;
+        private Texture2D rpgTexture;
 
         public WeaponManager(Game1 game)
         {
@@ -22,10 +24,12 @@ namespace RecoilGame
             weaponTextures = new List<Texture2D>();
             projectileTextures = new List<Texture2D>();
 
-            for(int x = 0; x < 4; x++)
-            {
-                weaponTextures.Add(game.Content.Load<Texture2D>("square"));
-            }
+            //adding weapon textures
+            rpgTexture = game.Content.Load<Texture2D>("rpgSprite");
+            shotgunTexture = game.Content.Load<Texture2D>("shotgunSprite");
+
+            weaponTextures.Add(shotgunTexture);
+            weaponTextures.Add(rpgTexture);
 
             projectileTextures.Add(game.Content.Load<Texture2D>("bulletTexture"));
             projectileTextures.Add(game.Content.Load<Texture2D>("rocketTexture"));

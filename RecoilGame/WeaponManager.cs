@@ -146,16 +146,17 @@ namespace RecoilGame
 
         public void UpdatePosition()
         {
-            Rectangle rectangle;
-
             foreach(PlayerWeapon weapon in weapons)
             {
-                rectangle = weapon.ObjectRect;
+                int x = (int)Game1.playerManager.PlayerObject.XPos + 55;
+                
+                int y = (int)Game1.playerManager.PlayerObject.YPos + 45;
 
-                rectangle.X = (int)Game1.playerManager.PlayerObject.XPos + 55;
-                rectangle.Y = (int)Game1.playerManager.PlayerObject.YPos + 45;
+                Vector2 newPos = new Vector2(x, y);
 
-                weapon.ObjectRect = rectangle;
+                weapon.Position = newPos;
+
+                weapon.ConvertPosToRect();
             }
         }
 
@@ -185,7 +186,7 @@ namespace RecoilGame
 
                 Vector2 distancePosition = currentWeapon.Position - mousePosition;
 
-                float rotation = (float)(4.65 - Math.Atan2(distancePosition.Y, distancePosition.X));
+                float rotation = (float)(4.75 - Math.Atan2(distancePosition.Y, distancePosition.X));
 
                 foreach (PlayerWeapon weapon in weapons)
                 {

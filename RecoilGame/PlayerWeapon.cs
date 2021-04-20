@@ -51,6 +51,7 @@ namespace RecoilGame
         public float CurrentAngle
         {
             get { return currentAngle; }
+            set { currentAngle = value; }
         }
 
         //CONSTRUCTOR
@@ -71,7 +72,8 @@ namespace RecoilGame
         {
             this.cooldownAmt = 0;
             this.currentCooldown = 0;
-            currentAngle = 0.0f;
+
+            Game1.weaponManager.UpdateRotation();
         }
 
 
@@ -98,17 +100,9 @@ namespace RecoilGame
 
             Point origin = new Point(0, weaponRect.Height/2);
 
-            MouseState mouse = Mouse.GetState();
+            Game1.weaponManager.UpdateRotation();
 
-            Vector2 mousePosition = new Vector2(mouse.Y, mouse.X);
-
-            Vector2 distancePosition = this.Position - mousePosition;
-
-            float rotation = (float)((3*Math.PI/2) - Math.Atan2(distancePosition.Y, distancePosition.X));
-
-            currentAngle = rotation;
-
-            sb.Draw(sprite, weaponRect, null, tint, rotation, origin.ToVector2(), SpriteEffects.None, 0.0f);
+            sb.Draw(sprite, weaponRect, null, tint, currentAngle, origin.ToVector2(), SpriteEffects.None, 0.0f);
         }
     }
 }

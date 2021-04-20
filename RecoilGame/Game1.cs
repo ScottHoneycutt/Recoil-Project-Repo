@@ -199,6 +199,8 @@ namespace RecoilGame
                 //Updates the weapons position based on player's position
 
                 weaponManager.UpdatePosition();
+                weaponManager.UpdateRotation();
+
                 IsMouseVisible = false;
 
                 //Scroll wheel or spacebar can switch player's weapon----

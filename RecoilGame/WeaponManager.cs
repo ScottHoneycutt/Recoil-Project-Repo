@@ -172,5 +172,26 @@ namespace RecoilGame
                 new Rectangle(x - 15, y - 15, 30, 30),
                 Color.White);
         }
+
+        public void UpdateRotation()
+        {
+            if(CurrentWeapon != null)
+            {
+                Game1.weaponManager.UpdatePosition();
+
+                MouseState mouse = Mouse.GetState();
+
+                Vector2 mousePosition = new Vector2(mouse.Y, mouse.X);
+
+                Vector2 distancePosition = currentWeapon.Position - mousePosition;
+
+                float rotation = (float)(4.65 - Math.Atan2(distancePosition.Y, distancePosition.X));
+
+                foreach (PlayerWeapon weapon in weapons)
+                {
+                    weapon.CurrentAngle = rotation;
+                }
+            }
+        }
     }
 }

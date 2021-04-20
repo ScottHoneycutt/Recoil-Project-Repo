@@ -96,9 +96,11 @@ namespace RecoilGame
 
             float angle = (float)((2*Math.PI) - CurrentAngle);
 
-            new Projectile(objectRect.X, (objectRect.Y - (objectRect.Height/2)), 20, 20, projectileTexture, true, bulletSpeed, angle, 10, 0, 7, false, true, false);
-            new Projectile(objectRect.X, (objectRect.Y - (objectRect.Height / 2)), 20, 20, projectileTexture, true, bulletSpeed, angle - 0.09f, 10, 0, 7, false, true, false);
-            new Projectile(objectRect.X, (objectRect.Y - (objectRect.Height / 2)), 20, 20, projectileTexture, true, bulletSpeed, angle + 0.09f, 10, 0, 7, false, true, false);
+            new Projectile(objectRect.X, (objectRect.Y - (objectRect.Height/2)), 10, 10, projectileTexture, true, bulletSpeed, angle, 10, 0, 7, false, true, false);
+            new Projectile(objectRect.X, (objectRect.Y - (objectRect.Height / 2)), 10, 10, projectileTexture, true, bulletSpeed, angle - 0.09f, 10, 0, 7, false, true, false);
+            new Projectile(objectRect.X, (objectRect.Y - (objectRect.Height / 2)), 10, 10, projectileTexture, true, bulletSpeed, angle + 0.09f, 10, 0, 7, false, true, false);
+            new Projectile(objectRect.X, (objectRect.Y - (objectRect.Height / 2)), 10, 10, projectileTexture, true, bulletSpeed, angle - 0.18f, 10, 0, 7, false, true, false);
+            new Projectile(objectRect.X, (objectRect.Y - (objectRect.Height / 2)), 10, 10, projectileTexture, true, bulletSpeed, angle + 0.18f, 10, 0, 7, false, true, false);
 
             //Calls playerManager's shooting capability method
             Game1.playerManager.ShootingCapability();

@@ -291,36 +291,36 @@ namespace RecoilGame
 
                 List<Rectangle> collisionRects = new List<Rectangle>();
 
-                // border rectangles
+                //Creating rigid map borders----
 
                 // left border
                 collisionRects.Add(new Rectangle(
-                     -1,
-                     -1,
-                     1,
-                     16 * tilesDown + 1));
+                     -51,
+                     -51,
+                     50,
+                     1100));
 
                 // right border
                 collisionRects.Add(new Rectangle(
-                     tilesAcross * 16,
-                     -1,
-                     1,
-                     16 * tilesDown + 1));
+                     1501,
+                     -51,
+                     50,
+                     1100));
 
 
                 // Top border
                 collisionRects.Add(new Rectangle(
-                     -1,
-                     -1,
-                     16 * tilesAcross + 1,
-                     1));
+                     -51,
+                     -51,
+                     1600,
+                     50));
 
                 // bottom border
                 collisionRects.Add(new Rectangle(
-                     -1,
-                     tilesDown * 16,
-                     16 * tilesAcross + 1,
-                     1));
+                     -51,
+                     1001,
+                     1600,
+                     50));
 
                 
 
@@ -465,7 +465,7 @@ namespace RecoilGame
 
                 foreach(Rectangle collisionRect in collisionRects)
                 {
-                    ListOfMapTiles.Add(new MapTile(
+                    collisionTiles.Add(new MapTile(
                         collisionRect.X,
                         collisionRect.Y,
                         collisionRect.Width,

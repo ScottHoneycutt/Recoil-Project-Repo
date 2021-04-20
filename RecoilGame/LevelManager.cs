@@ -207,8 +207,13 @@ namespace RecoilGame
                 objectiveTile.Draw(sb, Color.Yellow);
             }
 
-            //Drawing all other tiles----
             foreach (MapTile tile in collisionTiles)
+            {
+                tile.Draw(sb, Color.White);
+            }
+
+            //Drawing all other tiles----
+            foreach (MapTile tile in textureTiles)
             {
                 tile.Draw(sb, Color.White);
             }
@@ -223,7 +228,7 @@ namespace RecoilGame
         {
 
             StreamReader input = null;
-            //try
+            try
             {
                 //get file path
                 String path = Path.GetDirectoryName(
@@ -243,18 +248,16 @@ namespace RecoilGame
                 int tilesDown = Convert.ToInt32(input.ReadLine());
 
                 Vector2 playerPos = default;
-                char[,] charMapArray = null;
+                char[,] charMapArray = new char[tilesAcross, tilesDown];
 
                 // get each tile and add it to group
                 for (int i = 0; i < tilesAcross; i++)
                 {
                     string rowOfChar = input.ReadLine();
 
-                    int countOfChar = 0;
-                    foreach (char tileChar in rowOfChar.ToCharArray())
+                    for (int j = 0; j < rowOfChar.Length; j++)
                     {
-                        charMapArray[i, countOfChar] = tileChar;
-                        countOfChar++;
+                        charMapArray[i, j] = rowOfChar[j];
                     }
 
                     for (int j = 0; j < tilesDown; j++)
@@ -265,8 +268,6 @@ namespace RecoilGame
                             GetTextureFromChar(charTileToPlace);
 
                         // if not air tile
-                        if (charTileToPlace != 'a')
-                        {
                             textureTiles.Add(
                             new MapTile(
                                 i,
@@ -283,7 +284,6 @@ namespace RecoilGame
                             {
                                 playerPos = new Vector2(i * 16, j * 16);
                             }
-                        }
                     }
                 }
 
@@ -334,9 +334,9 @@ namespace RecoilGame
                 // create for walls
                 for (int i = 0; i < tilesAcross; i++)
                 {
-                    for (int j = 0; i < tilesDown; j++)
+                    for (int j = 0; j < tilesDown; j++)
                     {
-                        if (charMapArray[i,j] == 'w')
+                        if (charMapArray[i, j] == 'w')
                         {
                             if (newBox)
                             {
@@ -378,9 +378,9 @@ namespace RecoilGame
 
                 for (int i = 0; i < tilesDown; i++)
                 {
-                    for (int j = 0; i < tilesAcross; j++)
+                    for (int j = 0; j < tilesAcross; j++)
                     {
-                        if (charMapArray[i, j] == 'f')
+                        if (charMapArray[j, i] == 'f')
                         {
                             if (newBox)
                             {
@@ -422,9 +422,9 @@ namespace RecoilGame
                 // create for platforms
                 for (int i = 0; i < tilesDown; i++)
                 {
-                    for (int j = 0; i < tilesAcross; j++)
+                    for (int j = 0; j < tilesAcross; j++)
                     {
-                        if (IsPlatform(charMapArray[i, j]))
+                        if (IsPlatform(charMapArray[j, i]))
                         {
                             if (newBox)
                             {
@@ -463,12 +463,27 @@ namespace RecoilGame
                     }
                 }
 
+                foreach(Rectangle collisionRect in collisionRects)
+                {
+                    ListOfMapTiles.Add(new MapTile(
+                        collisionRect.X,
+                        collisionRect.Y,
+                        collisionRect.Width,
+                        collisionRect.Height,
+                        gameRef.Content.Load<Texture2D>("square"),
+                        true,
+                        false));
+                }
+
                 Game1.playerManager.PlayerObject.Position = playerPos;
                 Game1.playerManager.PlayerObject.ConvertPosToRect();
-            } /*catch (Exception e)
+            } catch (Exception e)
             {
                 throw new Exception("Level loading failed.");
-            }*/
+            } finally
+            {
+                input.Close();
+            }
         }
 
 
@@ -486,34 +501,35 @@ namespace RecoilGame
         private Texture2D GetTextureFromChar(char charRepresentingTexture)
         {
             Texture2D charAsTexture = null;
+            string fileNameToGet = "";
             switch (charRepresentingTexture)
             {
                 case 'w':
-                    charAsTexture = gameRef.Content.Load<Texture2D>("wall");
+                    charAsTexture = gameRef.Content.Load<Texture2D>("square");
                     break;
                 case 'f':
-                    charAsTexture = gameRef.Content.Load<Texture2D>("floor");
+                    charAsTexture = gameRef.Content.Load<Texture2D>("square");
                     break;
                 case 'a':
-                    charAsTexture = gameRef.Content.Load<Texture2D>("air");
+                    charAsTexture = gameRef.Content.Load<Texture2D>("square");
                     break;
                 case 'l':
-                    charAsTexture = gameRef.Content.Load<Texture2D>("platformleft");
+                    charAsTexture = gameRef.Content.Load<Texture2D>("square");
                     break;
                 case 'm':
-                    charAsTexture = gameRef.Content.Load<Texture2D>("platformmiddle");
+                    charAsTexture = gameRef.Content.Load<Texture2D>("square");
                     break;
                 case 'r':
-                    charAsTexture = gameRef.Content.Load<Texture2D>("platformright");
+                    charAsTexture = gameRef.Content.Load<Texture2D>("square");
                     break;
                 case 'o':
-                    charAsTexture = gameRef.Content.Load<Texture2D>("objective");
+                    charAsTexture = gameRef.Content.Load<Texture2D>("square");
                     break;
                 case 'p':
-                    charAsTexture = gameRef.Content.Load<Texture2D>("player");
+                    charAsTexture = gameRef.Content.Load<Texture2D>("PinkGuyMid");
                     break;
                 case 'e':
-                    charAsTexture = gameRef.Content.Load<Texture2D>("enemy");
+                    charAsTexture = gameRef.Content.Load<Texture2D>("EnemyTexture");
                     break;
             }
             return charAsTexture;
@@ -541,6 +557,7 @@ namespace RecoilGame
             //objectiveTile does not exist (and thus killing all enemies is the objective)----
             else
             {
+                return false;
                 if (Game1.enemyManager.ListOfEnemies.Count == 0)
                 {
                     return true;

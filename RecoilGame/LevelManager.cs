@@ -31,6 +31,7 @@ namespace RecoilGame
         private int playerSpawnX;
         private int playerSpawnY;
         private Game1 gameRef;
+        private int tileWidth = 20;
 
         //UI elements----
         private Texture2D testSprite;
@@ -189,7 +190,7 @@ namespace RecoilGame
                 collisionTiles.Clear();
                 objectiveTile = null;
                 Game1.enemyManager.ListOfEnemies.Clear();
-                GenerateLevelFromFile("testPlayerWallsFloorsObjectiveEnemy.rlv");
+                GenerateLevelFromFile("newTest.rlv");
                 //GenerateTestLevel();
             }
             return true;
@@ -228,11 +229,12 @@ namespace RecoilGame
         {
 
             StreamReader input = null;
-            try
+           try
             {
 
                 Stream inStream = new FileStream(
-                    "../../../" + fileName, FileMode.Open);
+                    "../../../Content/Levels/" +
+                    fileName, FileMode.Open);
 
                 input = new StreamReader(inStream);
 
@@ -260,13 +262,13 @@ namespace RecoilGame
                         Texture2D textureFromChar =
                             GetTextureFromChar(charTileToPlace);
 
-                        // if not air tile
+                        // draw tile to textureTiles
                             textureTiles.Add(
                             new MapTile(
-                                i * 8,
-                                j * 8,
-                                8,
-                                8,
+                                i * tileWidth,
+                                j * tileWidth,
+                                tileWidth,
+                                tileWidth,
                                 textureFromChar,
                                 true,
                                 charTileToPlace == 'o'
@@ -275,7 +277,7 @@ namespace RecoilGame
 
                             if (charTileToPlace == 'p')
                             {
-                                playerPos = new Vector2(i * 16, j * 16);
+                                playerPos = new Vector2(i * tileWidth, j * tileWidth);
                             }
                     }
                 }
@@ -316,7 +318,7 @@ namespace RecoilGame
                      50));
 
                 
-
+                // variables for collision generation
                 bool newBox = true;
                 bool boxCreated = false;
                 Vector2 positionOfBox = new Vector2();
@@ -329,18 +331,23 @@ namespace RecoilGame
                 {
                     for (int j = 0; j < tilesDown; j++)
                     {
+                        // if wall
                         if (charMapArray[i, j] == 'w')
                         {
+                            // and first
                             if (newBox)
                             {
+                                // create new rect
                                 headMapTile =
-                                    textureTiles[i * tilesAcross + j];
+                                    textureTiles[i * tilesDown + j];
                                 newBox = false;
                                 boxCreated = true;
                                 positionOfBox = headMapTile.Position;
                                 width = headMapTile.ObjectRect.Width;
                                 height = headMapTile.ObjectRect.Height;
-                            } else
+                            }
+                            // else add to previous rect
+                            else
                             {
                                 height += headMapTile.ObjectRect.Height;
                             }
@@ -470,12 +477,15 @@ namespace RecoilGame
 
                 Game1.playerManager.PlayerObject.Position = playerPos;
                 Game1.playerManager.PlayerObject.ConvertPosToRect();
+
+                input.Close();
+
             } catch (Exception e)
             {
                 throw new Exception("Level loading failed.");
             } finally
             {
-                input.Close();
+                
             }
         }
 
@@ -494,7 +504,6 @@ namespace RecoilGame
         private Texture2D GetTextureFromChar(char charRepresentingTexture)
         {
             Texture2D charAsTexture = null;
-            string fileNameToGet = "";
             switch (charRepresentingTexture)
             {
                 case 'w':
@@ -608,7 +617,7 @@ namespace RecoilGame
                 }
                 else
                 {
-                    rocketCD.Height = (int)((float)rocketBG.Height * rocketCDfloat / rocketMaxCD);
+                    rocketCD.Height = (int)(rocketBG.Height * rocketCDfloat / rocketMaxCD);
                 }
             }
         }

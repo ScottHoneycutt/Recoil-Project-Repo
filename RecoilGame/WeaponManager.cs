@@ -152,7 +152,7 @@ namespace RecoilGame
             {
                 rectangle = weapon.ObjectRect;
 
-                rectangle.X = (int)Game1.playerManager.PlayerObject.XPos + 55;
+                rectangle.X= (int)Game1.playerManager.PlayerObject.XPos + 55;
                 rectangle.Y = (int)Game1.playerManager.PlayerObject.YPos + 45;
 
                 weapon.ObjectRect = rectangle;

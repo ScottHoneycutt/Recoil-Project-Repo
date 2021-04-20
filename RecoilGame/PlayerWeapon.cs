@@ -93,6 +93,8 @@ namespace RecoilGame
         public override void Draw(SpriteBatch sb, Color tint)
         {
             Game1.weaponManager.UpdatePosition();
+            System.Diagnostics.Debug.WriteLine(this.Position.X);
+            System.Diagnostics.Debug.WriteLine(this.ObjectRect.X);
 
             Rectangle weaponRect = objectRect;
 

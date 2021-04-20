@@ -295,32 +295,32 @@ namespace RecoilGame
 
                 // left border
                 collisionRects.Add(new Rectangle(
-                     -1,
-                     -1,
-                     1,
-                     16 * tilesDown + 1));
+                     -10,
+                     -10,
+                     10,
+                     16 * tilesDown + 10));
 
                 // right border
                 collisionRects.Add(new Rectangle(
-                     tilesAcross * 16,
-                     -1,
-                     1,
-                     16 * tilesDown + 1));
+                     tilesAcross * 16 + 10,
+                     -10,
+                     10,
+                     16 * tilesDown + 10));
 
 
                 // Top border
                 collisionRects.Add(new Rectangle(
-                     -1,
-                     -1,
-                     16 * tilesAcross + 1,
-                     1));
+                     -10,
+                     -10,
+                     16 * tilesAcross + 10,
+                     10));
 
                 // bottom border
                 collisionRects.Add(new Rectangle(
-                     -1,
+                     -10,
                      tilesDown * 16,
-                     16 * tilesAcross + 1,
-                     1));
+                     16 * tilesAcross + 10,
+                     10));
 
                 
 
@@ -465,7 +465,7 @@ namespace RecoilGame
 
                 foreach(Rectangle collisionRect in collisionRects)
                 {
-                    ListOfMapTiles.Add(new MapTile(
+                    collisionTiles.Add(new MapTile(
                         collisionRect.X,
                         collisionRect.Y,
                         collisionRect.Width,

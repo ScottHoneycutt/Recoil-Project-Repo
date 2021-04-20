@@ -97,8 +97,8 @@ namespace RecoilGame
                 Vector2 normalizedVector = new Vector2(playerRef.CenteredX - CenteredX, 
                     playerRef.CenteredY - CenteredY);
                 normalizedVector.Normalize();
-                normalizedVector.X *= 15;
-                normalizedVector.Y *= 15;
+                normalizedVector.X *= 5;
+                normalizedVector.Y *= 5;
 
                 //Creating the projectile----
                 new Projectile((int)CenteredX, (int)CenteredY, 10, 10, projectileSprite, true, normalizedVector, Damage,

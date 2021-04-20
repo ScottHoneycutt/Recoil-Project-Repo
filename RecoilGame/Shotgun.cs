@@ -38,7 +38,7 @@ namespace RecoilGame
 
             playerRecoil = 5;
             CooldownAmt = 2;
-            damage = 15;
+            damage = 10;
             numProjectiles = 3;
 
             Type = WeaponType.Shotgun;

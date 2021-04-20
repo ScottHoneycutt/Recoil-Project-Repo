@@ -122,7 +122,7 @@ namespace RecoilGame
                     CurrentWeapon = weapons.Find(currentWeapon).Previous.Value;
                 }
             }
-            else if(currentWheelValue > prevWheelValue)
+            else
             {
                 if(weapons.Find(currentWeapon).Next == null)
                 {
@@ -148,9 +148,9 @@ namespace RecoilGame
         {
             foreach(PlayerWeapon weapon in weapons)
             {
-                int x = (int)Game1.playerManager.PlayerObject.XPos + 55;
+                int x = (int)Game1.playerManager.PlayerObject.CenteredX;
                 
-                int y = (int)Game1.playerManager.PlayerObject.YPos + 45;
+                int y = (int)Game1.playerManager.PlayerObject.CenteredY;
 
                 Vector2 newPos = new Vector2(x, y);
 
@@ -182,11 +182,37 @@ namespace RecoilGame
 
                 MouseState mouse = Mouse.GetState();
 
-                Vector2 mousePosition = new Vector2(mouse.Y, mouse.X);
+                Vector2 mousePosition = new Vector2(mouse.X, mouse.Y);
 
-                Vector2 distancePosition = currentWeapon.Position - mousePosition;
+                //Converting y coordinates to more conventional coordinates (where up is + and down is -)----
+                mousePosition.Y = mousePosition.Y + (500-mousePosition.Y)*2;
+                Vector2 adjustedWeaponPos = new Vector2(currentWeapon.Position.X, 
+                    currentWeapon.Position.Y + (500 - currentWeapon.Position.Y) * 2); 
 
-                float rotation = (float)(4.75 - Math.Atan2(distancePosition.Y, distancePosition.X));
+                Vector2 distancePosition = adjustedWeaponPos - mousePosition;
+
+                //Calculating angle for the right side of the player----
+                float rotation = (360/(2*MathF.PI))*MathF.Asin(distancePosition.Y/distancePosition.Length());
+
+                System.Diagnostics.Debug.WriteLine(rotation);
+
+                //Flipping rotation across the y axis if the cursor is on the left side of the player to correct the angle----
+                if (distancePosition.X > 0)
+                {
+                    System.Diagnostics.Debug.WriteLine("ding");
+
+                    if (distancePosition.Y > 0)
+                    {
+                        rotation = rotation + 2*(90 - rotation);
+                    }
+                    else
+                    {
+                        rotation = rotation + 2*(90 - rotation);
+                    }
+                }
+
+                //Converting rotation into radians so that it can be used again----
+                rotation = rotation / 360 * (2 * MathF.PI);
 
                 foreach (PlayerWeapon weapon in weapons)
                 {

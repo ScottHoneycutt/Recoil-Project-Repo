@@ -100,7 +100,7 @@ namespace RecoilGame
 
             Rectangle weaponRect = objectRect;
 
-            Point origin = new Point(0, weaponRect.Height/2);
+            Point origin = new Point(5, 10);
 
             Game1.weaponManager.UpdateRotation();
 

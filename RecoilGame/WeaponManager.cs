@@ -181,11 +181,19 @@ namespace RecoilGame
 
                 MouseState mouse = Mouse.GetState();
 
-                Vector2 mousePosition = new Vector2(mouse.Y, mouse.X);
+                Vector2 mousePosition = new Vector2(mouse.X, mouse.Y);
 
-                Vector2 distancePosition = currentWeapon.Position - mousePosition;
+                //Converting y coordinates to more conventional coordinates (where up is + and down is -)----
+                mousePosition.Y = mousePosition.Y + (500-mousePosition.Y)*2;
 
-                float rotation = (float)(4.65 - Math.Atan2(distancePosition.Y, distancePosition.X));
+                System.Diagnostics.Debug.WriteLine(mousePosition.X + ", " + mousePosition.Y);
+
+                Vector2 adjustedWeaponPos = new Vector2(currentWeapon.Position.X, 
+                    currentWeapon.Position.Y + (500 - currentWeapon.Position.Y) * 2); 
+
+                Vector2 distancePosition = adjustedWeaponPos - mousePosition;
+
+                float rotation = (float)(Math.Asin(distancePosition.Y/distancePosition.Length()));
 
                 foreach (PlayerWeapon weapon in weapons)
                 {

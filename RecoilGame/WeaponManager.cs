@@ -194,13 +194,9 @@ namespace RecoilGame
                 //Calculating angle for the right side of the player----
                 float rotation = (360/(2*MathF.PI))*MathF.Asin(distancePosition.Y/distancePosition.Length());
 
-                System.Diagnostics.Debug.WriteLine(rotation);
-
                 //Flipping rotation across the y axis if the cursor is on the left side of the player to correct the angle----
                 if (distancePosition.X > 0)
                 {
-                    System.Diagnostics.Debug.WriteLine("ding");
-
                     if (distancePosition.Y > 0)
                     {
                         rotation = rotation + 2*(90 - rotation);

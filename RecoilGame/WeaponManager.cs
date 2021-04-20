@@ -63,7 +63,7 @@ namespace RecoilGame
             {
                 case 1:
 
-                    currentWeapon = new Shotgun(0, 0, 50, 20, weaponTextures[0], true, projectileTextures[0]);
+                    currentWeapon = new Shotgun((int)Game1.playerManager.PlayerObject.XPos, (int)Game1.playerManager.PlayerObject.YPos, 50, 20, weaponTextures[0], true, projectileTextures[0]);
 
                     weapons.AddFirst(currentWeapon);
 
@@ -142,6 +142,21 @@ namespace RecoilGame
         public void Draw(SpriteBatch sb, Color tint)
         {
             currentWeapon.Draw(sb, tint);
+        }
+
+        public void UpdatePosition()
+        {
+            Rectangle rectangle;
+
+            foreach(PlayerWeapon weapon in weapons)
+            {
+                rectangle = weapon.ObjectRect;
+
+                rectangle.X = (int)Game1.playerManager.PlayerObject.XPos + 55;
+                rectangle.Y = (int)Game1.playerManager.PlayerObject.YPos + 45;
+
+                weapon.ObjectRect = rectangle;
+            }
         }
 
         /// <summary>

@@ -197,6 +197,8 @@ namespace RecoilGame
             else if (currentGameState == GameState.Level)
             {
                 //Updates the weapons position based on player's position
+
+                weaponManager.UpdatePosition();
                 IsMouseVisible = false;
                 if (weaponManager.CurrentWeapon != null)
                 {
@@ -308,6 +310,11 @@ namespace RecoilGame
 
                 //player.Draw(_spriteBatch, Color.White);
                 playerManager.AnimatePlayer(_spriteBatch);
+
+                if(weaponManager.CurrentWeapon != null)
+                {
+                    weaponManager.Draw(_spriteBatch, Color.White);
+                }
 
                 //Drawing UI----
                 levelManager.DrawUI(_spriteBatch);

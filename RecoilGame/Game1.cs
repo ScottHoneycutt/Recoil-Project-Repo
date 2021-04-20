@@ -200,11 +200,6 @@ namespace RecoilGame
 
                 weaponManager.UpdatePosition();
                 IsMouseVisible = false;
-                if (weaponManager.CurrentWeapon != null)
-                {
-                    weaponManager.CurrentWeapon.XPos = player.XPos;
-                    weaponManager.CurrentWeapon.CenteredY = player.CenteredY;
-                }
 
                 if (currentMouseState.ScrollWheelValue != prevMousState.ScrollWheelValue)
                 {

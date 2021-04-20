@@ -193,12 +193,8 @@ namespace RecoilGame
             else if (currentGameState == GameState.Level)
             {
                 //Updates the weapons position based on player's position
-                
-                if (weaponManager.CurrentWeapon != null)
-                {
-                    weaponManager.CurrentWeapon.XPos = player.XPos;
-                    weaponManager.CurrentWeapon.CenteredY = player.CenteredY;
-                }
+
+                weaponManager.UpdatePosition();
 
                 if (currentMouseState.ScrollWheelValue != prevMousState.ScrollWheelValue)
                 {
@@ -299,6 +295,11 @@ namespace RecoilGame
 
                 //player.Draw(_spriteBatch, Color.White);
                 playerManager.AnimatePlayer(_spriteBatch);
+
+                if(weaponManager.CurrentWeapon != null)
+                {
+                    weaponManager.Draw(_spriteBatch, Color.White);
+                }
 
                 //Drawing UI----
                 levelManager.DrawUI(_spriteBatch);

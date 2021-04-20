@@ -21,6 +21,7 @@ namespace RecoilGame
         private WeaponType weaponType;
         private float cooldownAmt;
         private float currentCooldown;
+        private float currentAngle;
 
 
         public WeaponType Type
@@ -47,6 +48,11 @@ namespace RecoilGame
             set { currentCooldown = value; }
         }
 
+        public float CurrentAngle
+        {
+            get { return currentAngle; }
+        }
+
         //CONSTRUCTOR
 
         /// <summary>
@@ -65,6 +71,7 @@ namespace RecoilGame
         {
             this.cooldownAmt = 0;
             this.currentCooldown = 0;
+            currentAngle = 0.0f;
         }
 
 
@@ -85,7 +92,23 @@ namespace RecoilGame
 
         public override void Draw(SpriteBatch sb, Color tint)
         {
-            base.Draw(sb, tint);
+            Game1.weaponManager.UpdatePosition();
+
+            Rectangle weaponRect = objectRect;
+
+            Point origin = new Point(0, weaponRect.Height/2);
+
+            MouseState mouse = Mouse.GetState();
+
+            Vector2 mousePosition = new Vector2(mouse.Y, mouse.X);
+
+            Vector2 distancePosition = this.Position - mousePosition;
+
+            float rotation = (float)((3*Math.PI/2) - Math.Atan2(distancePosition.Y, distancePosition.X));
+
+            currentAngle = rotation;
+
+            sb.Draw(sprite, weaponRect, null, tint, rotation, origin.ToVector2(), SpriteEffects.None, 0.0f);
         }
     }
 }

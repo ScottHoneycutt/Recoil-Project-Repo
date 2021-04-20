@@ -83,58 +83,22 @@ namespace RecoilGame
             float xNormalized = xDirection / (float)magnitude;
             float yNormalized = yDirection / (float)magnitude;
 
-            float bulletSpeed = 8;
+            float bulletSpeed = 5.0f;
 
-            Vector2 directionOne = new Vector2();
-            Vector2 directionTwo = new Vector2();
-            Vector2 directionThree = new Vector2();
+            Point mousePoint = new Point((int)mouseX, (int)mouseY);
             
-            if(mouseX == player.CenteredX && mouseY == player.CenteredY)
+            if(player.ObjectRect.Contains(mousePoint))
             {
                 return;
             }
 
-            if(mouseX > player.CenteredX)
-            {
-                directionOne.X = 0;
-                directionTwo.X = 0;
-                directionThree.X = 0;
-            }
-            else if(mouseX < player.CenteredX)
-            {
-                directionOne.X = 0;
-                directionTwo.X = 0;
-                directionThree.X = 0;
-            }
-            else if(mouseX == player.CenteredX)
-            {
-                directionOne.X = 0;
-                directionTwo.X = 0;
-                directionThree.X = 0;
-            }
+            Vector2 direction = new Vector2(xNormalized, yNormalized);
 
-            if(mouseY > player.CenteredY)
-            {
-                directionOne.Y = 0;
-                directionTwo.Y = 0;
-                directionThree.Y = 0;
-            }
-            else if(mouseY < player.CenteredY)
-            {
-                directionOne.Y = 0;
-                directionTwo.Y = 0;
-                directionThree.Y = 0;
-            }
-            else if(mouseY == player.CenteredY)
-            {
-                directionOne.Y = 0;
-                directionTwo.Y = 0;
-                directionThree.Y = 0;
-            }
+            float angle = (float)((2*Math.PI) - CurrentAngle);
 
-            new Projectile((int)player.CenteredX, (int)player.CenteredY, 7, 7, projectileTexture, true, directionOne, damage, 5, 0.75f, false, true, false);
-            new Projectile((int)player.CenteredX, (int)player.CenteredY, 7, 7, projectileTexture, true, directionTwo, damage, 5, 0.75f, false, true, false);
-            new Projectile((int)player.CenteredX, (int)player.CenteredY, 7, 7, projectileTexture, true, directionThree, damage, 5, 0.75f, false, true, false);
+            new Projectile(objectRect.X, (objectRect.Y - (objectRect.Height/2)), 20, 20, projectileTexture, true, bulletSpeed, angle, 10, 0, 7, false, true, false);
+            new Projectile(objectRect.X, (objectRect.Y - (objectRect.Height / 2)), 20, 20, projectileTexture, true, bulletSpeed, angle - 0.09f, 10, 0, 7, false, true, false);
+            new Projectile(objectRect.X, (objectRect.Y - (objectRect.Height / 2)), 20, 20, projectileTexture, true, bulletSpeed, angle + 0.09f, 10, 0, 7, false, true, false);
 
             //Calls playerManager's shooting capability method
             Game1.playerManager.ShootingCapability();

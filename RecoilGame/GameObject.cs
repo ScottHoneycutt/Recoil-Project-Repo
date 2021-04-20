@@ -22,6 +22,10 @@ namespace RecoilGame
             {
                 return objectRect;
             }
+            set
+            {
+                objectRect = value;
+            }
         }
         //position vector coordinate positions
         public float XPos
@@ -34,6 +38,16 @@ namespace RecoilGame
         {
             get { return position.Y; }
             set { position.Y = value; }
+        }
+
+        public float Width
+        {
+            get { return objectRect.Width; }
+        }
+
+        public float Height
+        {
+            get { return objectRect.Height; }
         }
 
         public Vector2 Position

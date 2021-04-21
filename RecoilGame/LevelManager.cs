@@ -157,7 +157,7 @@ namespace RecoilGame
 
                 Game1.weaponManager.AddWeapon(currentLevel);
 
-                GenerateLevelFromFile("newTest.rlv");
+                GenerateLevelFromFile("level" + currentLevel + ".rlv");
             }
 
             //If the objective has been completed----
@@ -190,7 +190,7 @@ namespace RecoilGame
                 textureTiles.Clear();
                 objectiveTile = null;
                 Game1.enemyManager.ListOfEnemies.Clear();
-                GenerateLevelFromFile("newTest.rlv");
+                GenerateLevelFromFile("level" + currentLevel + ".rlv");
             }
             return true;
         }
@@ -214,7 +214,7 @@ namespace RecoilGame
 
             foreach (MapTile tile in collisionTiles)
             {
-                tile.Draw(sb, Color.Red);
+                tile.Draw(sb, Color.White);
             }
 
             //Drawing all other tiles----
@@ -230,8 +230,8 @@ namespace RecoilGame
         {
 
             StreamReader input = null;
-            try
-            {
+/*            try
+            {*/
 
                 Stream inStream = new FileStream(
                     "../../../Content/Levels/" +
@@ -545,7 +545,7 @@ namespace RecoilGame
 
                 Game1.playerManager.PlayerObject.Position = playerPos;
                 Game1.playerManager.PlayerObject.ConvertPosToRect();
-        } 
+/*        } 
             catch (Exception e)
             {
                 throw new Exception("Level loading failed.");
@@ -553,7 +553,7 @@ namespace RecoilGame
             finally
             {
                 input.Close();
-            }
+            }*/
         }
 
 
@@ -580,7 +580,7 @@ namespace RecoilGame
                     charAsTexture = gameRef.Content.Load<Texture2D>("floorTile");
                     break;
                 case 'a':
-                    charAsTexture = gameRef.Content.Load<Texture2D>("emptyTile");
+                    charAsTexture = gameRef.Content.Load<Texture2D>("airTile");
                     break;
                 case 'l':
                     charAsTexture = gameRef.Content.Load<Texture2D>("leftTile");

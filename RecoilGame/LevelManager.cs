@@ -77,7 +77,7 @@ namespace RecoilGame
         /// </summary>
         public void ResetCurrentLevel()
         {
-            GenerateLevelFromFile("level" + currentLevel);
+            GenerateLevelFromFile("level" + currentLevel + ".rlv");
             Game1.playerManager.PlayerObject.ResetHealth();
         }
 
@@ -230,8 +230,8 @@ namespace RecoilGame
         {
 
             StreamReader input = null;
-/*            try
-            {*/
+            try
+            {
 
                 Stream inStream = new FileStream(
                     "../../../Content/Levels/" +
@@ -264,6 +264,7 @@ namespace RecoilGame
                         GetTextureFromChar(charTileToPlace);
 
                     // draw tile to textureTiles
+                    if (!(charTileToPlace == 'p' || charTileToPlace == 'e'))
                     textureTiles.Add(
                     new MapTile(
                         i * tileWidth,
@@ -275,7 +276,9 @@ namespace RecoilGame
                         charTileToPlace == 'o'
                         ));
 
-                    if (!(charTileToPlace == 'a' || charTileToPlace == 'o'))
+                    if (!(charTileToPlace == 'a' || charTileToPlace == 'o' ||
+                            charTileToPlace == 'p' || charTileToPlace == 'e'))
+
                     {
                         collisionTiles.Add(
                             new MapTile(
@@ -312,8 +315,8 @@ namespace RecoilGame
                     if (charTileToPlace == 'e')
                     {
                         new Enemy(
-                            i * tileWidth,
-                                j * tileWidth,
+                            i * tileWidth - 20,
+                                j * tileWidth - 20,
                                 50,
                                 50,
                                 enemyTexture, 
@@ -545,15 +548,15 @@ namespace RecoilGame
 
                 Game1.playerManager.PlayerObject.Position = playerPos;
                 Game1.playerManager.PlayerObject.ConvertPosToRect();
-/*        } 
+            }
             catch (Exception e)
             {
                 throw new Exception("Level loading failed.");
-    } 
+            }
             finally
             {
                 input.Close();
-            }*/
+            }
         }
 
 

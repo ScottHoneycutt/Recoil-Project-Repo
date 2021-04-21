@@ -77,7 +77,7 @@ namespace RecoilGame
         /// </summary>
         public void ResetCurrentLevel()
         {
-            GenerateLevelFromFile("level" + currentLevel);
+            GenerateLevelFromFile("level" + currentLevel + ".rlv");
             Game1.playerManager.PlayerObject.ResetHealth();
         }
 
@@ -545,15 +545,18 @@ namespace RecoilGame
 
                 Game1.playerManager.PlayerObject.Position = playerPos;
                 Game1.playerManager.PlayerObject.ConvertPosToRect();
-/*        } 
-            catch (Exception e)
-            {
-                throw new Exception("Level loading failed.");
-    } 
-            finally
-            {
-                input.Close();
-            }*/
+            /*        } 
+                        catch (Exception e)
+                        {
+                            throw new Exception("Level loading failed.");
+                } 
+                        finally
+                        {
+                            input.Close();
+                        }*/
+
+            input.Close();
+            inStream.Close();
         }
 
 

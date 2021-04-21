@@ -95,7 +95,7 @@ namespace RecoilGame
             
             //Setting objectiveTile to null until one appears in a level----
             objectiveTile = null;
-            numberOfLevels = 3;
+            numberOfLevels = 4;
 
             //Loading in sprites and spritefonts----
             testSprite = game.Content.Load<Texture2D>("square");

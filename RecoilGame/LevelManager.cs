@@ -314,12 +314,12 @@ namespace RecoilGame
                         new Enemy(
                             i * tileWidth,
                                 j * tileWidth,
-                                tileWidth,
-                                tileWidth,
+                                50,
+                                50,
                                 enemyTexture, 
                                 true, 
                                 new Vector2(0, 0), 
-                                10, 
+                                50, 
                                 3, 
                                 10);
                     }

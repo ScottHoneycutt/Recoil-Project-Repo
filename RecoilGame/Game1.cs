@@ -289,6 +289,8 @@ namespace RecoilGame
                 //God mode buttons (draw method handles whether they should be drawn based upon active/inactive)----
                 godModeToggleOff.Draw(_spriteBatch);
                 godModeToggleOn.Draw(_spriteBatch);
+
+                weaponManager.DrawCrosshair(_spriteBatch);
             }
             //Level state----
             else if (currentGameState == GameState.Level)
@@ -327,6 +329,8 @@ namespace RecoilGame
 
                 //Drawing the "next" button----
                 nextButton.Draw(_spriteBatch);
+
+                weaponManager.DrawCrosshair(_spriteBatch);
             }
 
             _spriteBatch.End();

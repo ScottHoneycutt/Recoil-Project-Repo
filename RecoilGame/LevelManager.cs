@@ -77,7 +77,7 @@ namespace RecoilGame
         /// </summary>
         public void ResetCurrentLevel()
         {
-            GenerateLevelFromFile("level" + currentLevel);
+            GenerateLevelFromFile("level" + currentLevel + ".rlv");
             Game1.playerManager.PlayerObject.ResetHealth();
         }
 

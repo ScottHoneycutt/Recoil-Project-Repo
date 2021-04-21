@@ -36,8 +36,8 @@ namespace RecoilGame
         //UI elements----
         private Texture2D testSprite;
         private SpriteFont arial20;
-        private Texture2D shotgunUI;
         private Texture2D shotgunUIUnequipped;
+        private Texture2D shotgunUI;
         private Texture2D rocketLauncherUI;
         private Texture2D rocketUIUnequipped;
         //General----
@@ -153,6 +153,10 @@ namespace RecoilGame
             //Starting the first level----
             if (currentLevel == 0)
             {
+                //Resetting the list of tiles----
+                ListOfMapTiles.Clear();
+                textureTiles.Clear();
+
                 currentLevel++;
 
                 Game1.weaponManager.AddWeapon(currentLevel);
@@ -163,8 +167,9 @@ namespace RecoilGame
             //If the objective has been completed----
             if (ObjectiveReached())
             {
-                //Removing all explosions and projectiles----
+                //Removing all explosions, enemies, and projectiles----
                 Game1.projectileManager.ClearAll();
+                Game1.enemyManager.ClearAll();
 
                 //Resetting player HP----
                 Game1.playerManager.PlayerObject.ResetHealth();

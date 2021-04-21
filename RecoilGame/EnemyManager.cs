@@ -202,5 +202,10 @@ namespace RecoilGame
             }
             
         }
+
+        public void ClearAll()
+        {
+            listOfEnemies.Clear();
+        }
     }
 }

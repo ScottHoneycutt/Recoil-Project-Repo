@@ -322,7 +322,7 @@ namespace RecoilGame
                                 enemyTexture, 
                                 true, 
                                 new Vector2(0, 0), 
-                                10, 
+                                50, 
                                 3, 
                                 10);
                     }

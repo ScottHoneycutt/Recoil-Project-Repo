@@ -115,6 +115,8 @@ namespace RecoilGame
             //Updating the rectangles used to determine whether or not there is floor ahead----
             leftRect.X = objectRect.X -1;
             rightRect.X = objectRect.X + objectRect.Width;
+            leftRect.Y = objectRect.Y + objectRect.Height;
+            rightRect.Y = objectRect.Y + objectRect.Height;
 
             //Moving left----
             if (movesLeft)

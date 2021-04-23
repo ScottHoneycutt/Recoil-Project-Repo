@@ -203,6 +203,9 @@ namespace RecoilGame
             
         }
 
+        /// <summary>
+        /// Clears the list of enemies. Useful if reseting a level or progressing to the next one----
+        /// </summary>
         public void ClearAll()
         {
             listOfEnemies.Clear();

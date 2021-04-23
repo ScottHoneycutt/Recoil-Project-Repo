@@ -53,6 +53,10 @@ namespace RecoilGame
         //enemy texture
         private Texture2D enemyTexture;
 
+        //objective
+        private Texture2D objectiveTexture;
+        private Objective objective;
+
         //Property to easily get the list of all MapTiles----
         public List<MapTile> ListOfMapTiles
         {
@@ -108,6 +112,7 @@ namespace RecoilGame
             rocketLauncherUI = game.Content.Load<Texture2D>("recoil rocket launcher UI");
             rocketUIUnequipped = game.Content.Load<Texture2D>("recoil rocket launcher Unequipped");
             enemyTexture = game.Content.Load<Texture2D>("EnemyTexture");
+            objectiveTexture = game.Content.Load<Texture2D>("keySprite");
 
             arial20 = game.Content.Load<SpriteFont>("Arial20");
 
@@ -198,6 +203,7 @@ namespace RecoilGame
                 collisionTiles.Clear();
                 textureTiles.Clear();
                 objectiveTile = null;
+                objective = null;
                 Game1.enemyManager.ListOfEnemies.Clear();
                 GenerateLevelFromFile("level" + currentLevel + ".rlv");
             }
@@ -213,7 +219,7 @@ namespace RecoilGame
             //Drawing objective first (if it exists)----
             if (objectiveTile != null)
             {
-                objectiveTile.Draw(sb, Color.Yellow);
+                objectiveTile.Draw(sb, Color.White);
             }
 
             foreach (MapTile tile in textureTiles)
@@ -225,7 +231,11 @@ namespace RecoilGame
             {
                 tile.Draw(sb, Color.White);
             }
-
+            if(objective != null)
+            {
+                objective.Draw(sb, Color.White);
+            }
+            
             //Drawing all other tiles----
 
         }
@@ -274,20 +284,35 @@ namespace RecoilGame
 
                     // draw tile to textureTiles
                     if (!(charTileToPlace == 'p' || charTileToPlace == 'e'))
-                    textureTiles.Add(
-                    new MapTile(
-                        i * tileWidth,
-                        j * tileWidth,
-                        tileWidth,
-                        tileWidth,
-                        textureFromChar,
-                        true,
-                        charTileToPlace == 'o'
-                        ));
+                    {
+                            textureTiles.Add(
+                            new MapTile(
+                                i * tileWidth,
+                                j * tileWidth,
+                                tileWidth,
+                                tileWidth,
+                                textureFromChar,
+                                true,
+                                charTileToPlace == 'o'
+                                ));
+                    } else
+                        {
+                            textureTiles.Add(
+                            new MapTile(
+                                i * tileWidth,
+                                j * tileWidth,
+                                tileWidth,
+                                tileWidth,
+                                GetTextureFromChar('a'),
+                                true,
+                                charTileToPlace == 'o'
+                                ));
+                        }
 
-                    if (!(charTileToPlace == 'a' || charTileToPlace == 'o' ||
-                            charTileToPlace == 'p' || charTileToPlace == 'e'))
 
+                        if (!(charTileToPlace == 'a' || charTileToPlace == 'o' ||
+                                charTileToPlace == 'p' || charTileToPlace == 'e'))
+                            
                     {
                         collisionTiles.Add(
                             new MapTile(
@@ -309,6 +334,16 @@ namespace RecoilGame
 
                    if (charTileToPlace == 'o')
                     {
+                        objective =
+                           new Objective(
+                                i * tileWidth - 15,
+                                j * tileWidth - 25,
+                                50,
+                                50,
+                                objectiveTexture,
+                                true
+                                    );
+                        /*
                         objectiveTile = 
                             new MapTile(
                                 i * tileWidth,
@@ -319,6 +354,7 @@ namespace RecoilGame
                                 true,
                                 charTileToPlace == 'o'
                                 );
+                        */
                     }
 
                     if (charTileToPlace == 'e')

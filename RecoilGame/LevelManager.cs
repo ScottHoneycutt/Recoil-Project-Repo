@@ -77,6 +77,10 @@ namespace RecoilGame
         /// </summary>
         public void ResetCurrentLevel()
         {
+            //Clearing the list of enemies first----
+            Game1.enemyManager.ClearAll();
+
+            //Generating level and resetting player health----
             GenerateLevelFromFile("level" + currentLevel + ".rlv");
             Game1.playerManager.PlayerObject.ResetHealth();
         }

@@ -265,16 +265,31 @@ namespace RecoilGame
 
                     // draw tile to textureTiles
                     if (!(charTileToPlace == 'p' || charTileToPlace == 'e'))
-                    textureTiles.Add(
-                    new MapTile(
-                        i * tileWidth,
-                        j * tileWidth,
-                        tileWidth,
-                        tileWidth,
-                        textureFromChar,
-                        true,
-                        charTileToPlace == 'o'
-                        ));
+                    {
+                            textureTiles.Add(
+                            new MapTile(
+                                i * tileWidth,
+                                j * tileWidth,
+                                tileWidth,
+                                tileWidth,
+                                textureFromChar,
+                                true,
+                                charTileToPlace == 'o'
+                                ));
+                    } else
+                        {
+                            textureTiles.Add(
+                            new MapTile(
+                                i * tileWidth,
+                                j * tileWidth,
+                                tileWidth,
+                                tileWidth,
+                                GetTextureFromChar('a'),
+                                true,
+                                charTileToPlace == 'o'
+                                ));
+                        }
+
 
                     if (!(charTileToPlace == 'a' || charTileToPlace == 'o' ||
                             charTileToPlace == 'p' || charTileToPlace == 'e'))

@@ -660,9 +660,9 @@ namespace RecoilGame
         private bool ObjectiveReached()
         {
             //objectiveTile exists (and thus is the objective)----
-            if (objectiveTile != null)
+            if (objective != null)
             {
-                if (Game1.playerManager.PlayerObject.ObjectRect.Intersects(objectiveTile.ObjectRect))
+                if (Game1.playerManager.PlayerObject.ObjectRect.Intersects(objective.ObjectRect))
                 {
                     return true;
                 }

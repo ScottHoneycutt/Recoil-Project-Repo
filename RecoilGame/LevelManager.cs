@@ -283,7 +283,7 @@ namespace RecoilGame
                         GetTextureFromChar(charTileToPlace);
 
                     // draw tile to textureTiles
-                    if (!(charTileToPlace == 'p' || charTileToPlace == 'e'))
+                    if (!(charTileToPlace == 'p' || charTileToPlace == 'e' || charTileToPlace == 'o'))
                     {
                             textureTiles.Add(
                             new MapTile(

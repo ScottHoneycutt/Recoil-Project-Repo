@@ -60,7 +60,7 @@ namespace RecoilGame
 
             float angle = (float)((2 * Math.PI) - CurrentAngle);
 
-            new Projectile(objectRect.X, (objectRect.Y - (objectRect.Height / 2)), 20, 20, projectileTexture, true, bulletSpeed, angle, damage, 8.5f, 10f, true, true, true);
+            new Projectile(objectRect.X, objectRect.Y, 20, 20, projectileTexture, true, bulletSpeed, angle, damage, 8.5f, 10f, true, true, true);
 
             CurrentCooldown = CooldownAmt;
         }

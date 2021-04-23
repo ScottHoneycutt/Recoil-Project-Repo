@@ -88,8 +88,8 @@ namespace RecoilGame
                     break;
 
                 case 2:
-                    System.Diagnostics.Debug.WriteLine(projectileTextures[0]);
-                    RocketLauncher rocketLauncher = new RocketLauncher(0, 0, 50, 20, weaponTextures[1], true, projectileTextures[1]);
+
+                    RocketLauncher rocketLauncher = new RocketLauncher((int)Game1.playerManager.PlayerObject.XPos, (int)Game1.playerManager.PlayerObject.YPos, 70, 30, weaponTextures[1], true, projectileTextures[1]);
 
                     weapons.AddAfter(weapons.Last, rocketLauncher);
 

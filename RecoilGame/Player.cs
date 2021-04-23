@@ -87,6 +87,8 @@ namespace RecoilGame
         {
             if (isActive)
             {
+                ConvertPosToRect();
+               
                 sb.Draw(
                     sprite, 
                     position, 

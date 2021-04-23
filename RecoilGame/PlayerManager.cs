@@ -169,6 +169,10 @@ namespace RecoilGame
             standingTextures.Add(game.Content.Load<Texture2D>("PinkGuyMid"));
             standingTextures.Add(game.Content.Load<Texture2D>("PinkGuyMid"));
             standingTextures.Add(game.Content.Load<Texture2D>("PinkGuyMid"));
+            standingTextures.Add(game.Content.Load<Texture2D>("PinkGuyMid"));
+            standingTextures.Add(game.Content.Load<Texture2D>("PinkGuyMid"));
+            standingTextures.Add(game.Content.Load<Texture2D>("PinkGuyMidCrouch"));
+            standingTextures.Add(game.Content.Load<Texture2D>("PinkGuyMidCrouch"));
             standingTextures.Add(game.Content.Load<Texture2D>("PinkGuyMidCrouch"));
             standingTextures.Add(game.Content.Load<Texture2D>("PinkGuyMidCrouch"));
             standingTextures.Add(game.Content.Load<Texture2D>("PinkGuyMidCrouch"));
@@ -177,6 +181,8 @@ namespace RecoilGame
             standingTextures.Add(game.Content.Load<Texture2D>("PinkGuyMidCrouch"));
 
             walkingTextures = new List<Texture2D>();
+            walkingTextures.Add(game.Content.Load<Texture2D>("PinkGuyW4"));
+            walkingTextures.Add(game.Content.Load<Texture2D>("PinkGuyW4"));
             walkingTextures.Add(game.Content.Load<Texture2D>("PinkGuyW1"));
             walkingTextures.Add(game.Content.Load<Texture2D>("PinkGuyW1"));
             walkingTextures.Add(game.Content.Load<Texture2D>("PinkGuyW1"));
@@ -187,8 +193,7 @@ namespace RecoilGame
             walkingTextures.Add(game.Content.Load<Texture2D>("PinkGuyW3"));
             walkingTextures.Add(game.Content.Load<Texture2D>("PinkGuyW3"));
             walkingTextures.Add(game.Content.Load<Texture2D>("PinkGuyW3"));
-            walkingTextures.Add(game.Content.Load<Texture2D>("PinkGuyW4"));
-            walkingTextures.Add(game.Content.Load<Texture2D>("PinkGuyW4"));
+            
         }
 
         /// <summary>
@@ -401,6 +406,8 @@ namespace RecoilGame
 
             //Applying gravity, adding all the vectors up, and simulating movement----
             gravityVelocity += playerGravity;
+            System.Diagnostics.Debug.WriteLine($" ev: {effectsVelocity}");
+            System.Diagnostics.Debug.WriteLine($" iv: {inputsVelocity}");
             playerObject.Position += effectsVelocity + inputsVelocity + gravityVelocity;
             playerObject.ConvertPosToRect();
 
@@ -674,10 +681,11 @@ namespace RecoilGame
                     walkingIndex = 0;
                 }
                 
-                if (standingIndex >= 11) //standing animation is be 6 frames;
+                if (standingIndex >= 15) //standing animation is be 6 frames;
                 {
                     standingIndex = 0;
                 }
+                //walking cycle
                 if (walkingIndex >= 11)
                 {
                     walkingIndex = 0;
@@ -711,6 +719,8 @@ namespace RecoilGame
 
                     //No walking animations yet so it plays the sprites default look but changes direction
                     case MovementState.WalkLeft:
+                        //this was for headbobbing
+                        /*
                         if((walkingIndex >= 0 && walkingIndex <= 3) || (walkingIndex >= 6 && walkingIndex <= 9))
                         {
                             playerObject.ObjectRect = new Rectangle((int)playerObject.XPos, (int)playerObject.YPos, 60, 82);
@@ -719,10 +729,12 @@ namespace RecoilGame
                         {
                             playerObject.ObjectRect = new Rectangle((int)playerObject.XPos, (int)playerObject.YPos, 60, 80);
                         }
+                        */
                         playerObject.DrawSpecial(sb, walkingTextures[walkingIndex], SpriteEffects.FlipHorizontally);
                         break;
 
                     case MovementState.WalkRight:
+                        /*
                         if ((walkingIndex >= 0 && walkingIndex <= 3) || (walkingIndex >= 6 && walkingIndex <= 9))
                         {
                             playerObject.ObjectRect = new Rectangle((int)playerObject.XPos, (int)playerObject.YPos, 60, 82);
@@ -731,6 +743,7 @@ namespace RecoilGame
                         {
                             playerObject.ObjectRect = new Rectangle((int)playerObject.XPos, (int)playerObject.YPos, 60, 80);
                         }
+                        */
                         playerObject.DrawSpecial(sb, walkingTextures[walkingIndex], SpriteEffects.None);
                         break;
 

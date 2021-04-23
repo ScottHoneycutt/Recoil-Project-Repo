@@ -1,4 +1,5 @@
-﻿using System;
+﻿//Trevor Dunn       4/15/21
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework;
@@ -9,14 +10,20 @@ namespace RecoilGame
 {
     public class WeaponManager
     {
+        //Fields
         private LinkedList<PlayerWeapon> weapons;
         private PlayerWeapon currentWeapon;
         private List<Texture2D> weaponTextures;
         private List<Texture2D> projectileTextures;
         private Texture2D crosshairSprite;
-        private Texture2D shotgunTexture;
-        private Texture2D rpgTexture;
 
+
+        //CONSTRUCTOR
+
+        /// <summary>
+        /// Constructor for weaponManager
+        /// </summary>
+        /// <param name="game"></param>
         public WeaponManager(Game1 game)
         {
             weapons = new LinkedList<PlayerWeapon>();
@@ -33,6 +40,11 @@ namespace RecoilGame
         }
 
 
+        //PROPERTIES
+
+        /// <summary>
+        /// Property to return or set the player's current weapon
+        /// </summary>
         public PlayerWeapon CurrentWeapon
         {
             get
@@ -45,6 +57,9 @@ namespace RecoilGame
             }
         }
 
+        /// <summary>
+        /// Property to return the list of weapons the player has
+        /// </summary>
         public LinkedList<PlayerWeapon> Weapons
         {
             get
@@ -52,6 +67,9 @@ namespace RecoilGame
                 return weapons;
             }
         }
+
+
+        //METHODS
 
         /// <summary>
         /// Adds a new weapon based on the current level number
@@ -134,6 +152,7 @@ namespace RecoilGame
                 }
             }
         }
+
         /// <summary>
         /// draws the current weapon held
         /// </summary>
@@ -144,6 +163,9 @@ namespace RecoilGame
             currentWeapon.Draw(sb, tint);
         }
 
+        /// <summary>
+        /// Updates every weapons position based on the player's position
+        /// </summary>
         public void UpdatePosition()
         {
             foreach(PlayerWeapon weapon in weapons)
@@ -174,6 +196,9 @@ namespace RecoilGame
                 Color.White);
         }
 
+        /// <summary>
+        /// Updates every weapons rotation based on mouse position
+        /// </summary>
         public void UpdateRotation()
         {
             if(CurrentWeapon != null)

@@ -514,6 +514,13 @@ namespace RecoilGame
         {
             effectsVelocity += velocity;
 
+            //Putting a maximum on the effects velocity----
+            if (effectsVelocity.Length() > 27)
+            {
+                effectsVelocity.Normalize();
+                effectsVelocity = effectsVelocity * 27;
+            }
+
             //Resetting other velocity vectors----
             inputsVelocity.Y = 0;
             gravityVelocity = Vector2.Zero;

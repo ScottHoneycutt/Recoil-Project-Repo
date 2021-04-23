@@ -19,6 +19,19 @@ namespace RecoilGame
         private float attackTimer;
         private int damage;
 
+        //Patrol movement stuff----
+        private float moveSpeed;
+        private float patrolTime;
+        private float patrolTimer;
+        private float patrolRandom;
+        private float patrolRandomNum;
+        private Random randomGenerator;
+        private bool movesLeft;
+
+        //Patrol floor detection rectangles----
+        private Rectangle leftRect;
+        private Rectangle rightRect;
+
         // Properties
         public float Health
         {
@@ -61,7 +74,7 @@ namespace RecoilGame
         /// <param name="isActive"> If player should be drawn to screen </param>
         /// <param name="velocity"> Velocity of player </param>
         /// <param name="health"> Health of player </param>
-        /// /// <param name="attackPeriod">The amount of time between each attack----</param>
+        /// <param name="attackPeriod">The amount of time between each attack----</param>
         public Enemy(int x, int y, int width, int height, Texture2D texture, bool isActive, Vector2 velocity, 
             float health, float attackPeriod, int damage)
             : base(x, y, width, height, texture, isActive)
@@ -71,7 +84,19 @@ namespace RecoilGame
             this.attackPeriod = attackPeriod;
             this.damage = damage;
             attackTimer = 0;
-            
+
+            //Movement stuff----
+            moveSpeed = 2;
+            patrolTime = 2;
+            patrolTimer = 0;
+            patrolRandom = 1;
+            patrolRandomNum = 0;
+            randomGenerator = new Random();
+            movesLeft = true;
+
+            //Setting up the rectangles for floor detection for patrolling----
+            leftRect = new Rectangle(objectRect.X - 1, objectRect.Y + objectRect.Height, 1, 10);
+            rightRect = new Rectangle(objectRect.X + objectRect.Width, objectRect.Y + objectRect.Height, 1, 10);
 
             //Reporting this enemy's existence to the EnemyManager;
             Game1.enemyManager.ReportExists(this);
@@ -83,9 +108,76 @@ namespace RecoilGame
         /// <param name="playerRef">Reference to the player object----</param>
         /// <param name="gameTime">GameTime object reference so that the duration between frames
         /// can be counted----</param>
-        /// <param name="projectileSprite">The texture to use for the projectile th enemy shoots----</param>
+        /// <param name="projectileSprite">The texture to use for the projectile the enemy shoots----</param>
         public void SimulateBehaviors(Player playerRef, GameTime gameTime, Texture2D projectileSprite)
         {
+            //Movement stuff----
+            //Updating the rectangles used to determine whether or not there is floor ahead----
+            leftRect.X = objectRect.X -1;
+            rightRect.X = objectRect.X + objectRect.Width;
+
+            //Moving left----
+            if (movesLeft)
+            {
+                position.X -= moveSpeed;
+
+                //Incrementing timer----
+                patrolTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                //Detecting floor ahead----
+                bool floorAhead = false;
+                foreach (MapTile hitbox in Game1.levelManager.ListOfMapTiles)
+                {
+                    if (leftRect.Intersects(hitbox.ObjectRect))
+                    {
+                        floorAhead = true;
+                        //Breaking to save time---
+                        break;
+                    }
+                }
+
+                //Switching directions if the timer runs out for moving in one direction, or if there is no floor ahead----
+                if (patrolTimer >= patrolTime + patrolRandomNum || !floorAhead)
+                {
+                    movesLeft = false;
+                    //Resetting timer and getting a new random value----
+                    patrolTimer = 0;
+                    patrolRandomNum = (float)randomGenerator.NextDouble() * patrolRandom;
+                }
+            }
+
+            //Moving right----
+            else
+            {
+                position.X += moveSpeed;
+
+                //Incrementing timer----
+                patrolTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                //Detecting floor ahead----
+                bool floorAhead = false;
+                foreach (MapTile hitbox in Game1.levelManager.ListOfMapTiles)
+                {
+                    if (rightRect.Intersects(hitbox.ObjectRect))
+                    {
+                        floorAhead = true;
+                        //Breaking to save time---
+                        break;
+                    }
+                }
+
+                //Switching directions if the timer runs out for moving in one direction, or if there is no floor ahead----
+                if (patrolTimer >= patrolTime + patrolRandomNum || !floorAhead)
+                {
+                    movesLeft = true;
+                    //Resetting timer and getting a new random value----
+                    patrolTimer = 0;
+                    patrolRandomNum = (float)randomGenerator.NextDouble() * patrolRandom;
+                }
+            }
+            ConvertPosToRect();
+
+            //Shooting----
             //Shoot at the player once every attack period----
             attackTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (attackTimer > attackPeriod)

@@ -372,7 +372,7 @@ namespace RecoilGame
                                 true, 
                                 new Vector2(0, 0), 
                                 50, 
-                                3, 
+                                2, 
                                 10);
                     }
                 }

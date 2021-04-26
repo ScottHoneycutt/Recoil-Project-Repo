@@ -161,9 +161,6 @@ namespace RecoilGame
                                     enemy.XVelocity = 0;
                                 }
                             }
-
-                            //Telling the enemy to switch directions----
-
                         }
                         //if height is less than width then the player is moved up or down
                         if (intersection.Height <= intersection.Width)

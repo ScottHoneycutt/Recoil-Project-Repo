@@ -18,7 +18,6 @@ namespace RecoilGame
         private float attackPeriod;
         private float attackTimer;
         private int damage;
-        private bool shouldSwitchDirections;
 
         //Patrol movement stuff----
         private float moveSpeed;
@@ -63,7 +62,6 @@ namespace RecoilGame
             get { return damage; }
             set { damage = value; }
         }
-        //public bool 
 
         /// <summary>
         /// Constructor for Enemy class - inherits from GameObject

@@ -221,14 +221,13 @@ namespace RecoilGame
                 }
 
                 //Player Physics
-                
                 playerManager.MovePlayer();
                 playerManager.CheckForCollisions();
-                playerManager.UpdateAnimation(gameTime);
                 playerManager.HandleMovementState();
+                playerManager.UpdateAnimation(gameTime);
 
                 //Running enemy behaviors----
-                
+
                 enemyManager.MoveEnemies();
                 enemyManager.CheckForCollisions();
                 enemyManager.SimulateBehaviors(gameTime);

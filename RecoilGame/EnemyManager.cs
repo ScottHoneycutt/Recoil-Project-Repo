@@ -127,7 +127,7 @@ namespace RecoilGame
 
                     Rectangle tileRect = mapTile.ObjectRect;
 
-                    //If a collision is detected between player and a maptile----
+                    //If a collision is detected between enemy and a maptile----
                     if (enemyRect.Intersects(tileRect))
                     {
 
@@ -161,6 +161,9 @@ namespace RecoilGame
                                     enemy.XVelocity = 0;
                                 }
                             }
+
+                            //Telling the enemy to switch directions----
+
                         }
                         //if height is less than width then the player is moved up or down
                         if (intersection.Height <= intersection.Width)

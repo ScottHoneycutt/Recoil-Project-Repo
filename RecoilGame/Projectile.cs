@@ -160,7 +160,7 @@ namespace RecoilGame
                         if (isExplosive)
                         {
                             new Explosion((int)CenteredX, (int)CenteredY, 100, 100, Game1.projectileManager.ExplosionTextures,
-                                true, 20, 100, 17, 1, true);
+                                true, 25, 100, 17, 1, true);
                         }
 
                         Expire();
@@ -180,7 +180,7 @@ namespace RecoilGame
                     if (isExplosive)
                     {
                         new Explosion((int)CenteredX, (int)CenteredY, 100, 100, Game1.projectileManager.ExplosionTextures,
-                            true, 20, 100, 17, 1, false);
+                            true, 25, 100, 17, 1, false);
                     }
 
                     //Expires after collision----

@@ -14,7 +14,6 @@ namespace RecoilGame
         private float playerRecoil;
         private Texture2D projectileTexture;
         private Random rand;
-        private float bulletSpeed;
 
         //CONSTRUCTOR
 
@@ -35,8 +34,7 @@ namespace RecoilGame
             this.projectileTexture = projectileTexture;
 
             playerRecoil = 5;
-            CooldownAmt = 3.0f;
-            bulletSpeed = 4.5f;
+            CooldownAmt = 2.0f;
 
             rand = new Random();
         }
@@ -71,28 +69,25 @@ namespace RecoilGame
             }
 
             //sets the bullet's speed
-            float bulletSpeed = 9f;
+            float bulletSpeed = 12f;
 
             float angle = (float)((2*Math.PI) - CurrentAngle);
 
             //Adding slight randomization to weapon spread----
             float spreadRandom;
 
-            //Randomizes the amount of projectiles that will be created
-            int randomNum = rand.Next(1, 4);
-            int randomNum = rand.Next(1, 6);
-
+            //Firing the primary projectile----
             new Projectile(objectRect.X, (objectRect.Y - (objectRect.Height / 2)), 10, 10, projectileTexture, true, bulletSpeed,
                 angle, 10, 0, .5f, false, true, false);
 
-            for (int x = 1; x <= randomNum+1; x++)
+            for (int x = 0; x < 4; x++)
             {
-                //Randoming the weapon spread----
-                spreadRandom = (float)(rand.NextDouble() * .05f) + 1;
+                spreadRandom = (float)(rand.NextDouble() * .2f) + 1;
                 new Projectile(objectRect.X, (objectRect.Y - (objectRect.Height / 2)), 10, 10, projectileTexture, true, bulletSpeed,
-                    angle - (0.09f*x * spreadRandom), 10, 0, .5f, false, true, false);
+                    angle - (0.05f*x * spreadRandom), 10, 0, .5f, false, true, false);
+                spreadRandom = (float)(rand.NextDouble() * .2f) + 1;
                 new Projectile(objectRect.X, (objectRect.Y - (objectRect.Height / 2)), 10, 10, projectileTexture, true, bulletSpeed,
-                    angle + (0.09f*x * spreadRandom), 10, 0, .5f, false, true, false);
+                    angle + (0.05f*x * spreadRandom), 10, 0, .5f, false, true, false);
             }
 
             //Calls playerManager's shooting capability method

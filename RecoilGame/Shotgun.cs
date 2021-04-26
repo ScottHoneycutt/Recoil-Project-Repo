@@ -14,6 +14,7 @@ namespace RecoilGame
         private float playerRecoil;
         private Texture2D projectileTexture;
         private Random rand;
+        private float bulletSpeed;
 
         //CONSTRUCTOR
 
@@ -35,8 +36,7 @@ namespace RecoilGame
 
             playerRecoil = 5;
             CooldownAmt = 3.0f;
-
-            Type = WeaponType.Shotgun;
+            bulletSpeed = 4.5f;
 
             rand = new Random();
         }
@@ -70,21 +70,15 @@ namespace RecoilGame
                 return;
             }
 
-            //sets the bullet's speed
-            float bulletSpeed = 4.5f;
-
             float angle = (float)((2*Math.PI) - CurrentAngle);
 
-            //Randomizes the amount of projectiles that will be created
-            int randomNum = rand.Next(1, 4);
+            int randomNum = rand.Next(1, 6);
 
             new Projectile(objectRect.X, (objectRect.Y - (objectRect.Height / 2)), 10, 10, projectileTexture, true, bulletSpeed, angle, 10, 0, 1.5f, false, true, false);
-
-            for (int x = 1; x <= randomNum+1; x++)
-            {   
-                new Projectile(objectRect.X, (objectRect.Y - (objectRect.Height / 2)), 10, 10, projectileTexture, true, bulletSpeed, angle - (0.09f*x), 10, 0, 1.5f, false, true, false);
-                new Projectile(objectRect.X, (objectRect.Y - (objectRect.Height / 2)), 10, 10, projectileTexture, true, bulletSpeed, angle + (0.09f*x), 10, 0, 1.5f, false, true, false);
-            }
+            new Projectile(objectRect.X, (objectRect.Y - (objectRect.Height / 2)), 10, 10, projectileTexture, true, bulletSpeed, angle - (0.04f), 10, 0, 1.5f, false, true, false);
+            new Projectile(objectRect.X, (objectRect.Y - (objectRect.Height / 2)), 10, 10, projectileTexture, true, bulletSpeed, angle + (0.04f), 10, 0, 1.5f, false, true, false);
+            new Projectile(objectRect.X, (objectRect.Y - (objectRect.Height / 2)), 10, 10, projectileTexture, true, bulletSpeed, angle - (0.08f), 10, 0, 1.5f, false, true, false);
+            new Projectile(objectRect.X, (objectRect.Y - (objectRect.Height / 2)), 10, 10, projectileTexture, true, bulletSpeed, angle + (0.08f), 10, 0, 1.5f, false, true, false);
 
             //Calls playerManager's shooting capability method
             Game1.playerManager.ShootingCapability();

@@ -8,28 +8,12 @@ using System.Text;
 
 namespace RecoilGame
 {
-    public enum WeaponType
-    {
-        Shotgun,
-        RocketLauncher,
-        MachineGun,
-        Sniper
-    }
-
     public abstract class PlayerWeapon : GameObject
     {
-        private WeaponType weaponType;
         private float cooldownAmt;
         private float currentCooldown;
         private float currentAngle;
         private SpriteEffects weaponEffect;
-
-
-        public WeaponType Type
-        {
-            set { weaponType = value; }
-            get { return weaponType; }
-        }
 
         /// <summary>
         /// Property for the amount of cooldown caused when shooting

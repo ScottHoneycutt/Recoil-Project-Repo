@@ -25,8 +25,6 @@ namespace RecoilGame
             damage = 1;
             cooldownAmt = 3;
             currentCooldown = 0;
-
-            Type = WeaponType.MachineGun;
         }
 
         public override void Shoot()

@@ -14,6 +14,7 @@ namespace RecoilGame
         private float playerRecoil;
         private Texture2D projectileTexture;
         private Random rand;
+        private float bulletSpeed;
 
         //CONSTRUCTOR
 
@@ -35,8 +36,7 @@ namespace RecoilGame
 
             playerRecoil = 5;
             CooldownAmt = 3.0f;
-
-            Type = WeaponType.Shotgun;
+            bulletSpeed = 4.5f;
 
             rand = new Random();
         }
@@ -80,6 +80,7 @@ namespace RecoilGame
 
             //Randomizes the amount of projectiles that will be created
             int randomNum = rand.Next(1, 4);
+            int randomNum = rand.Next(1, 6);
 
             new Projectile(objectRect.X, (objectRect.Y - (objectRect.Height / 2)), 10, 10, projectileTexture, true, bulletSpeed,
                 angle, 10, 0, .5f, false, true, false);

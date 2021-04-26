@@ -13,6 +13,7 @@ namespace RecoilGame
         //Fields
         private Texture2D projectileTexture;
         private int damage;
+        private float bulletSpeed;
 
         //Constructor
 
@@ -33,9 +34,7 @@ namespace RecoilGame
             this.projectileTexture = projectileTexture;
             CooldownAmt = 2;
             damage = 25;
-
-            Type = WeaponType.RocketLauncher;
-
+            bulletSpeed = 6.5f;
         }
 
 
@@ -55,8 +54,6 @@ namespace RecoilGame
             {
                 return;
             }
-
-            float bulletSpeed = 6.5f;
 
             float angle = (float)((2 * Math.PI) - CurrentAngle);
 

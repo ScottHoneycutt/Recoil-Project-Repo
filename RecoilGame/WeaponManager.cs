@@ -89,11 +89,9 @@ namespace RecoilGame
 
                 case 2:
 
-                    RocketLauncher rocketLauncher = new RocketLauncher((int)Game1.playerManager.PlayerObject.XPos, (int)Game1.playerManager.PlayerObject.YPos, 70, 30, weaponTextures[1], true, projectileTextures[1]);
+                    currentWeapon = new RocketLauncher((int)Game1.playerManager.PlayerObject.XPos, (int)Game1.playerManager.PlayerObject.YPos, 70, 30, weaponTextures[1], true, projectileTextures[1]);
 
-                    weapons.AddAfter(weapons.Last, rocketLauncher);
-
-                    currentWeapon = rocketLauncher;
+                    weapons.AddAfter(weapons.Last, currentWeapon);
 
                     break;
                 /*
@@ -134,22 +132,20 @@ namespace RecoilGame
                 if(weapons.Find(currentWeapon).Previous == null)
                 {
                     CurrentWeapon = weapons.Last.Value;
+                    return;
                 }
-                else
-                {
-                    CurrentWeapon = weapons.Find(currentWeapon).Previous.Value;
-                }
+                    
+                CurrentWeapon = weapons.Find(currentWeapon).Previous.Value;
             }
             else
             {
                 if(weapons.Find(currentWeapon).Next == null)
                 {
                     CurrentWeapon = weapons.First.Value;
+                    return;
                 }
-                else
-                {
-                    CurrentWeapon = weapons.Find(currentWeapon).Next.Value;
-                }
+                    
+                CurrentWeapon = weapons.Find(currentWeapon).Next.Value;
             }
         }
 
@@ -174,9 +170,7 @@ namespace RecoilGame
                 
                 int y = (int)Game1.playerManager.PlayerObject.CenteredY;
 
-                Vector2 newPos = new Vector2(x, y);
-
-                weapon.Position = newPos;
+                weapon.Position = new Vector2(x, y);
 
                 weapon.ConvertPosToRect();
             }

@@ -233,7 +233,7 @@ namespace RecoilGame
                 }
 
                 //Converting rotation into radians so that it can be used again----
-                rotation = rotation / 360 * (2 * MathF.PI);
+                rotation = rotation / 360 * (2 * MathF.PI);     
 
                 foreach (PlayerWeapon weapon in weapons)
                 {

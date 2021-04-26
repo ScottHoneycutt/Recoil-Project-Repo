@@ -28,8 +28,6 @@ namespace RecoilGame
             cooldownAmt = 5;
             currentCooldown = 0;
             isTrickShot = false;
-
-            Type = WeaponType.Sniper;
         }
 
         public void CheckTrickShot(GameTime gameTime)

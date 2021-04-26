@@ -44,6 +44,8 @@ namespace RecoilGame
         private Rectangle healthBarBackground;
         private Rectangle healthBar;
         private Text levelDisplay;
+        private Text healthText;
+        private Text weaponsText;
         //Weapon statuses----
         private Rectangle shotgunBG;
         private Rectangle shotgunCD;
@@ -117,15 +119,17 @@ namespace RecoilGame
             arial20 = game.Content.Load<SpriteFont>("Arial20");
 
             //Setting up UI elements----
-            healthBarBackground = new Rectangle(20, 20, 500, 20);
-            healthBar = new Rectangle(20, 20, 500, 20);
-            levelDisplay = new Text(arial20, new Vector2(20, 45), "Level " + currentLevel);
+            healthBarBackground = new Rectangle(10, 30, 500, 20);
+            healthBar = new Rectangle(10, 30, 500, 20);
+            levelDisplay = new Text(arial20, new Vector2(10, 55), "Level " + currentLevel);
+            healthText = new Text(arial20, new Vector2(10, 2), "Health");
+            weaponsText = new Text(arial20, new Vector2(600, 2), "Weapons");
 
             //Setting up weapon cooldown displays for the UI----
-            shotgunBG = new Rectangle(1290, 930, 50, 50);
-            shotgunCD = new Rectangle(1290, 930, 50, 0);
-            rocketBG = new Rectangle(1360, 930, 50, 50);
-            rocketCD = new Rectangle(1360, 930, 50, 0);
+            shotgunBG = new Rectangle(600, 30, 50, 50);
+            shotgunCD = new Rectangle(600, 30, 50, 0);
+            rocketBG = new Rectangle(670, 30, 50, 50);
+            rocketCD = new Rectangle(670, 30, 50, 0);
         }
 
         /// <summary>
@@ -745,6 +749,7 @@ namespace RecoilGame
         public void DrawUI(SpriteBatch sb)
         {
             //Drawing the health bar in the top left corner----
+            healthText.Draw(sb, Color.Black);
             //Health bar background----
             sb.Draw(testSprite, healthBarBackground, Color.White);
             //Health bar (remaining health)----
@@ -754,8 +759,8 @@ namespace RecoilGame
             levelDisplay.Draw(sb, Color.Black);
 
             //Drawing the UI for the weapons----
+            weaponsText.Draw(sb, Color.Black);
             //Backgrounds, color based upon whether or not they are selected----
-
             if (Game1.weaponManager.CurrentWeapon != null && Game1.weaponManager.Weapons.First != null)
             {
                 if (Game1.weaponManager.CurrentWeapon == Game1.weaponManager.Weapons.First.Value)

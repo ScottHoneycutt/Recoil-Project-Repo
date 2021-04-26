@@ -8,27 +8,12 @@ using System.Text;
 
 namespace RecoilGame
 {
-    public enum WeaponType
-    {
-        Shotgun,
-        RocketLauncher,
-        MachineGun,
-        Sniper
-    }
-
     public abstract class PlayerWeapon : GameObject
     {
-        private WeaponType weaponType;
         private float cooldownAmt;
         private float currentCooldown;
         private float currentAngle;
-
-
-        public WeaponType Type
-        {
-            set { weaponType = value; }
-            get { return weaponType; }
-        }
+        private SpriteEffects weaponEffect;
 
         /// <summary>
         /// Property for the amount of cooldown caused when shooting
@@ -48,6 +33,9 @@ namespace RecoilGame
             set { currentCooldown = value; }
         }
 
+        /// <summary>
+        /// Property for the weapon's current angle
+        /// </summary>
         public float CurrentAngle
         {
             get { return currentAngle; }
@@ -70,10 +58,12 @@ namespace RecoilGame
         public PlayerWeapon(int xPos, int yPos, int width, int height, Texture2D sprite, 
             bool isActive) : base(xPos, yPos, width, height, sprite, isActive)
         {
-            this.cooldownAmt = 0;
-            this.currentCooldown = 0;
+            cooldownAmt = 0;
+            currentCooldown = 0;
 
             Game1.weaponManager.UpdateRotation();
+
+            weaponEffect = SpriteEffects.None;
         }
 
 
@@ -85,26 +75,43 @@ namespace RecoilGame
         public abstract void Shoot();
 
         /// <summary>
-        /// Abstract Method For Cooldown Update
+        /// Abstract Method For Cooldown Update, takes in gameTime
         /// </summary>
         /// <param name="gameTime"></param>
         public abstract void UpdateCooldown(GameTime gameTime);
 
+
+        /// <summary>
+        /// Abstract method for cooldown update, takes in a fixed amount
+        /// </summary>
+        /// <param name="amount"></param>
         public abstract void UpdateCooldown(int amount);
 
+        /// <summary>
+        /// Overridden draw method
+        /// </summary>
+        /// <param name="sb"></param>
+        /// <param name="tint"></param>
         public override void Draw(SpriteBatch sb, Color tint)
         {
             Game1.weaponManager.UpdatePosition();
-            //System.Diagnostics.Debug.WriteLine(this.Position.Y);
-            //System.Diagnostics.Debug.WriteLine(this.ObjectRect.Y);
-
-            Rectangle weaponRect = objectRect;
 
             Point origin = new Point(5, 10);
 
             Game1.weaponManager.UpdateRotation();
 
-            sb.Draw(sprite, weaponRect, null, tint, currentAngle, origin.ToVector2(), SpriteEffects.None, 0.0f);
+            MouseState mouse = Mouse.GetState();
+
+            if(mouse.X < Game1.playerManager.PlayerObject.CenteredX)
+            {
+                weaponEffect = SpriteEffects.FlipVertically;
+            }
+            else if(mouse.X >= Game1.playerManager.PlayerObject.CenteredX)
+            {
+                weaponEffect = SpriteEffects.None;
+            }
+
+            sb.Draw(sprite, objectRect, null, tint, currentAngle, origin.ToVector2(), weaponEffect, 0.0f);
         }
     }
 }

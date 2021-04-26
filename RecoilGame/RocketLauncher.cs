@@ -34,7 +34,7 @@ namespace RecoilGame
             this.projectileTexture = projectileTexture;
             CooldownAmt = 2;
             damage = 25;
-            bulletSpeed = 6.5f;
+            bulletSpeed = 7f;
         }
 
 

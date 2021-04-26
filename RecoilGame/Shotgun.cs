@@ -78,16 +78,16 @@ namespace RecoilGame
 
             //Firing the primary projectile----
             new Projectile(objectRect.X, (objectRect.Y - (objectRect.Height / 2)), 10, 10, projectileTexture, true, bulletSpeed,
-                angle, 10, 0, .5f, false, true, false);
+                angle, 15, 0, .5f, false, true, false);
 
             for (int x = 0; x < 4; x++)
             {
                 spreadRandom = (float)(rand.NextDouble() * .2f) + 1;
                 new Projectile(objectRect.X, (objectRect.Y - (objectRect.Height / 2)), 10, 10, projectileTexture, true, bulletSpeed,
-                    angle - (0.05f*x * spreadRandom), 10, 0, .5f, false, true, false);
+                    angle - (0.05f*x * spreadRandom), 15, 0, .5f, false, true, false);
                 spreadRandom = (float)(rand.NextDouble() * .2f) + 1;
                 new Projectile(objectRect.X, (objectRect.Y - (objectRect.Height / 2)), 10, 10, projectileTexture, true, bulletSpeed,
-                    angle + (0.05f*x * spreadRandom), 10, 0, .5f, false, true, false);
+                    angle + (0.05f*x * spreadRandom), 15, 0, .5f, false, true, false);
             }
 
             //Calls playerManager's shooting capability method

@@ -71,19 +71,27 @@ namespace RecoilGame
             }
 
             //sets the bullet's speed
-            float bulletSpeed = 4.5f;
+            float bulletSpeed = 9f;
 
             float angle = (float)((2*Math.PI) - CurrentAngle);
+
+            //Adding slight randomization to weapon spread----
+            float spreadRandom;
 
             //Randomizes the amount of projectiles that will be created
             int randomNum = rand.Next(1, 4);
 
-            new Projectile(objectRect.X, (objectRect.Y - (objectRect.Height / 2)), 10, 10, projectileTexture, true, bulletSpeed, angle, 10, 0, 1.5f, false, true, false);
+            new Projectile(objectRect.X, (objectRect.Y - (objectRect.Height / 2)), 10, 10, projectileTexture, true, bulletSpeed,
+                angle, 10, 0, .5f, false, true, false);
 
             for (int x = 1; x <= randomNum+1; x++)
-            {   
-                new Projectile(objectRect.X, (objectRect.Y - (objectRect.Height / 2)), 10, 10, projectileTexture, true, bulletSpeed, angle - (0.09f*x), 10, 0, 1.5f, false, true, false);
-                new Projectile(objectRect.X, (objectRect.Y - (objectRect.Height / 2)), 10, 10, projectileTexture, true, bulletSpeed, angle + (0.09f*x), 10, 0, 1.5f, false, true, false);
+            {
+                //Randoming the weapon spread----
+                spreadRandom = (float)(rand.NextDouble() * .05f) + 1;
+                new Projectile(objectRect.X, (objectRect.Y - (objectRect.Height / 2)), 10, 10, projectileTexture, true, bulletSpeed,
+                    angle - (0.09f*x * spreadRandom), 10, 0, .5f, false, true, false);
+                new Projectile(objectRect.X, (objectRect.Y - (objectRect.Height / 2)), 10, 10, projectileTexture, true, bulletSpeed,
+                    angle + (0.09f*x * spreadRandom), 10, 0, .5f, false, true, false);
             }
 
             //Calls playerManager's shooting capability method

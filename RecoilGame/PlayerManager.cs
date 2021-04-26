@@ -55,10 +55,13 @@ namespace RecoilGame
         private bool isColliding;
         private MovementState movementState;
         private float secondsPerFrame;
+
         //fields for animation
         private float timeCounter;
         private List<Texture2D> standingTextures;
         private int standingIndex;
+        private List<Texture2D> walkingTextures;
+        private int walkingIndex;
 
         //Fields created by Scott----
         private Vector2 inputsVelocity;
@@ -156,17 +159,41 @@ namespace RecoilGame
             movementState = MovementState.FaceRight;
 
             //animation is 4 frames per second
-            secondsPerFrame = .25f;
+            secondsPerFrame = .04f;
 
             //standing animation texture:
             standingTextures = new List<Texture2D>();
             standingTextures.Add(game.Content.Load<Texture2D>("PinkGuyMid"));
             standingTextures.Add(game.Content.Load<Texture2D>("PinkGuyMid"));
             standingTextures.Add(game.Content.Load<Texture2D>("PinkGuyMid"));
+            standingTextures.Add(game.Content.Load<Texture2D>("PinkGuyMid"));
+            standingTextures.Add(game.Content.Load<Texture2D>("PinkGuyMid"));
+            standingTextures.Add(game.Content.Load<Texture2D>("PinkGuyMid"));
+            standingTextures.Add(game.Content.Load<Texture2D>("PinkGuyMid"));
+            standingTextures.Add(game.Content.Load<Texture2D>("PinkGuyMid"));
+            standingTextures.Add(game.Content.Load<Texture2D>("PinkGuyMidCrouch"));
+            standingTextures.Add(game.Content.Load<Texture2D>("PinkGuyMidCrouch"));
+            standingTextures.Add(game.Content.Load<Texture2D>("PinkGuyMidCrouch"));
+            standingTextures.Add(game.Content.Load<Texture2D>("PinkGuyMidCrouch"));
+            standingTextures.Add(game.Content.Load<Texture2D>("PinkGuyMidCrouch"));
             standingTextures.Add(game.Content.Load<Texture2D>("PinkGuyMidCrouch"));
             standingTextures.Add(game.Content.Load<Texture2D>("PinkGuyMidCrouch"));
             standingTextures.Add(game.Content.Load<Texture2D>("PinkGuyMidCrouch"));
 
+            walkingTextures = new List<Texture2D>();
+            walkingTextures.Add(game.Content.Load<Texture2D>("PinkGuyW4"));
+            walkingTextures.Add(game.Content.Load<Texture2D>("PinkGuyW4"));
+            walkingTextures.Add(game.Content.Load<Texture2D>("PinkGuyW1"));
+            walkingTextures.Add(game.Content.Load<Texture2D>("PinkGuyW1"));
+            walkingTextures.Add(game.Content.Load<Texture2D>("PinkGuyW1"));
+            walkingTextures.Add(game.Content.Load<Texture2D>("PinkGuyW1"));
+            walkingTextures.Add(game.Content.Load<Texture2D>("PinkGuyW2"));
+            walkingTextures.Add(game.Content.Load<Texture2D>("PinkGuyW2"));
+            walkingTextures.Add(game.Content.Load<Texture2D>("PinkGuyW3"));
+            walkingTextures.Add(game.Content.Load<Texture2D>("PinkGuyW3"));
+            walkingTextures.Add(game.Content.Load<Texture2D>("PinkGuyW3"));
+            walkingTextures.Add(game.Content.Load<Texture2D>("PinkGuyW3"));
+            
         }
 
         /// <summary>
@@ -379,6 +406,8 @@ namespace RecoilGame
 
             //Applying gravity, adding all the vectors up, and simulating movement----
             gravityVelocity += playerGravity;
+            System.Diagnostics.Debug.WriteLine($" ev: {effectsVelocity}");
+            System.Diagnostics.Debug.WriteLine($" iv: {inputsVelocity}");
             playerObject.Position += effectsVelocity + inputsVelocity + gravityVelocity;
             playerObject.ConvertPosToRect();
 
@@ -640,16 +669,30 @@ namespace RecoilGame
             //keeping track of the time
                 timeCounter += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-                if (timeCounter >= secondsPerFrame)
+            if (timeCounter >= secondsPerFrame)
+            {
+                standingIndex++;
+                if(movementState == MovementState.WalkRight || movementState == MovementState.WalkLeft)
                 {
-                    standingIndex++;
-                    if (standingIndex >= 5) //walking animation will be 4 frames;
-                    {
-                        standingIndex = 0;
-                    }
-
-                    timeCounter -= secondsPerFrame;
+                    walkingIndex++;
                 }
+                else
+                {
+                    walkingIndex = 0;
+                }
+                
+                if (standingIndex >= 15) //standing animation is be 6 frames;
+                {
+                    standingIndex = 0;
+                }
+                //walking cycle
+                if (walkingIndex >= 11)
+                {
+                    walkingIndex = 0;
+                }
+                timeCounter -= secondsPerFrame;
+                //System.Diagnostics.Debug.WriteLine(walkingIndex);
+            }
             
         }
 
@@ -676,10 +719,32 @@ namespace RecoilGame
 
                     //No walking animations yet so it plays the sprites default look but changes direction
                     case MovementState.WalkLeft:
-                        playerObject.DrawSpecial(sb, playerObject.Sprite, SpriteEffects.FlipHorizontally);
+                        //this was for headbobbing
+                        /*
+                        if((walkingIndex >= 0 && walkingIndex <= 3) || (walkingIndex >= 6 && walkingIndex <= 9))
+                        {
+                            playerObject.ObjectRect = new Rectangle((int)playerObject.XPos, (int)playerObject.YPos, 60, 82);
+                        }
+                        else
+                        {
+                            playerObject.ObjectRect = new Rectangle((int)playerObject.XPos, (int)playerObject.YPos, 60, 80);
+                        }
+                        */
+                        playerObject.DrawSpecial(sb, walkingTextures[walkingIndex], SpriteEffects.FlipHorizontally);
                         break;
+
                     case MovementState.WalkRight:
-                        playerObject.DrawSpecial(sb, playerObject.Sprite, SpriteEffects.None);
+                        /*
+                        if ((walkingIndex >= 0 && walkingIndex <= 3) || (walkingIndex >= 6 && walkingIndex <= 9))
+                        {
+                            playerObject.ObjectRect = new Rectangle((int)playerObject.XPos, (int)playerObject.YPos, 60, 82);
+                        }
+                        else
+                        {
+                            playerObject.ObjectRect = new Rectangle((int)playerObject.XPos, (int)playerObject.YPos, 60, 80);
+                        }
+                        */
+                        playerObject.DrawSpecial(sb, walkingTextures[walkingIndex], SpriteEffects.None);
                         break;
 
                 }

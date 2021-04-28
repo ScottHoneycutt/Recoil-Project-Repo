@@ -257,7 +257,7 @@ namespace RecoilGame
             {
 
                 Stream inStream = new FileStream(
-                    "../../../Content/Levels/" +
+                    "Content/Levels/" +
                     fileName, FileMode.Open);
 
                 input = new StreamReader(inStream);

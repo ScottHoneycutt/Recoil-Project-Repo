@@ -406,8 +406,8 @@ namespace RecoilGame
 
             //Applying gravity, adding all the vectors up, and simulating movement----
             gravityVelocity += playerGravity;
-            System.Diagnostics.Debug.WriteLine($" ev: {effectsVelocity}");
-            System.Diagnostics.Debug.WriteLine($" iv: {inputsVelocity}");
+            //System.Diagnostics.Debug.WriteLine($" ev: {effectsVelocity}");
+            //System.Diagnostics.Debug.WriteLine($" iv: {inputsVelocity}");
             playerObject.Position += effectsVelocity + inputsVelocity + gravityVelocity;
             playerObject.ConvertPosToRect();
 

@@ -105,7 +105,7 @@ namespace RecoilGame
             
             //Setting objectiveTile to null until one appears in a level----
             objectiveTile = null;
-            numberOfLevels = 3;
+            numberOfLevels = 4;
 
             //Loading in sprites and spritefonts----
             testSprite = game.Content.Load<Texture2D>("square");
@@ -130,6 +130,7 @@ namespace RecoilGame
             shotgunCD = new Rectangle(600, 30, 50, 0);
             rocketBG = new Rectangle(670, 30, 50, 50);
             rocketCD = new Rectangle(670, 30, 50, 0);
+
         }
 
         /// <summary>
@@ -175,11 +176,13 @@ namespace RecoilGame
                 Game1.weaponManager.AddWeapon(currentLevel);
 
                 GenerateLevelFromFile("level" + currentLevel + ".rlv");
+                
             }
 
             //If the objective has been completed----
             if (ObjectiveReached())
             {
+                
                 //Removing all explosions, enemies, and projectiles----
                 Game1.projectileManager.ClearAll();
                 Game1.enemyManager.ClearAll();
@@ -678,7 +681,6 @@ namespace RecoilGame
             //objectiveTile does not exist (and thus killing all enemies is the objective)----
             else
             {
-                return false;
                 if (Game1.enemyManager.ListOfEnemies.Count == 0)
                 {
                     return true;

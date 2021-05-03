@@ -105,7 +105,7 @@ namespace RecoilGame
             
             //Setting objectiveTile to null until one appears in a level----
             objectiveTile = null;
-            numberOfLevels = 3;
+            numberOfLevels = 5;
 
             //Loading in sprites and spritefonts----
             testSprite = game.Content.Load<Texture2D>("square");
@@ -678,7 +678,6 @@ namespace RecoilGame
             //objectiveTile does not exist (and thus killing all enemies is the objective)----
             else
             {
-                return false;
                 if (Game1.enemyManager.ListOfEnemies.Count == 0)
                 {
                     return true;

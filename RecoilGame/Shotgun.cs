@@ -34,7 +34,7 @@ namespace RecoilGame
             this.projectileTexture = projectileTexture;
 
             playerRecoil = 5;
-            CooldownAmt = 2.0f;
+            CooldownAmt = 1.5f;
 
             rand = new Random();
         }

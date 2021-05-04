@@ -14,7 +14,6 @@ using System.Reflection;
 
 namespace RecoilGame
 {
-
     /// <summary>
     /// Scott Honeycutt----
     /// 3/22/2021----
@@ -601,7 +600,7 @@ namespace RecoilGame
             }
             finally
             {
-                input.Close();
+                input.Close(); 
             }
         }
 

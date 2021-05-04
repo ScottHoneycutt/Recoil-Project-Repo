@@ -632,7 +632,7 @@ namespace RecoilGame
                     charAsTexture = gameRef.Content.Load<Texture2D>("wallTile");
                     break;
                 case 'f':
-                    charAsTexture = gameRef.Content.Load<Texture2D>("floorTile");
+                    charAsTexture = gameRef.Content.Load<Texture2D>("emptyTile");
                     break;
                 case 'a':
                     charAsTexture = gameRef.Content.Load<Texture2D>("airTile");

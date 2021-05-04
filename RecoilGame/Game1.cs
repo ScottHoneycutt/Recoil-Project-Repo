@@ -118,7 +118,7 @@ namespace RecoilGame
             //I'd get a null pointer error for the sprite texture
             
             player = new Player(200, 200, 60, 80, playerSprite, true, 100);
-            playerManager = new PlayerManager(player, 6, 4, -10.5f, .6f, 1, .25f, 1, this);
+            playerManager = new PlayerManager(player, 5, 4, -10.5f, .6f, 1, .25f, 1, this);
 
             // TODO: use this.Content to load your game content here
             //load bg for levels

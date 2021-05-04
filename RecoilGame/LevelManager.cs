@@ -109,10 +109,6 @@ namespace RecoilGame
 
             //Loading in sprites and spritefonts----
             testSprite = game.Content.Load<Texture2D>("square");
-            shotgunUI = game.Content.Load<Texture2D>("recoil shotgun UI");
-            shotgunUIUnequipped = game.Content.Load<Texture2D>("recoil shotgun UI unequipped");
-            rocketLauncherUI = game.Content.Load<Texture2D>("recoil rocket launcher UI");
-            rocketUIUnequipped = game.Content.Load<Texture2D>("recoil rocket launcher Unequipped");
             enemyTexture = game.Content.Load<Texture2D>("EnemyTexture");
             objectiveTexture = game.Content.Load<Texture2D>("keySprite");
 
@@ -126,9 +122,7 @@ namespace RecoilGame
             weaponsText = new Text(arial20, new Vector2(600, 2), "Weapons");
 
             //Setting up weapon cooldown displays for the UI----
-            shotgunBG = new Rectangle(600, 30, 50, 50);
             shotgunCD = new Rectangle(600, 30, 50, 0);
-            rocketBG = new Rectangle(670, 30, 50, 50);
             rocketCD = new Rectangle(670, 30, 50, 0);
 
         }
@@ -632,7 +626,7 @@ namespace RecoilGame
                     charAsTexture = gameRef.Content.Load<Texture2D>("wallTile");
                     break;
                 case 'f':
-                    charAsTexture = gameRef.Content.Load<Texture2D>("floorTile");
+                    charAsTexture = gameRef.Content.Load<Texture2D>("emptyTile");
                     break;
                 case 'a':
                     charAsTexture = gameRef.Content.Load<Texture2D>("airTile");
@@ -701,6 +695,17 @@ namespace RecoilGame
         {
             //Grabbing a reference to the player----
             Player player = Game1.playerManager.PlayerObject;
+            LinkedList<PlayerWeapon> weapons = Game1.weaponManager.Weapons;
+
+            if(weapons != null)
+            {
+                shotgunBG = weapons.First.Value.Background;
+
+                if(weapons.First.Next != null)
+                {
+                    rocketBG = weapons.First.Next.Value.Background;
+                } 
+            }
 
             //Updating player's health bar to match the player's health----
             healthBar.Width = (int)((float)player.Health / (float)player.MaxHealth * 
@@ -765,17 +770,16 @@ namespace RecoilGame
             //Backgrounds, color based upon whether or not they are selected----
             if (Game1.weaponManager.CurrentWeapon != null && Game1.weaponManager.Weapons.First != null)
             {
-                if (Game1.weaponManager.CurrentWeapon == Game1.weaponManager.Weapons.First.Value)
+                //draws current weapon's UI
+                sb.Draw(Game1.weaponManager.CurrentWeapon.EquippedUI, Game1.weaponManager.CurrentWeapon.Background, Color.White);
+
+                //draws other weapon's UI
+                foreach(PlayerWeapon weapon in Game1.weaponManager.Weapons)
                 {
-                    //Current weapon is the shotgun----
-                    sb.Draw(shotgunUI, shotgunBG, Color.White);
-                    sb.Draw(rocketUIUnequipped, rocketBG, Color.White);
-                }
-                else
-                {
-                    //Current weapon is the rocket launcher----
-                    sb.Draw(rocketLauncherUI, rocketBG, Color.White);
-                    sb.Draw(shotgunUIUnequipped, shotgunBG, Color.White);
+                    if(weapon != Game1.weaponManager.CurrentWeapon)
+                    {
+                        sb.Draw(weapon.UnequippedUI, weapon.Background, Color.White);
+                    }
                 }
 
                 //Cooldowns----

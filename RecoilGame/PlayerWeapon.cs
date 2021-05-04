@@ -14,6 +14,9 @@ namespace RecoilGame
         private float currentCooldown;
         private float currentAngle;
         private SpriteEffects weaponEffect;
+        private Texture2D equippedUI;
+        private Texture2D unequippedUI;
+        private Rectangle background;
 
         /// <summary>
         /// Property for the amount of cooldown caused when shooting
@@ -40,6 +43,24 @@ namespace RecoilGame
         {
             get { return currentAngle; }
             set { currentAngle = value; }
+        }
+
+        public Texture2D EquippedUI
+        {
+            get { return equippedUI; }
+            set { equippedUI = value; }
+        }
+
+        public Texture2D UnequippedUI
+        {
+            get { return unequippedUI; }
+            set { unequippedUI = value; }
+        }
+
+        public Rectangle Background
+        {
+            get { return background; }
+            set { background = value; }
         }
 
         //CONSTRUCTOR

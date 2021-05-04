@@ -16,6 +16,9 @@ namespace RecoilGame
         private List<Texture2D> weaponTextures;
         private List<Texture2D> projectileTextures;
         private Texture2D crosshairSprite;
+        private List<Texture2D> equippedUI;
+        private List<Texture2D> unequippedUI;
+        private Texture2D square;
 
 
         //CONSTRUCTOR
@@ -30,6 +33,8 @@ namespace RecoilGame
             currentWeapon = null;
             weaponTextures = new List<Texture2D>();
             projectileTextures = new List<Texture2D>();
+            equippedUI = new List<Texture2D>();
+            unequippedUI = new List<Texture2D>();
 
             weaponTextures.Add(game.Content.Load<Texture2D>("shotgunSprite"));
             weaponTextures.Add(game.Content.Load<Texture2D>("rpgSprite"));
@@ -37,6 +42,12 @@ namespace RecoilGame
             projectileTextures.Add(game.Content.Load<Texture2D>("bulletTexture"));
             projectileTextures.Add(game.Content.Load<Texture2D>("rocketTexture"));
             crosshairSprite = game.Content.Load<Texture2D>("crosshair");
+
+            equippedUI.Add(game.Content.Load<Texture2D>("recoil shotgun UI"));
+            equippedUI.Add(game.Content.Load<Texture2D>("recoil rocket launcher UI"));
+
+            unequippedUI.Add(game.Content.Load<Texture2D>("recoil shotgun UI unequipped"));
+            unequippedUI.Add(game.Content.Load<Texture2D>("recoil rocket launcher Unequipped"));
         }
 
 
@@ -83,13 +94,23 @@ namespace RecoilGame
 
                     currentWeapon = new Shotgun((int)Game1.playerManager.PlayerObject.XPos, (int)Game1.playerManager.PlayerObject.YPos, 50, 20, weaponTextures[0], true, projectileTextures[0]);
 
+                    currentWeapon.EquippedUI = equippedUI[0];
+                    currentWeapon.UnequippedUI = unequippedUI[0];
+
+                    currentWeapon.Background = new Rectangle(600, 30, 50, 50);
+
                     weapons.AddFirst(currentWeapon);
 
                     break;
 
-                case 2:
+                case 5:
 
                     currentWeapon = new RocketLauncher((int)Game1.playerManager.PlayerObject.XPos, (int)Game1.playerManager.PlayerObject.YPos, 70, 30, weaponTextures[1], true, projectileTextures[1]);
+
+                    currentWeapon.EquippedUI = equippedUI[1];
+                    currentWeapon.UnequippedUI = unequippedUI[1];
+
+                    currentWeapon.Background = new Rectangle(670, 30, 50, 50); ;
 
                     weapons.AddAfter(weapons.Last, currentWeapon);
 

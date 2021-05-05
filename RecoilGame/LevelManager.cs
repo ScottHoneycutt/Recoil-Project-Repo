@@ -14,7 +14,6 @@ using System.Reflection;
 
 namespace RecoilGame
 {
-
     /// <summary>
     /// Scott Honeycutt----
     /// 3/22/2021----
@@ -105,7 +104,7 @@ namespace RecoilGame
             
             //Setting objectiveTile to null until one appears in a level----
             objectiveTile = null;
-            numberOfLevels = 8;
+            numberOfLevels = 11;
 
             //Loading in sprites and spritefonts----
             testSprite = game.Content.Load<Texture2D>("square");
@@ -157,7 +156,7 @@ namespace RecoilGame
         /// </summary>
         /// <returns>True if the game should stay in level state, false if it should move to victory----</returns>
         public bool RunLevel()
-        {
+        {  
             //Starting the first level----
             if (currentLevel == 0)
             {
@@ -172,6 +171,7 @@ namespace RecoilGame
                 GenerateLevelFromFile("level" + currentLevel + ".rlv");
                 
             }
+            
 
             //If the objective has been completed----
             if (ObjectiveReached())
@@ -208,6 +208,7 @@ namespace RecoilGame
                 Game1.enemyManager.ListOfEnemies.Clear();
                 GenerateLevelFromFile("level" + currentLevel + ".rlv");
             }
+            
             return true;
         }
 
@@ -419,178 +420,6 @@ namespace RecoilGame
             int height = 0;
             MapTile headMapTile = null;
 
-/*            // align all vertical platforms
-            for (int i = 0; i < collisionRects.Count; i++)
-            {
-                // if collision box exists
-                if (newBox)
-                {
-                    positionOfBox = new Vector2(collisionRects[i].X, collisionRects[i].Y);
-                    newBox = false;
-                    boxCreated = true;
-                    width += ;
-                    height += collisionRects[i].Height;
-                    indexOfStartingBox = i;
-                } 
-                else if (
-                    collisionRects[i - 1].X + collisionRects[i - 1].Width == collisionRects[i].X &&)
-                {
-                    
-                }
-            }
-
-                
-                // variables for collision generation
-
-
-                // create for walls
-                for (int i = 0; i < tilesAcross; i++)
-                {
-                    for (int j = 0; j < tilesDown; j++)
-                    {
-                        // if wall
-                        if (charMapArray[i, j] == 'w')
-                        {
-                            // and first
-                            if (newBox)
-                            {
-                                // create new rect
-                                headMapTile =
-                                    textureTiles[i * tilesDown + j];
-                                newBox = false;
-                                boxCreated = true;
-                                positionOfBox = headMapTile.Position;
-                                width = headMapTile.ObjectRect.Width;
-                                height = headMapTile.ObjectRect.Height;
-                            }
-                            // else add to previous rect
-                            else
-                            {
-                                height += headMapTile.ObjectRect.Height;
-                            }
-                        }
-                        else if (!newBox && boxCreated)
-                        {
-                            collisionRects.Add(new Rectangle(
-                                (int)positionOfBox.X,
-                                (int)positionOfBox.Y,
-                                width,
-                                height));
-                            newBox = true;
-                            boxCreated = false;
-                        }
-                    }
-                    // edge case for bottom right
-                    if (boxCreated)
-                    {
-                        collisionRects.Add(new Rectangle(
-                        (int)positionOfBox.X,
-                        (int)positionOfBox.Y,
-                        width,
-                        height));
-                    }
-                }   
-
-                // create for floors
-
-                for (int i = 0; i < tilesAcross; i++)
-                {
-                    for (int j = 0; j < tilesDown; j++)
-                    {
-                        if (charMapArray[i, j] == 'f')
-                        {
-                            if (newBox)
-                            {
-                                headMapTile =
-                                    textureTiles[i * tilesAcross + j];
-                                newBox = false;
-                                boxCreated = true;
-                                positionOfBox = headMapTile.Position;
-                                width = headMapTile.ObjectRect.Width;
-                                height = headMapTile.ObjectRect.Height;
-                            }
-                            else
-                            {
-                                width += headMapTile.ObjectRect.Width;
-                            }
-                        }
-                        else if (!newBox && boxCreated)
-                        {
-                            collisionRects.Add(new Rectangle(
-                                (int)positionOfBox.X,
-                                (int)positionOfBox.Y,
-                                width,
-                                height));
-                            newBox = true;
-                            boxCreated = false;
-                        }
-                    }
-                    // edge case for bottom right
-                    if (boxCreated)
-                    {
-                        collisionRects.Add(new Rectangle(
-                        (int)positionOfBox.X,
-                        (int)positionOfBox.Y,
-                        width,
-                        height));
-                    }
-                }
-
-                // create for platforms
-                for (int i = 0; i < tilesDown; i++)
-                {
-                    for (int j = 0; j < tilesAcross; j++)
-                    {
-                        if (IsPlatform(charMapArray[j, i]))
-                        {
-                            if (newBox)
-                            {
-                                headMapTile =
-                                    textureTiles[i * tilesAcross + j];
-                                newBox = false;
-                                boxCreated = true;
-                                positionOfBox = headMapTile.Position;
-                                width = headMapTile.ObjectRect.Width;
-                                height = headMapTile.ObjectRect.Height;
-                            }
-                            else
-                            {
-                                width += headMapTile.ObjectRect.Width;
-                            }
-                        }
-                        else if (!newBox && boxCreated)
-                        {
-                            collisionRects.Add(new Rectangle(
-                                (int)positionOfBox.X,
-                                (int)positionOfBox.Y,
-                                width,
-                                height));
-                            newBox = true;
-                            boxCreated = false;
-                        }
-                    }
-                    // edge case for bottom right
-                    if (boxCreated)
-                    {
-                        collisionRects.Add(new Rectangle(
-                        (int)positionOfBox.X,
-                        (int)positionOfBox.Y,
-                        width,
-                        height));
-                    }
-                }
-
-                foreach (Rectangle collisionRect in collisionRects)
-                {
-                    collisionTiles.Add(new MapTile(
-                        collisionRect.X,
-                        collisionRect.Y,
-                        collisionRect.Width,
-                        collisionRect.Height,
-                        gameRef.Content.Load<Texture2D>("square"),
-                        true,
-                        false));
-                }*/
 
                 Game1.playerManager.PlayerObject.Position = playerPos;
                 Game1.playerManager.PlayerObject.ConvertPosToRect();
@@ -601,7 +430,7 @@ namespace RecoilGame
             }
             finally
             {
-                input.Close();
+                input.Close(); 
             }
         }
 

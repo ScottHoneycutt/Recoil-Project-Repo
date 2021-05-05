@@ -103,7 +103,7 @@ namespace RecoilGame
 
                     break;
 
-                case 5:
+                case 2:
 
                     currentWeapon = new RocketLauncher((int)Game1.playerManager.PlayerObject.XPos, (int)Game1.playerManager.PlayerObject.YPos, 70, 30, weaponTextures[1], true, projectileTextures[1]);
 

@@ -14,7 +14,6 @@ using System.Reflection;
 
 namespace RecoilGame
 {
-
     /// <summary>
     /// Scott Honeycutt----
     /// 3/22/2021----
@@ -603,7 +602,7 @@ namespace RecoilGame
             }
             finally
             {
-                input.Close();
+                input.Close(); 
             }
         }
 
@@ -628,7 +627,7 @@ namespace RecoilGame
                     charAsTexture = gameRef.Content.Load<Texture2D>("wallTile");
                     break;
                 case 'f':
-                    charAsTexture = gameRef.Content.Load<Texture2D>("floorTile");
+                    charAsTexture = gameRef.Content.Load<Texture2D>("emptyTile");
                     break;
                 case 'a':
                     charAsTexture = gameRef.Content.Load<Texture2D>("airTile");

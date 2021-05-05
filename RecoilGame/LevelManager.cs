@@ -156,7 +156,7 @@ namespace RecoilGame
         /// </summary>
         /// <returns>True if the game should stay in level state, false if it should move to victory----</returns>
         public bool RunLevel()
-        {
+        {  
             //Starting the first level----
             if (currentLevel == 0)
             {
@@ -171,6 +171,7 @@ namespace RecoilGame
                 GenerateLevelFromFile("level" + currentLevel + ".rlv");
                 
             }
+            
 
             //If the objective has been completed----
             if (ObjectiveReached())
@@ -207,6 +208,7 @@ namespace RecoilGame
                 Game1.enemyManager.ListOfEnemies.Clear();
                 GenerateLevelFromFile("level" + currentLevel + ".rlv");
             }
+            
             return true;
         }
 
